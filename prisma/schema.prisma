@@ -1,0 +1,297 @@
+// Prisma schema for Realestate
+// See /Users/apple/.claude/plans/design-a-plan-for-kind-gizmo.md for the design.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  AGENT
+  BUYER
+}
+
+enum AgentStatus {
+  PENDING
+  APPROVED
+  SUSPENDED
+  REJECTED
+}
+
+enum KycStatus {
+  NOT_STARTED
+  PENDING
+  VERIFIED
+  FAILED
+}
+
+enum ListingStatus {
+  DRAFT
+  PENDING_REVIEW
+  PUBLISHED
+  REJECTED
+  RESERVED
+  SOLD
+  ARCHIVED
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  LAND
+  DUPLEX
+  BUNGALOW
+  TERRACE
+}
+
+enum ReservationStatus {
+  PENDING
+  PAID
+  EXPIRED
+  CANCELLED
+  CONVERTED
+}
+
+enum ThreadRole {
+  BUYER
+  AGENT
+  ADMIN
+}
+
+enum CommissionStatus {
+  PENDING_PAYOUT
+  PROCESSING
+  PAID
+  CANCELLED
+  ON_HOLD
+}
+
+model User {
+  id                  String              @id @default(cuid())
+  email               String              @unique
+  passwordHash        String
+  fullName            String
+  phone               String?
+  role                UserRole            @default(BUYER)
+  emailVerified       DateTime?
+  emailVerifyToken    String?             @unique
+  emailVerifyExpires  DateTime?
+  passwordResetToken  String?             @unique
+  passwordResetExpires DateTime?
+  kycStatus           KycStatus           @default(NOT_STARTED)
+  kycVerifiedAt       DateTime?
+  agentProfile        AgentProfile?
+  reservations        Reservation[]
+  ownedListings       Listing[]           @relation("ListingAgent")
+  threadParticipants  ThreadParticipant[]
+  messagesSent        Message[]
+  kycSubmissions      KycSubmission[]
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@index([role])
+  @@index([kycStatus])
+}
+
+model AgentProfile {
+  id                    String             @id @default(cuid())
+  userId                String             @unique
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug                  String             @unique
+  businessName          String
+  cacNumber             String?
+  bio                   String?            @db.Text
+  avatarUrl             String?
+  status                AgentStatus        @default(PENDING)
+  approvedAt            DateTime?
+  approvedById          String?
+  rejectionReason       String?
+  bankCode              String?
+  bankAccountNo         String?
+  bankAccountName       String?
+  paystackRecipientCode String?
+  defaultCommissionPct  Decimal            @default(5.00) @db.Decimal(5, 2)
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  commissionEntries     CommissionLedger[]
+
+  @@index([status])
+}
+
+model KycSubmission {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider      String    @default("dojah")
+  bvnHash       String?
+  ninHash       String?
+  dob           DateTime?
+  selfieKey     String?
+  livenessScore Decimal?  @db.Decimal(4, 3)
+  providerRef   String?
+  status        KycStatus @default(PENDING)
+  failureReason String?
+  rawResponse   Json?
+  createdAt     DateTime  @default(now())
+  decidedAt     DateTime?
+
+  @@index([userId, status])
+}
+
+model Listing {
+  id                 String             @id @default(cuid())
+  slug               String             @unique
+  title              String
+  description        String             @db.Text
+  propertyType       PropertyType
+  status             ListingStatus      @default(DRAFT)
+  priceNgn           Decimal            @db.Decimal(14, 2)
+  depositNgn         Decimal            @db.Decimal(14, 2)
+  bedrooms           Int?
+  bathrooms          Int?
+  areaSqm            Decimal?           @db.Decimal(10, 2)
+  addressLine        String
+  city               String
+  state              String
+  country            String             @default("Nigeria")
+  latitude           Decimal?           @db.Decimal(9, 6)
+  longitude          Decimal?           @db.Decimal(9, 6)
+  amenities          String[]
+  images             ListingImage[]
+  reservations       Reservation[]
+  threads            MessageThread[]
+  agentId            String?
+  agent              User?              @relation("ListingAgent", fields: [agentId], references: [id])
+  agentCommissionPct Decimal?           @db.Decimal(5, 2)
+  platformFeePct     Decimal            @default(1.00) @db.Decimal(5, 2)
+  createdById        String
+  publishedAt        DateTime?
+  soldAt             DateTime?
+  rejectionReason    String?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  commissionEntries  CommissionLedger[]
+
+  @@index([status, city])
+  @@index([propertyType, priceNgn])
+  @@index([agentId, status])
+  @@index([publishedAt])
+}
+
+model ListingImage {
+  id         String  @id @default(cuid())
+  listingId  String
+  listing    Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  storageKey String
+  url        String
+  width      Int?
+  height     Int?
+  altText    String?
+  sortOrder  Int     @default(0)
+  isCover    Boolean @default(false)
+}
+
+model Reservation {
+  id                 String            @id @default(cuid())
+  reference          String            @unique
+  listingId          String
+  listing            Listing           @relation(fields: [listingId], references: [id])
+  buyerId            String
+  buyer              User              @relation(fields: [buyerId], references: [id])
+  depositNgn         Decimal           @db.Decimal(14, 2)
+  status             ReservationStatus @default(PENDING)
+  paystackAuthUrl    String?
+  paystackAccessCode String?
+  paidAt             DateTime?
+  expiresAt          DateTime
+  notes              String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  commissionLedger   CommissionLedger?
+
+  @@index([listingId, status])
+  @@index([buyerId, createdAt])
+}
+
+model MessageThread {
+  id            String              @id @default(cuid())
+  listingId     String
+  listing       Listing             @relation(fields: [listingId], references: [id])
+  buyerId       String
+  subject       String?
+  lastMessageAt DateTime            @default(now())
+  participants  ThreadParticipant[]
+  messages      Message[]
+  createdAt     DateTime            @default(now())
+
+  @@unique([listingId, buyerId])
+  @@index([buyerId, lastMessageAt])
+}
+
+model ThreadParticipant {
+  id         String        @id @default(cuid())
+  threadId   String
+  thread     MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  role       ThreadRole
+  lastReadAt DateTime?
+
+  @@unique([threadId, userId])
+  @@index([userId, lastReadAt])
+}
+
+model Message {
+  id        String        @id @default(cuid())
+  threadId  String
+  thread    MessageThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  senderId  String
+  sender    User          @relation(fields: [senderId], references: [id])
+  body      String        @db.Text
+  createdAt DateTime      @default(now())
+
+  @@index([threadId, createdAt])
+}
+
+model CommissionLedger {
+  id                  String           @id @default(cuid())
+  listingId           String
+  listing             Listing          @relation(fields: [listingId], references: [id])
+  reservationId       String           @unique
+  reservation         Reservation      @relation(fields: [reservationId], references: [id])
+  agentId             String?
+  agent               AgentProfile?    @relation(fields: [agentId], references: [id])
+  salePriceNgn        Decimal          @db.Decimal(14, 2)
+  agentCommissionPct  Decimal          @db.Decimal(5, 2)
+  agentCommissionNgn  Decimal          @db.Decimal(14, 2)
+  platformFeePct      Decimal          @db.Decimal(5, 2)
+  platformFeeNgn      Decimal          @db.Decimal(14, 2)
+  netPayoutNgn        Decimal          @db.Decimal(14, 2)
+  status              CommissionStatus @default(PENDING_PAYOUT)
+  paystackTransferRef String?
+  paidAt              DateTime?
+  notes               String?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  @@index([agentId, status])
+  @@index([status, createdAt])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  meta       Json?
+  createdAt  DateTime @default(now())
+
+  @@index([entityType, entityId])
+  @@index([actorId, createdAt])
+}

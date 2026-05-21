@@ -47,11 +47,22 @@ export function NotificationBell() {
 
   useEffect(() => {
     if (!open) return;
-    setLoading(true);
-    fetch("/api/agent/notifications?take=10")
-      .then((r) => (r.ok ? r.json() : { items: [] }))
-      .then((d) => setItems(d.items ?? []))
-      .finally(() => setLoading(false));
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      try {
+        const r = await fetch("/api/agent/notifications?take=10");
+        const d = r.ok
+          ? ((await r.json()) as { items?: NotificationRow[] })
+          : { items: [] };
+        if (!cancelled) setItems(d.items ?? []);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [open]);
 
   useEffect(() => {
@@ -117,7 +128,7 @@ export function NotificationBell() {
               <p className="px-4 py-6 text-center text-sm text-stone-500">Loading…</p>
             ) : items.length === 0 ? (
               <p className="px-4 py-6 text-center text-sm text-stone-500">
-                You're all caught up.
+                You&apos;re all caught up.
               </p>
             ) : (
               <ul>

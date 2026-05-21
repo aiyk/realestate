@@ -13,9 +13,18 @@ export const listingImageInputSchema = z.object({
   storageKey: z.string().min(1),
   url: z.string().url(),
   altText: z.string().max(200).optional(),
+  caption: z.string().max(200).optional(),
   sortOrder: z.number().int().min(0).max(99).default(0),
   isCover: z.boolean().default(false),
 });
+
+const optionalUrl = z
+  .string()
+  .trim()
+  .max(500)
+  .url()
+  .optional()
+  .or(z.literal("").transform(() => undefined));
 
 export const createListingSchema = z.object({
   title: z.string().min(5).max(160),
@@ -36,6 +45,15 @@ export const createListingSchema = z.object({
   images: z.array(listingImageInputSchema).min(1).max(20),
   agentCommissionPct: z.coerce.number().min(0).max(50).optional(),
   platformFeePct: z.coerce.number().min(0).max(50).default(1),
+  videoUrl: optionalUrl,
+  virtualTourUrl: optionalUrl,
+  youtubeEmbedId: z
+    .string()
+    .trim()
+    .max(40)
+    .regex(/^[A-Za-z0-9_-]*$/, "Use the 11-char YouTube video id")
+    .optional()
+    .or(z.literal("").transform(() => undefined)),
 });
 
 export type CreateListingInput = z.infer<typeof createListingSchema>;

@@ -1,4 +1,4 @@
-import { CheckCircle2, Clock, Hourglass, ArrowRight, HandCoins } from "lucide-react";
+import { CheckCircle2, Clock, Hourglass, ArrowRight, HandCoins, Download } from "lucide-react";
 import Link from "next/link";
 import { getSessionUser } from "@/lib/rbac";
 import { prisma } from "@/lib/db";
@@ -50,17 +50,28 @@ export default async function AgentEarningsPage() {
 
   return (
     <section>
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-          Money in motion
-        </p>
-        <h1 className="mt-1 text-2xl font-semibold tracking-tight">
-          Earnings & payouts
-        </h1>
-        <p className="mt-1 text-sm text-stone-600 text-pretty">
-          Every commission entry, every transfer, with the breakdown spelled
-          out — sale, commission %, platform fee, your net.
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            Money in motion
+          </p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight">
+            Earnings &amp; payouts
+          </h1>
+          <p className="mt-1 text-sm text-stone-600 text-pretty">
+            Every commission entry, every transfer, with the breakdown spelled
+            out — sale, commission %, platform fee, your net.
+          </p>
+        </div>
+        {ledgers.length > 0 && (
+          <a
+            href="/api/agent/earnings/statement.csv"
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+          >
+            <Download className="h-3 w-3" />
+            Download CSV
+          </a>
+        )}
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">

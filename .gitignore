@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/.playwright-mcp/
+/test-results/
+/playwright-report/
+/agent-dashboard.png
+/agents-directory.png
 
 # next.js
 /.next/

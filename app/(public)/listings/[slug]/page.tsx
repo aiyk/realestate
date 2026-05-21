@@ -34,6 +34,8 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { cn, formatNgn } from "@/lib/utils";
 import { ListingGallery } from "@/components/listings/listing-gallery";
+import { ListingViewTracker } from "@/components/listings/listing-view-tracker";
+import { ListingMediaExtras } from "@/components/listings/listing-media-extras";
 import { ListingCard } from "@/components/listings/listing-card";
 import { Callout } from "@/components/ui/callout";
 import { SpeechBubble } from "@/components/ui/speech-bubble";
@@ -191,8 +193,19 @@ export default async function ListingDetailPage({ params }: Props) {
     include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
   });
 
+  const openHouses = await prisma.openHouse.findMany({
+    where: {
+      listingId: listing.id,
+      cancelledAt: null,
+      startsAt: { gte: new Date() },
+    },
+    orderBy: { startsAt: "asc" },
+    take: 5,
+  });
+
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-6 pb-20 pt-6">
+      <ListingViewTracker listingId={listing.id} />
       <Link
         href="/listings"
         className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition-colors hover:text-emerald-700"
@@ -308,6 +321,26 @@ export default async function ListingDetailPage({ params }: Props) {
               {listing.description}
             </p>
           </Section>
+
+          {(listing.videoUrl ||
+            listing.virtualTourUrl ||
+            listing.youtubeEmbedId ||
+            openHouses.length > 0) && (
+            <Section title="See more">
+              <ListingMediaExtras
+                listingId={listing.id}
+                videoUrl={listing.videoUrl}
+                virtualTourUrl={listing.virtualTourUrl}
+                youtubeEmbedId={listing.youtubeEmbedId}
+                openHouses={openHouses.map((o) => ({
+                  startsAt: o.startsAt.toISOString(),
+                  endsAt: o.endsAt.toISOString(),
+                  capacity: o.capacity,
+                  notes: o.notes,
+                }))}
+              />
+            </Section>
+          )}
 
           {listing.amenities.length > 0 && (
             <Section title="What's inside & out">

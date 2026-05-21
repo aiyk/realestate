@@ -103,6 +103,9 @@ export async function POST(req: NextRequest) {
           data.longitude !== undefined
             ? new Prisma.Decimal(data.longitude)
             : null,
+        videoUrl: data.videoUrl ?? null,
+        virtualTourUrl: data.virtualTourUrl ?? null,
+        youtubeEmbedId: data.youtubeEmbedId ?? null,
         amenities: data.amenities,
         agentId,
         agentCommissionPct:
@@ -117,6 +120,7 @@ export async function POST(req: NextRequest) {
             storageKey: img.storageKey,
             url: img.url,
             altText: img.altText ?? null,
+            caption: img.caption ?? null,
             sortOrder: img.sortOrder ?? i,
             isCover: img.isCover ?? i === 0,
           })),

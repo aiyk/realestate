@@ -21,7 +21,7 @@ export function AgentDecisionRow({
   async function approve() {
     setLoading("approve");
     setError(null);
-    const res = await fetch(`/api/agents/${id}/approve`, {
+    const res = await fetch(`/api/admin/agents/${id}/approve`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ defaultCommissionPct: pct }),
@@ -40,7 +40,7 @@ export function AgentDecisionRow({
     if (!reason) return;
     setLoading("reject");
     setError(null);
-    const res = await fetch(`/api/agents/${id}/reject`, {
+    const res = await fetch(`/api/admin/agents/${id}/reject`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ reason }),

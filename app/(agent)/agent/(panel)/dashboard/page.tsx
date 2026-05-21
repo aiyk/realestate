@@ -15,6 +15,9 @@ import { SpeechBubble } from "@/components/ui/speech-bubble";
 import { Callout } from "@/components/ui/callout";
 import { buttonVariants } from "@/components/ui/button";
 import { LagosSkyline } from "@/components/illustrations/skylines";
+import { PerformanceWidgets } from "@/components/agent/dashboard/performance-widgets";
+import { QuickActions } from "@/components/agent/dashboard/quick-actions";
+import { ActivityFeed } from "@/components/agent/dashboard/activity-feed";
 import { cn, formatNgn } from "@/lib/utils";
 import { greet } from "@/lib/voice";
 
@@ -105,7 +108,21 @@ export default async function AgentDashboard() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-stone-500">
+          This week
+        </p>
+        <PerformanceWidgets
+          agentUserId={user.id}
+          agentProfileId={profile?.id ?? null}
+        />
+      </div>
+
+      <div className="mt-8">
+        <QuickActions agentUserId={user.id} />
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/agent/listings?status=PUBLISHED">
           <StatBadge
             icon={<Building2 className="h-4 w-4" />}
@@ -182,6 +199,10 @@ export default async function AgentDashboard() {
             Open inbox <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </Callout>
+      </div>
+
+      <div className="mt-10">
+        <ActivityFeed agentUserId={user.id} />
       </div>
     </section>
   );

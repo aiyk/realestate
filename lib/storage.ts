@@ -60,3 +60,22 @@ export function listingImageKey(listingId: string, filename: string): string {
 export function kycSelfieKey(userId: string): string {
   return `kyc/${userId}/selfie-${Date.now()}.jpg`;
 }
+
+export function agentAvatarKey(userId: string, filename: string): string {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "bin";
+  return `agents/${userId}/avatar-${Date.now()}.${ext}`;
+}
+
+export function agentCoverKey(userId: string, filename: string): string {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "bin";
+  return `agents/${userId}/cover-${Date.now()}.${ext}`;
+}
+
+export function listingDocumentKey(
+  listingId: string,
+  filename: string,
+): string {
+  const ext = filename.split(".").pop()?.toLowerCase() ?? "bin";
+  const slug = filename.replace(/[^a-z0-9._-]/gi, "_");
+  return `listings/${listingId}/docs/${Date.now()}-${slug.slice(0, 40)}.${ext}`;
+}

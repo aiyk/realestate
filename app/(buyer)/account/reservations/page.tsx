@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Callout } from "@/components/ui/callout";
 import { NoReservations } from "@/components/illustrations/empty-states";
+import { ReviewSubmitDialog } from "@/components/agent/review-submit-dialog";
 import { cn, formatNgn } from "@/lib/utils";
 import { emptyState, statusBlurb } from "@/lib/voice";
 
@@ -42,8 +43,16 @@ export default async function BuyerReservationsPage() {
           state: true,
           priceNgn: true,
           images: { take: 1, orderBy: { sortOrder: "asc" } },
+          agent: {
+            select: {
+              agentProfile: {
+                select: { slug: true, businessName: true },
+              },
+            },
+          },
         },
       },
+      agentReview: { select: { id: true } },
     },
   });
 
@@ -173,7 +182,7 @@ export default async function BuyerReservationsPage() {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 border-t border-stone-100 px-5 py-3">
+              <div className="flex flex-wrap items-center gap-2 border-t border-stone-100 px-5 py-3">
                 <Link
                   href={`/listings/${r.listing.slug}`}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
@@ -187,6 +196,20 @@ export default async function BuyerReservationsPage() {
                   <MessageCircle className="h-3.5 w-3.5" />
                   Message agent
                 </Link>
+                {(r.status === "PAID" || r.status === "CONVERTED") &&
+                  r.listing.agent?.agentProfile &&
+                  !r.agentReview && (
+                    <ReviewSubmitDialog
+                      agentSlug={r.listing.agent.agentProfile.slug}
+                      agentBusinessName={r.listing.agent.agentProfile.businessName}
+                      reservationId={r.id}
+                    />
+                  )}
+                {r.agentReview && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-900">
+                    ✓ Review submitted
+                  </span>
+                )}
               </div>
             </article>
           ))}

@@ -71,56 +71,179 @@ enum CommissionStatus {
   ON_HOLD
 }
 
+enum AgentReviewStatus {
+  PUBLISHED
+  HIDDEN
+  FLAGGED
+}
+
+enum ContactInquiryKind {
+  MESSAGE
+  VIEWING_REQUEST
+}
+
+enum ContactInquiryStatus {
+  NEW
+  READ
+  REPLIED
+  SPAM
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  QUALIFIED
+  BOOKED
+  LOST
+}
+
+enum LeadSource {
+  SEARCH
+  PROFILE
+  LISTING
+  SHARE
+  REFERRAL
+  DIRECT
+  OTHER
+}
+
+enum LeadKind {
+  CONTACT_INQUIRY
+  VISIT_REQUEST
+  RESERVATION
+}
+
+enum VisitStatus {
+  REQUESTED
+  CONFIRMED
+  RESCHEDULED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+enum NotificationType {
+  LEAD_NEW
+  LEAD_BOOKED
+  RESERVATION_NEW
+  RESERVATION_PAID
+  LISTING_APPROVED
+  LISTING_REJECTED
+  PAYOUT_PROCESSING
+  PAYOUT_PAID
+  MESSAGE_NEW
+  OPEN_HOUSE_REMINDER
+  PROFILE_VERIFIED
+  SYSTEM
+}
+
+enum AnalyticsEventKind {
+  LISTING_VIEW
+  LISTING_FAVORITED
+  LISTING_SHARED
+  LISTING_CONTACT_CLICK
+  LISTING_PHONE_REVEAL
+  LISTING_VIRTUAL_TOUR_OPEN
+}
+
+enum DocumentKind {
+  TITLE_DEED
+  SURVEY_PLAN
+  C_OF_O
+  DEED_OF_ASSIGNMENT
+  OTHER
+}
+
 model User {
-  id                  String              @id @default(cuid())
-  email               String              @unique
-  passwordHash        String
-  fullName            String
-  phone               String?
-  role                UserRole            @default(BUYER)
-  emailVerified       DateTime?
-  emailVerifyToken    String?             @unique
-  emailVerifyExpires  DateTime?
-  passwordResetToken  String?             @unique
+  id                   String                  @id @default(cuid())
+  email                String                  @unique
+  passwordHash         String
+  fullName             String
+  phone                String?
+  role                 UserRole                @default(BUYER)
+  emailVerified        DateTime?
+  emailVerifyToken     String?                 @unique
+  emailVerifyExpires   DateTime?
+  passwordResetToken   String?                 @unique
   passwordResetExpires DateTime?
-  kycStatus           KycStatus           @default(NOT_STARTED)
-  kycVerifiedAt       DateTime?
-  agentProfile        AgentProfile?
-  reservations        Reservation[]
-  ownedListings       Listing[]           @relation("ListingAgent")
-  threadParticipants  ThreadParticipant[]
-  messagesSent        Message[]
-  kycSubmissions      KycSubmission[]
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+  kycStatus            KycStatus               @default(NOT_STARTED)
+  kycVerifiedAt        DateTime?
+  agentProfile         AgentProfile?
+  reservations         Reservation[]
+  ownedListings        Listing[]               @relation("ListingAgent")
+  threadParticipants   ThreadParticipant[]
+  messagesSent         Message[]
+  threadsAsBuyer       MessageThread[]         @relation("ThreadBuyer")
+  kycSubmissions       KycSubmission[]
+  icsToken             String?                 @unique
+  agentReviewsAuthored AgentReview[]           @relation("AgentReviewAuthor")
+  leadsAssigned        Lead[]                  @relation("LeadAgent")
+  leadsAsBuyer         Lead[]                  @relation("LeadBuyer")
+  leadNotes            LeadNote[]
+  notifications        Notification[]
+  notificationPref     AgentNotificationPref?
+  uploadedDocuments    ListingDocument[]       @relation("DocumentUploader")
+  priceChanges         ListingPriceHistory[]   @relation("PriceChangeAuthor")
+  analyticsEvents      ListingAnalyticsEvent[]
+  createdAt            DateTime                @default(now())
+  updatedAt            DateTime                @updatedAt
 
   @@index([role])
   @@index([kycStatus])
 }
 
 model AgentProfile {
-  id                    String             @id @default(cuid())
-  userId                String             @unique
-  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
-  slug                  String             @unique
-  businessName          String
-  cacNumber             String?
-  bio                   String?            @db.Text
-  avatarUrl             String?
-  status                AgentStatus        @default(PENDING)
-  approvedAt            DateTime?
-  approvedById          String?
-  rejectionReason       String?
-  bankCode              String?
-  bankAccountNo         String?
-  bankAccountName       String?
-  paystackRecipientCode String?
-  defaultCommissionPct  Decimal            @default(5.00) @db.Decimal(5, 2)
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
-  commissionEntries     CommissionLedger[]
+  id                          String             @id @default(cuid())
+  userId                      String             @unique
+  user                        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug                        String             @unique
+  businessName                String
+  cacNumber                   String?
+  bio                         String?            @db.Text
+  avatarUrl                   String?
+  coverPhotoUrl               String?
+  tagline                     String?
+  yearsOfExperience           Int?
+  languages                   String[]           @default([])
+  credentials                 String[]           @default([])
+  responseTimeMinutes         Int?
+  whatsappNumber              String?
+  twitterUrl                  String?
+  linkedinUrl                 String?
+  instagramUrl                String?
+  facebookUrl                 String?
+  websiteUrl                  String?
+  ratingAvg                   Decimal?           @db.Decimal(3, 2)
+  ratingCount                 Int                @default(0)
+  listingCountCache           Int                @default(0)
+  soldCountCache              Int                @default(0)
+  performanceTier             String?
+  goalListingsSoldThisQuarter Int?
+  goalQuarterStartedAt        DateTime?
+  bankReverifyRequestedAt     DateTime?
+  businessNameLastChangedAt   DateTime?
+  status                      AgentStatus        @default(PENDING)
+  approvedAt                  DateTime?
+  approvedById                String?
+  rejectionReason             String?
+  bankCode                    String?
+  bankAccountNo               String?
+  bankAccountName             String?
+  paystackRecipientCode       String?
+  defaultCommissionPct        Decimal            @default(5.00) @db.Decimal(5, 2)
+  createdAt                   DateTime           @default(now())
+  updatedAt                   DateTime           @updatedAt
+  commissionEntries           CommissionLedger[]
+  specialties                 AgentSpecialty[]
+  serviceAreas                AgentServiceArea[]
+  faqs                        AgentFaq[]
+  reviews                     AgentReview[]
+  contactInquiries            ContactInquiry[]
 
   @@index([status])
+  @@index([status, ratingAvg])
+  @@index([status, soldCountCache])
+  @@index([status, listingCountCache])
 }
 
 model KycSubmission {
@@ -144,43 +267,66 @@ model KycSubmission {
 }
 
 model Listing {
-  id                 String             @id @default(cuid())
-  slug               String             @unique
-  title              String
-  description        String             @db.Text
-  propertyType       PropertyType
-  status             ListingStatus      @default(DRAFT)
-  priceNgn           Decimal            @db.Decimal(14, 2)
-  depositNgn         Decimal            @db.Decimal(14, 2)
-  bedrooms           Int?
-  bathrooms          Int?
-  areaSqm            Decimal?           @db.Decimal(10, 2)
-  addressLine        String
-  city               String
-  state              String
-  country            String             @default("Nigeria")
-  latitude           Decimal?           @db.Decimal(9, 6)
-  longitude          Decimal?           @db.Decimal(9, 6)
-  amenities          String[]
-  images             ListingImage[]
-  reservations       Reservation[]
-  threads            MessageThread[]
-  agentId            String?
-  agent              User?              @relation("ListingAgent", fields: [agentId], references: [id])
-  agentCommissionPct Decimal?           @db.Decimal(5, 2)
-  platformFeePct     Decimal            @default(1.00) @db.Decimal(5, 2)
-  createdById        String
-  publishedAt        DateTime?
-  soldAt             DateTime?
-  rejectionReason    String?
-  createdAt          DateTime           @default(now())
-  updatedAt          DateTime           @updatedAt
-  commissionEntries  CommissionLedger[]
+  id                  String                  @id @default(cuid())
+  slug                String                  @unique
+  title               String
+  description         String                  @db.Text
+  propertyType        PropertyType
+  status              ListingStatus           @default(DRAFT)
+  priceNgn            Decimal                 @db.Decimal(14, 2)
+  depositNgn          Decimal                 @db.Decimal(14, 2)
+  bedrooms            Int?
+  bathrooms           Int?
+  areaSqm             Decimal?                @db.Decimal(10, 2)
+  addressLine         String
+  city                String
+  state               String
+  country             String                  @default("Nigeria")
+  latitude            Decimal?                @db.Decimal(9, 6)
+  longitude           Decimal?                @db.Decimal(9, 6)
+  amenities           String[]
+  images              ListingImage[]
+  reservations        Reservation[]
+  threads             MessageThread[]
+  agentId             String?
+  agent               User?                   @relation("ListingAgent", fields: [agentId], references: [id])
+  agentCommissionPct  Decimal?                @db.Decimal(5, 2)
+  platformFeePct      Decimal                 @default(1.00) @db.Decimal(5, 2)
+  createdById         String
+  publishedAt         DateTime?
+  soldAt              DateTime?
+  rejectionReason     String?
+  videoUrl            String?
+  virtualTourUrl      String?
+  youtubeEmbedId      String?
+  isFeatured          Boolean                 @default(false)
+  featuredUntil       DateTime?
+  viewCount           Int                     @default(0)
+  inquiryCount        Int                     @default(0)
+  lastViewedAt        DateTime?
+  archivedAt          DateTime?
+  duplicatedFromId    String?
+  duplicatedFrom      Listing?                @relation("ListingDuplicate", fields: [duplicatedFromId], references: [id])
+  duplicates          Listing[]               @relation("ListingDuplicate")
+  priceLastChangedAt  DateTime?
+  priceReviewRequired Boolean                 @default(false)
+  createdAt           DateTime                @default(now())
+  updatedAt           DateTime                @updatedAt
+  commissionEntries   CommissionLedger[]
+  openHouses          OpenHouse[]
+  visitRequests       VisitRequest[]
+  leads               Lead[]
+  analyticsEvents     ListingAnalyticsEvent[]
+  documents           ListingDocument[]
+  priceHistory        ListingPriceHistory[]
+  contactInquiries    ContactInquiry[]
 
   @@index([status, city])
   @@index([propertyType, priceNgn])
   @@index([agentId, status])
   @@index([publishedAt])
+  @@index([isFeatured, featuredUntil])
+  @@index([agentId, archivedAt])
 }
 
 model ListingImage {
@@ -192,6 +338,7 @@ model ListingImage {
   width      Int?
   height     Int?
   altText    String?
+  caption    String?
   sortOrder  Int     @default(0)
   isCover    Boolean @default(false)
 }
@@ -213,6 +360,8 @@ model Reservation {
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt
   commissionLedger   CommissionLedger?
+  agentReview        AgentReview?
+  lead               Lead?
 
   @@index([listingId, status])
   @@index([buyerId, createdAt])
@@ -223,10 +372,12 @@ model MessageThread {
   listingId     String
   listing       Listing             @relation(fields: [listingId], references: [id])
   buyerId       String
+  buyer         User                @relation("ThreadBuyer", fields: [buyerId], references: [id])
   subject       String?
   lastMessageAt DateTime            @default(now())
   participants  ThreadParticipant[]
   messages      Message[]
+  leads         Lead[]
   createdAt     DateTime            @default(now())
 
   @@unique([listingId, buyerId])
@@ -294,4 +445,252 @@ model AuditLog {
 
   @@index([entityType, entityId])
   @@index([actorId, createdAt])
+}
+
+model AgentSpecialty {
+  id           String       @id @default(cuid())
+  agentId      String
+  agent        AgentProfile @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  propertyType PropertyType
+  createdAt    DateTime     @default(now())
+
+  @@unique([agentId, propertyType])
+  @@index([propertyType])
+}
+
+model AgentServiceArea {
+  id        String       @id @default(cuid())
+  agentId   String
+  agent     AgentProfile @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  city      String
+  state     String
+  radiusKm  Int?
+  isPrimary Boolean      @default(false)
+  createdAt DateTime     @default(now())
+
+  @@unique([agentId, city, state])
+  @@index([city, state])
+  @@index([state])
+}
+
+model AgentFaq {
+  id          String       @id @default(cuid())
+  agentId     String
+  agent       AgentProfile @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  question    String
+  answer      String       @db.Text
+  sortOrder   Int          @default(0)
+  isPublished Boolean      @default(true)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([agentId, sortOrder])
+}
+
+model AgentReview {
+  id             String            @id @default(cuid())
+  agentId        String
+  agent          AgentProfile      @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User              @relation("AgentReviewAuthor", fields: [authorId], references: [id])
+  reservationId  String            @unique
+  reservation    Reservation       @relation(fields: [reservationId], references: [id])
+  rating         Int
+  body           String?           @db.Text
+  status         AgentReviewStatus @default(PUBLISHED)
+  agentReplyBody String?           @db.Text
+  agentRepliedAt DateTime?
+  flagReason     String?
+  flaggedAt      DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+
+  @@unique([agentId, authorId, reservationId])
+  @@index([agentId, status, createdAt])
+  @@index([rating])
+}
+
+model ContactInquiry {
+  id                String               @id @default(cuid())
+  agentId           String
+  agent             AgentProfile         @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  listingId         String?
+  listing           Listing?             @relation(fields: [listingId], references: [id])
+  name              String
+  email             String
+  phone             String?
+  message           String               @db.Text
+  kind              ContactInquiryKind   @default(MESSAGE)
+  viewingAt         DateTime?
+  ipHash            String
+  userAgent         String?
+  status            ContactInquiryStatus @default(NEW)
+  convertedThreadId String?
+  lead              Lead?
+  visitRequest      VisitRequest?
+  createdAt         DateTime             @default(now())
+
+  @@index([agentId, createdAt])
+  @@index([ipHash, createdAt])
+  @@index([email, createdAt])
+  @@index([status])
+}
+
+model OpenHouse {
+  id            String         @id @default(cuid())
+  listingId     String
+  listing       Listing        @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  startsAt      DateTime
+  endsAt        DateTime
+  capacity      Int?
+  notes         String?        @db.Text
+  cancelledAt   DateTime?
+  visitRequests VisitRequest[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@index([listingId, startsAt])
+  @@index([startsAt])
+}
+
+model VisitRequest {
+  id               String          @id @default(cuid())
+  listingId        String
+  listing          Listing         @relation(fields: [listingId], references: [id])
+  buyerId          String?
+  contactInquiryId String?         @unique
+  contactInquiry   ContactInquiry? @relation(fields: [contactInquiryId], references: [id])
+  requestedAt      DateTime        @default(now())
+  confirmedAt      DateTime?
+  status           VisitStatus     @default(REQUESTED)
+  slotStartsAt     DateTime?
+  slotEndsAt       DateTime?
+  openHouseId      String?
+  openHouse        OpenHouse?      @relation(fields: [openHouseId], references: [id])
+  notes            String?
+  lead             Lead?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@index([listingId, status])
+  @@index([buyerId, status])
+}
+
+model Lead {
+  id                     String          @id @default(cuid())
+  agentId                String
+  agent                  User            @relation("LeadAgent", fields: [agentId], references: [id])
+  listingId              String?
+  listing                Listing?        @relation(fields: [listingId], references: [id])
+  kind                   LeadKind
+  sourceContactInquiryId String?         @unique
+  sourceContactInquiry   ContactInquiry? @relation(fields: [sourceContactInquiryId], references: [id])
+  sourceVisitRequestId   String?         @unique
+  sourceVisitRequest     VisitRequest?   @relation(fields: [sourceVisitRequestId], references: [id])
+  sourceReservationId    String?         @unique
+  sourceReservation      Reservation?    @relation(fields: [sourceReservationId], references: [id])
+  source                 LeadSource
+  status                 LeadStatus      @default(NEW)
+  buyerName              String
+  buyerEmail             String
+  buyerPhone             String?
+  buyerUserId            String?
+  buyerUser              User?           @relation("LeadBuyer", fields: [buyerUserId], references: [id])
+  followUpAt             DateTime?
+  lastContactedAt        DateTime?
+  threadId               String?
+  thread                 MessageThread?  @relation(fields: [threadId], references: [id])
+  lostReason             String?
+  notes                  LeadNote[]
+  createdAt              DateTime        @default(now())
+  updatedAt              DateTime        @updatedAt
+
+  @@index([agentId, status, followUpAt])
+  @@index([agentId, createdAt])
+  @@index([listingId, status])
+}
+
+model LeadNote {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  body      String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([leadId, createdAt])
+}
+
+model Notification {
+  id         String           @id @default(cuid())
+  userId     String
+  user       User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type       NotificationType
+  title      String
+  body       String?          @db.Text
+  entityType String?
+  entityId   String?
+  actionUrl  String?
+  readAt     DateTime?
+  createdAt  DateTime         @default(now())
+
+  @@index([userId, readAt, createdAt])
+  @@index([userId, createdAt])
+}
+
+model AgentNotificationPref {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prefs     Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ListingAnalyticsEvent {
+  id          String             @id @default(cuid())
+  listingId   String
+  listing     Listing            @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  kind        AnalyticsEventKind
+  visitorHash String?
+  userId      String?
+  user        User?              @relation(fields: [userId], references: [id])
+  referrer    String?
+  createdAt   DateTime           @default(now())
+
+  @@index([listingId, kind, createdAt])
+  @@index([listingId, createdAt])
+}
+
+model ListingDocument {
+  id           String       @id @default(cuid())
+  listingId    String
+  listing      Listing      @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  kind         DocumentKind
+  title        String
+  storageKey   String
+  url          String
+  sizeBytes    Int?
+  mimeType     String
+  uploadedById String
+  uploadedBy   User         @relation("DocumentUploader", fields: [uploadedById], references: [id])
+  verifiedAt   DateTime?
+  createdAt    DateTime     @default(now())
+
+  @@index([listingId, kind])
+}
+
+model ListingPriceHistory {
+  id              String   @id @default(cuid())
+  listingId       String
+  listing         Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  oldPriceNgn     Decimal  @db.Decimal(14, 2)
+  newPriceNgn     Decimal  @db.Decimal(14, 2)
+  changedById     String
+  changedBy       User     @relation("PriceChangeAuthor", fields: [changedById], references: [id])
+  triggeredReview Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@index([listingId, createdAt])
 }

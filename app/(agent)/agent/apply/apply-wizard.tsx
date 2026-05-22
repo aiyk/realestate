@@ -91,13 +91,15 @@ export function ApplyWizard({
 
   return (
     <div>
-      <ol className="mb-6 flex items-center gap-2 text-xs text-neutral-500">
+      <ol className="mb-6 flex items-center gap-2 text-xs text-muted-foreground">
         {[1, 2, 3, 4].map((s) => (
           <li
             key={s}
             className={cn(
               "flex h-7 items-center rounded-full px-3",
-              step >= s ? "bg-neutral-900 text-white" : "bg-neutral-100",
+              step >= s
+                ? "bg-foreground text-background"
+                : "bg-surface-2 text-muted-foreground",
             )}
           >
             {s === 1 ? "Business" : s === 2 ? "Identity" : s === 3 ? "Payout" : "Review"}
@@ -137,11 +139,11 @@ export function ApplyWizard({
               defaultValue={initial?.bio ?? ""}
               maxLength={2000}
               rows={4}
-              className="mt-1 block w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm"
+              className="mt-1 block w-full rounded-md border border-border bg-card px-3 py-2 text-sm"
             />
           </div>
           {error && (
-            <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">
+            <p className="rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
               {error}
             </p>
           )}
@@ -153,12 +155,12 @@ export function ApplyWizard({
 
       {step === 2 && (
         <div className="flex flex-col gap-4">
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted-foreground">
             Identity verification (BVN/NIN) is required before agents can list
             properties. Same flow as the buyer KYC — complete it, then come back.
           </p>
           {kycStatus === "VERIFIED" ? (
-            <p className="rounded-md bg-emerald-50 p-3 text-sm text-emerald-800">
+            <p className="rounded-md bg-primary-soft p-3 text-sm text-primary-soft-foreground">
               KYC complete. Continue to payout details.
             </p>
           ) : (
@@ -185,7 +187,7 @@ export function ApplyWizard({
 
       {step === 3 && (
         <form onSubmit={savePayout} className="flex flex-col gap-4">
-          <p className="text-xs text-neutral-500">
+          <p className="text-xs text-muted-foreground">
             Bank account for commission payouts. Account holder name must match{" "}
             <strong>{fullName}</strong>.
           </p>
@@ -214,7 +216,7 @@ export function ApplyWizard({
             />
           </div>
           {error && (
-            <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">
+            <p className="rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
               {error}
             </p>
           )}
@@ -231,10 +233,10 @@ export function ApplyWizard({
 
       {step === 4 && (
         <div className="flex flex-col gap-4">
-          <p className="text-sm text-neutral-600">
+          <p className="text-sm text-muted-foreground">
             Review and submit. Admin will be notified and respond by email.
           </p>
-          <ul className="space-y-2 rounded-md bg-neutral-50 p-4 text-sm">
+          <ul className="space-y-2 rounded-md bg-surface-2 p-4 text-sm">
             <li>
               <strong>Business:</strong> {initial?.businessName}
             </li>
@@ -249,7 +251,7 @@ export function ApplyWizard({
             </li>
           </ul>
           {error && (
-            <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">
+            <p className="rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
               {error}
             </p>
           )}

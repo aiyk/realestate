@@ -21,12 +21,12 @@ export default async function AgentApplyPage() {
   return (
     <main className="mx-auto w-full max-w-2xl flex-1 px-6 py-12">
       <h1 className="text-2xl font-semibold">Become an agent</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         Three steps: business details, identity verification, and bank account
         for commission payouts.
       </p>
       {profile?.status === "REJECTED" && profile.rejectionReason && (
-        <p className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <p className="mt-4 rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
           Previous application rejected: {profile.rejectionReason}. Update your
           details and resubmit.
         </p>
@@ -39,7 +39,7 @@ export default async function AgentApplyPage() {
               <Badge variant="warning">Pending review</Badge>
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-sm text-neutral-600">
+          <CardContent className="text-sm text-muted-foreground">
             <p>
               Your application is under review. We will email you when there is
               an update.

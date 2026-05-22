@@ -12,6 +12,21 @@
 
 # testing
 /coverage
+/.playwright-mcp/
+/test-results/
+/playwright-report/
+
+# local screenshots / debug artifacts
+/test-*.png
+/width-*.png
+/home-*.png
+/listings-*.png
+/login-*.png
+/agents-*.png
+/notfound-*.png
+/center-*.png
+/agent-dashboard.png
+/agents-directory.png
 
 # next.js
 /.next/

@@ -7,14 +7,19 @@ import {
   ArrowRight,
   MessageCircle,
   Sparkles,
+  TrendingUp,
 } from "lucide-react";
 import { getSessionUser } from "@/lib/rbac";
 import { prisma } from "@/lib/db";
 import { StatBadge } from "@/components/ui/stat-badge";
+import { Sparkline } from "@/components/ui/sparkline";
 import { SpeechBubble } from "@/components/ui/speech-bubble";
 import { Callout } from "@/components/ui/callout";
 import { buttonVariants } from "@/components/ui/button";
 import { LagosSkyline } from "@/components/illustrations/skylines";
+import { PerformanceWidgets } from "@/components/agent/dashboard/performance-widgets";
+import { QuickActions } from "@/components/agent/dashboard/quick-actions";
+import { ActivityFeed } from "@/components/agent/dashboard/activity-feed";
 import { cn, formatNgn } from "@/lib/utils";
 import { greet } from "@/lib/voice";
 
@@ -65,6 +70,34 @@ export default async function AgentDashboard() {
     }),
   ]);
 
+  // 14-day rolling view trend across all of this agent's listings
+  const fourteenDaysAgo = new Date(Date.now() - 14 * 86400000);
+  const viewEvents = await prisma.listingAnalyticsEvent.findMany({
+    where: {
+      listing: { agentId: user.id },
+      kind: "LISTING_VIEW",
+      createdAt: { gte: fourteenDaysAgo },
+    },
+    select: { createdAt: true },
+  });
+  const viewBuckets = new Map<string, number>();
+  const viewLabels: string[] = [];
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date(Date.now() - i * 86400000);
+    const k = d.toISOString().slice(0, 10);
+    viewBuckets.set(k, 0);
+    viewLabels.push(String(d.getDate()));
+  }
+  for (const e of viewEvents) {
+    const k = e.createdAt.toISOString().slice(0, 10);
+    if (viewBuckets.has(k)) viewBuckets.set(k, (viewBuckets.get(k) ?? 0) + 1);
+  }
+  const viewTrend = Array.from(viewBuckets.values()).map((v, i) => ({
+    label: viewLabels[i],
+    value: v,
+  }));
+  const totalViews14d = viewTrend.reduce((a, b) => a + b.value, 0);
+
   const firstName = user.fullName.split(" ")[0];
 
   const todayLine = (() => {
@@ -80,16 +113,16 @@ export default async function AgentDashboard() {
 
   return (
     <section>
-      <div className="relative overflow-hidden rounded-3xl border border-stone-200 bg-gradient-to-br from-emerald-50 via-white to-amber-50/60 p-6 sm:p-8">
-        <LagosSkyline className="absolute inset-x-0 bottom-0 h-16 text-emerald-700/15" />
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-primary-soft via-card to-accent-soft/60 p-6 sm:p-8">
+        <LagosSkyline className="absolute inset-x-0 bottom-0 h-16 text-primary/15" />
         <div className="relative">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Agent dashboard
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-balance">
+          <h1 className="t-h1 mt-2 text-balance">
             {greet(firstName)}
           </h1>
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             {profile?.businessName ?? user.fullName}
           </p>
           <div className="mt-4 max-w-2xl">
@@ -105,7 +138,55 @@ export default async function AgentDashboard() {
         </div>
       </div>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-8">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          This week
+        </p>
+        <PerformanceWidgets
+          agentUserId={user.id}
+          agentProfileId={profile?.id ?? null}
+        />
+      </div>
+
+      <div className="mt-8">
+        <QuickActions agentUserId={user.id} />
+      </div>
+
+      <div className="mt-8 rounded-2xl border border-border bg-card p-5 shadow-sm">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Views — last 14 days
+            </p>
+            <p className="mt-1 inline-flex items-center gap-2 text-2xl font-bold tracking-tight">
+              {totalViews14d.toLocaleString()}
+              {totalViews14d > 0 && (
+                <span className="inline-flex items-center gap-1 rounded-full bg-success-soft px-2 py-0.5 text-xs font-medium text-success-soft-foreground">
+                  <TrendingUp className="h-3 w-3" />
+                  live
+                </span>
+              )}
+            </p>
+          </div>
+          <Link
+            href="/agent/listings?status=PUBLISHED"
+            className="text-xs font-medium text-primary hover:underline"
+          >
+            See listings →
+          </Link>
+        </div>
+        <div className="mt-4 h-16 text-primary">
+          <Sparkline
+            data={viewTrend}
+            height={64}
+            showArea
+            showAxis
+            ariaLabel="Total listing views over the last 14 days"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/agent/listings?status=PUBLISHED">
           <StatBadge
             icon={<Building2 className="h-4 w-4" />}
@@ -182,6 +263,10 @@ export default async function AgentDashboard() {
             Open inbox <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </Callout>
+      </div>
+
+      <div className="mt-10">
+        <ActivityFeed agentUserId={user.id} />
       </div>
     </section>
   );

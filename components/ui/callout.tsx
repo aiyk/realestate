@@ -4,39 +4,45 @@ import {
   AlertTriangle,
   CheckCircle2,
   Info,
+  AlertOctagon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type Tone = "tip" | "warn" | "success" | "info" | "concierge";
+type Tone = "tip" | "warn" | "success" | "info" | "danger" | "concierge";
 
 const TONE_STYLES: Record<
   Tone,
   { wrap: string; icon: string; Icon: React.ComponentType<{ className?: string }> }
 > = {
   tip: {
-    wrap: "bg-emerald-50 text-emerald-900 ring-emerald-200",
-    icon: "text-emerald-700",
+    wrap: "bg-primary-soft text-primary-soft-foreground ring-primary/20",
+    icon: "text-primary",
     Icon: Lightbulb,
   },
   warn: {
-    wrap: "bg-amber-50 text-amber-900 ring-amber-200",
-    icon: "text-amber-700",
+    wrap: "bg-warning-soft text-warning-soft-foreground ring-warning/20",
+    icon: "text-warning",
     Icon: AlertTriangle,
   },
   success: {
-    wrap: "bg-emerald-50 text-emerald-900 ring-emerald-200",
-    icon: "text-emerald-700",
+    wrap: "bg-success-soft text-success-soft-foreground ring-success/20",
+    icon: "text-success",
     Icon: CheckCircle2,
   },
   info: {
-    wrap: "bg-stone-50 text-stone-800 ring-stone-200",
-    icon: "text-stone-600",
+    wrap: "bg-surface-2 text-foreground ring-border",
+    icon: "text-muted-foreground",
     Icon: Info,
+  },
+  danger: {
+    wrap: "bg-danger-soft text-danger-soft-foreground ring-danger/20",
+    icon: "text-danger",
+    Icon: AlertOctagon,
   },
   concierge: {
     wrap:
-      "bg-gradient-to-br from-amber-50 via-stone-50 to-emerald-50 text-stone-800 ring-stone-200",
-    icon: "text-amber-700",
+      "bg-gradient-to-br from-accent-soft via-surface-2 to-primary-soft text-foreground ring-border",
+    icon: "text-accent",
     Icon: Lightbulb,
   },
 };
@@ -69,7 +75,7 @@ export function Callout({
         s.wrap,
         className,
       )}
-      role={tone === "warn" ? "alert" : undefined}
+      role={tone === "warn" || tone === "danger" ? "alert" : undefined}
     >
       <div className={cn("mt-0.5 shrink-0", s.icon)}>
         {icon ?? <Icon className="h-5 w-5" />}

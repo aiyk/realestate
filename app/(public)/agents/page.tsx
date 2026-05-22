@@ -1,94 +1,196 @@
 import Link from "next/link";
-import {
-  MapPin,
-  ShieldCheck,
-  Star,
-  ArrowRight,
-  CheckCircle2,
-  Users,
-} from "lucide-react";
+import { MapPin, ShieldCheck, Users, ArrowUpDown } from "lucide-react";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Callout } from "@/components/ui/callout";
 import { StatBadge } from "@/components/ui/stat-badge";
+import { AgentSearchBar } from "@/components/agent/agent-search-bar";
+import { AgentFilterRail } from "@/components/agent/agent-filter-rail";
+import { AgentActiveFilters } from "@/components/agent/agent-active-filters";
+import { DirectoryPagination } from "@/components/agent/directory-pagination";
+import { AgentDirectoryCard } from "@/components/agent/agent-directory-card";
+import { agentDirectoryFilterSchema } from "@/lib/schemas/agent";
 import { cn } from "@/lib/utils";
 import { emptyState } from "@/lib/voice";
 
 export const metadata = {
   title: "Agents — Realestate",
   description:
-    "Every agent on Realestate is KYC + bank-name verified. Browse the network and start a conversation.",
+    "Search verified Nigerian real estate agents by city, specialty, and rating. KYC + bank-name verified.",
+  alternates: { canonical: "/agents" },
 };
 export const dynamic = "force-dynamic";
 
-export default async function AgentsPage() {
-  const agents = await prisma.agentProfile.findMany({
-    where: { status: "APPROVED" },
-    orderBy: { approvedAt: "desc" },
-    include: {
-      user: {
-        select: {
-          fullName: true,
-          createdAt: true,
-          ownedListings: {
-            where: {
-              status: { in: ["PUBLISHED", "RESERVED", "SOLD"] },
-            },
-            select: { id: true, status: true, city: true },
+type SearchParams = Record<string, string | string[] | undefined>;
+
+const SORT_OPTIONS: { value: string; label: string }[] = [
+  { value: "recent", label: "Recently joined" },
+  { value: "mostListings", label: "Most listings" },
+  { value: "mostSold", label: "Most sold" },
+  { value: "rating", label: "Highest rated" },
+  { value: "alpha", label: "Alphabetical" },
+];
+
+export default async function AgentsPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const sp = await searchParams;
+  const parsed = agentDirectoryFilterSchema.safeParse(sp);
+  if (!parsed.success) {
+    return (
+      <main className="flex-1 px-6 py-16">
+        <p className="text-sm text-danger-soft-foreground">Invalid filter parameters.</p>
+      </main>
+    );
+  }
+  const f = parsed.data;
+
+  const where: Prisma.AgentProfileWhereInput = {
+    status: "APPROVED",
+    ...(f.q && {
+      OR: [
+        { businessName: { contains: f.q, mode: "insensitive" } },
+        { tagline: { contains: f.q, mode: "insensitive" } },
+        { user: { fullName: { contains: f.q, mode: "insensitive" } } },
+      ],
+    }),
+    ...(f.city && f.city.length > 0 && {
+      serviceAreas: { some: { city: { in: f.city } } },
+    }),
+    ...(f.state && f.state.length > 0 && {
+      serviceAreas: { some: { state: { in: f.state } } },
+    }),
+    ...(f.type && f.type.length > 0 && {
+      specialties: { some: { propertyType: { in: f.type } } },
+    }),
+    ...(f.tier === "top" && { performanceTier: "TOP_PERFORMER" }),
+    ...(f.tier === "rising" && { performanceTier: "RISING_STAR" }),
+  };
+
+  const orderBy: Prisma.AgentProfileOrderByWithRelationInput[] =
+    f.sort === "mostListings"
+      ? [{ listingCountCache: "desc" }, { approvedAt: "desc" }]
+      : f.sort === "mostSold"
+        ? [{ soldCountCache: "desc" }, { approvedAt: "desc" }]
+        : f.sort === "alpha"
+          ? [{ businessName: "asc" }]
+          : f.sort === "rating"
+            ? [{ ratingAvg: "desc" }, { ratingCount: "desc" }]
+            : [{ approvedAt: "desc" }];
+
+  const skip = (f.page - 1) * f.perPage;
+
+  const [agents, total, totalApproved, [stateFacets, cityFacets, typeFacets]] =
+    await Promise.all([
+      prisma.agentProfile.findMany({
+        where,
+        orderBy,
+        skip,
+        take: f.perPage,
+        include: {
+          user: { select: { fullName: true, createdAt: true } },
+          serviceAreas: {
+            orderBy: [{ isPrimary: "desc" }, { state: "asc" }],
+            take: 3,
           },
         },
-      },
-    },
-  });
+      }),
+      prisma.agentProfile.count({ where }),
+      prisma.agentProfile.count({ where: { status: "APPROVED" } }),
+      Promise.all([
+        prisma.agentServiceArea.groupBy({
+          by: ["state"],
+          where: { agent: { status: "APPROVED" } },
+          _count: { _all: true },
+          orderBy: { _count: { state: "desc" } },
+          take: 12,
+        }),
+        prisma.agentServiceArea.groupBy({
+          by: ["city"],
+          where: { agent: { status: "APPROVED" } },
+          _count: { _all: true },
+          orderBy: { _count: { city: "desc" } },
+          take: 16,
+        }),
+        prisma.agentSpecialty.groupBy({
+          by: ["propertyType"],
+          where: { agent: { status: "APPROVED" } },
+          _count: { _all: true },
+          orderBy: { _count: { propertyType: "desc" } },
+        }),
+      ]),
+    ]);
 
+  const totalLive = agents.reduce((acc, a) => acc + a.listingCountCache, 0);
+  const totalSold = agents.reduce((acc, a) => acc + a.soldCountCache, 0);
+  const totalCities = cityFacets.length;
   const empty = emptyState("agents");
+  const pages = Math.max(1, Math.ceil(total / f.perPage));
 
-  const totalLive = agents.reduce(
-    (acc, a) =>
-      acc + a.user.ownedListings.filter((l) => l.status === "PUBLISHED").length,
-    0,
-  );
-  const totalSold = agents.reduce(
-    (acc, a) =>
-      acc + a.user.ownedListings.filter((l) => l.status === "SOLD").length,
-    0,
-  );
-  const totalCities = new Set(
-    agents.flatMap((a) => a.user.ownedListings.map((l) => l.city)),
-  ).size;
+  const cityOptions = cityFacets.map((r) => ({
+    value: r.city,
+    label: r.city,
+    count: r._count._all,
+  }));
+  const stateOptions = stateFacets.map((r) => ({
+    value: r.state,
+    label: r.state,
+    count: r._count._all,
+  }));
+  const typeOptions = typeFacets.map((r) => ({
+    value: r.propertyType,
+    label: r.propertyType.charAt(0) + r.propertyType.slice(1).toLowerCase(),
+    count: r._count._all,
+  }));
+
+  function sortHref(value: string): string {
+    const next = new URLSearchParams();
+    for (const [k, v] of Object.entries(sp)) {
+      if (k === "page" || k === "sort") continue;
+      if (Array.isArray(v)) for (const x of v) next.append(k, x);
+      else if (typeof v === "string" && v) next.set(k, v);
+    }
+    if (value !== "recent") next.set("sort", value);
+    return `/agents?${next.toString()}`;
+  }
 
   return (
     <main className="flex-1">
-      <section className="relative overflow-hidden border-b border-stone-100 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white py-16">
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface-2 via-accent-soft/30 to-card py-16">
         <div className="absolute inset-0 -z-10 bg-grid opacity-30" />
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
-            Verified network
-          </p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl text-balance">
-            Meet the agents
-          </h1>
-          <p className="mx-auto mt-3 max-w-xl text-stone-600 text-pretty">
-            Every agent here passed KYC and bank-account verification before
-            they could list. Click through to see what they&apos;ve got — or
-            start a conversation from any listing.
-          </p>
+        <div className="mx-auto max-w-4xl px-6">
+          <Breadcrumb
+            items={[{ label: "Home", href: "/" }, { label: "Agents" }]}
+            className="mb-4"
+          />
+          <div className="text-center">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
+              Verified network
+            </p>
+            <h1 className="t-display mt-2 text-balance">
+              Find the right agent
+            </h1>
+            <p className="mx-auto mt-3 max-w-xl text-muted-foreground text-pretty">
+              Every agent here passed KYC and bank-account verification before
+              they could list. Filter by city, property type, and rating to find
+              who fits your search.
+            </p>
+          </div>
         </div>
 
-        {agents.length > 0 && (
+        {totalApproved > 0 && (
           <div className="mx-auto mt-10 grid max-w-3xl grid-cols-2 gap-3 px-6 sm:grid-cols-4">
             <StatBadge
               icon={<Users className="h-4 w-4" />}
               label="Agents"
-              value={agents.length}
+              value={totalApproved}
               tone="emerald"
             />
-            <StatBadge
-              label="Live listings"
-              value={totalLive}
-              tone="amber"
-            />
+            <StatBadge label="Live listings" value={totalLive} tone="amber" />
             <StatBadge label="Sold" value={totalSold} tone="stone" />
             <StatBadge
               icon={<MapPin className="h-4 w-4" />}
@@ -98,140 +200,110 @@ export default async function AgentsPage() {
             />
           </div>
         )}
+        <div className="mx-auto mt-8 max-w-2xl px-6">
+          <AgentSearchBar />
+        </div>
       </section>
 
-      <section className="py-16">
-        <div className="mx-auto max-w-7xl px-6">
-          {agents.length === 0 ? (
-            <div className="rounded-3xl border border-dashed border-stone-300 bg-white p-16 text-center">
-              <ShieldCheck className="mx-auto h-10 w-10 text-emerald-700" />
-              <p className="mt-4 text-lg font-semibold text-stone-700">
-                {empty.headline}
-              </p>
-              <p className="mx-auto mt-1 max-w-md text-sm text-stone-500 text-pretty">
-                {empty.body}
-              </p>
-              <Link
-                href="/agent/apply"
-                className={cn(buttonVariants({ variant: "outline" }), "mt-6")}
-              >
-                Are you an agent? Apply
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
+      <section className="py-12">
+        <div className="mx-auto max-w-[100rem] px-6">
+          <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
+            <div>
+              <AgentFilterRail
+                searchParams={sp}
+                cities={cityOptions}
+                states={stateOptions}
+                propertyTypes={typeOptions}
+              />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {agents.map((a, i) => {
-                const liveCount = a.user.ownedListings.filter(
-                  (l) => l.status === "PUBLISHED",
-                ).length;
-                const soldCount = a.user.ownedListings.filter(
-                  (l) => l.status === "SOLD",
-                ).length;
-                const cities = [
-                  ...new Set(a.user.ownedListings.map((l) => l.city)),
-                ].slice(0, 3);
-                const since = new Date(a.user.createdAt).getFullYear();
-                return (
+            <div>
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                  <span>
+                    <strong className="text-foreground">{total}</strong> agent
+                    {total === 1 ? "" : "s"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <ArrowUpDown className="h-3 w-3 text-muted-foreground" />
+                  <span className="text-muted-foreground">Sort:</span>
+                  {SORT_OPTIONS.map((opt) => (
+                    <Link
+                      key={opt.value}
+                      href={sortHref(opt.value)}
+                      className={cn(
+                        "rounded-full px-3 py-1 ring-1",
+                        f.sort === opt.value
+                          ? "bg-foreground text-background ring-foreground"
+                          : "bg-card text-foreground ring-border hover:bg-surface-2",
+                      )}
+                    >
+                      {opt.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+              <div className="mt-3">
+                <AgentActiveFilters searchParams={sp} />
+              </div>
+
+              {total === 0 ? (
+                <div className="mt-10 rounded-3xl border border-dashed border-input bg-card p-16 text-center">
+                  <ShieldCheck className="mx-auto h-10 w-10 text-primary" />
+                  <p className="mt-4 text-lg font-semibold text-foreground">
+                    {empty.headline}
+                  </p>
+                  <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground text-pretty">
+                    {empty.body}
+                  </p>
                   <Link
-                    key={a.id}
-                    href={`/agents/${a.slug}`}
-                    className={cn(
-                      "group flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white hover-lift animate-fade-up",
-                      `stagger-${(i % 6) + 1}`,
-                    )}
+                    href="/agents"
+                    className={cn(buttonVariants({ variant: "outline" }), "mt-6")}
                   >
-                    {/* Banner */}
-                    <div className="relative h-20 bg-gradient-to-br from-emerald-700 via-emerald-800 to-stone-900">
-                      <div className="absolute inset-0 bg-noise opacity-50" />
-                      <div className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-stone-900">
-                        <Star className="h-3 w-3 fill-current" /> Verified
-                      </div>
-                    </div>
-
-                    {/* Avatar */}
-                    <div className="-mt-10 px-6">
-                      <div className="grid h-16 w-16 place-items-center rounded-2xl border-4 border-white bg-gradient-to-br from-emerald-600 to-emerald-800 text-base font-semibold text-white shadow-md">
-                        {a.businessName
-                          .split(/\s+/)
-                          .filter(Boolean)
-                          .map((p) => p[0])
-                          .slice(0, 2)
-                          .join("")
-                          .toUpperCase()}
-                      </div>
-                    </div>
-
-                    <div className="p-6 pt-3">
-                      <p className="font-semibold text-stone-900 group-hover:text-emerald-700">
-                        {a.businessName}
-                      </p>
-                      <p className="text-xs text-stone-500">
-                        {a.user.fullName} · since {since}
-                      </p>
-                      <Badge variant="success" className="mt-2">
-                        <CheckCircle2 className="h-3 w-3" />
-                        KYC + bank verified
-                      </Badge>
-
-                      {a.bio && (
-                        <p className="mt-4 line-clamp-3 text-sm text-stone-600 text-pretty">
-                          {a.bio}
-                        </p>
-                      )}
-
-                      <div className="mt-5 grid grid-cols-2 gap-3 border-t border-stone-100 pt-4 text-sm">
-                        <div>
-                          <p className="text-[10px] uppercase tracking-wider text-stone-500">
-                            Live
-                          </p>
-                          <p className="font-semibold text-stone-900">
-                            {liveCount}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-[10px] uppercase tracking-wider text-stone-500">
-                            Sold
-                          </p>
-                          <p className="font-semibold text-stone-900">
-                            {soldCount}
-                          </p>
-                        </div>
-                      </div>
-                      {cities.length > 0 && (
-                        <div className="mt-3 flex flex-wrap gap-1 text-xs">
-                          {cities.map((c) => (
-                            <span
-                              key={c}
-                              className="inline-flex items-center gap-1 rounded-full bg-stone-100 px-2 py-0.5 text-stone-700"
-                            >
-                              <MapPin className="h-3 w-3" />
-                              {c}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      <p className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-emerald-700 opacity-0 transition-opacity group-hover:opacity-100">
-                        See their listings <ArrowRight className="h-3.5 w-3.5" />
-                      </p>
-                    </div>
+                    Clear filters
                   </Link>
-                );
-              })}
-            </div>
-          )}
+                </div>
+              ) : (
+                <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {agents.map((a) => (
+                    <AgentDirectoryCard
+                      key={a.id}
+                      slug={a.slug}
+                      businessName={a.businessName}
+                      fullName={a.user.fullName}
+                      tagline={a.tagline}
+                      bio={a.bio}
+                      avatarUrl={a.avatarUrl}
+                      coverPhotoUrl={a.coverPhotoUrl}
+                      liveCount={a.listingCountCache}
+                      soldCount={a.soldCountCache}
+                      ratingAvg={a.ratingAvg ? Number(a.ratingAvg) : null}
+                      ratingCount={a.ratingCount}
+                      cities={a.serviceAreas.map((s) => s.city)}
+                      performanceTier={
+                        (a.performanceTier as "TOP_PERFORMER" | "RISING_STAR" | null) ??
+                        null
+                      }
+                      yearJoined={new Date(a.user.createdAt).getFullYear()}
+                    />
+                  ))}
+                </div>
+              )}
 
-          <Callout
-            tone="concierge"
-            title="Want to join?"
-            className="mt-12"
-          >
+              <DirectoryPagination
+                page={f.page}
+                pages={pages}
+                searchParams={sp}
+              />
+            </div>
+          </div>
+
+          <Callout tone="concierge" title="Want to join?" className="mt-16">
             We onboard a fresh batch every Friday. If you can pass KYC + match
             your bank-account name, you can start listing the same week.{" "}
             <Link
               href="/agent/apply"
-              className="font-medium text-emerald-700 underline"
+              className="font-medium text-primary underline"
             >
               Apply to list
             </Link>

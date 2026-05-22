@@ -19,7 +19,7 @@ function Frame({
       viewBox="0 0 200 160"
       fill="none"
       aria-hidden="true"
-      className={cn("h-32 w-auto text-emerald-700", className)}
+      className={cn("h-32 w-auto text-primary", className)}
     >
       {children}
     </svg>

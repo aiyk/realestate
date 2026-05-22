@@ -54,14 +54,14 @@ export function AskBox({
     return (
       <div
         className={cn(
-          "flex items-start gap-3 rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-sm text-emerald-900",
+          "flex items-start gap-3 rounded-3xl border border-success/30 bg-success-soft p-5 text-sm text-success-soft-foreground",
           className,
         )}
       >
-        <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+        <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-success" />
         <div>
           <p className="font-semibold">Got it — we&apos;re on it.</p>
-          <p className="mt-1 text-emerald-800/90">
+          <p className="mt-1 opacity-90">
             We&apos;ll email you the moment something matches. No spam, no
             agent calls until you ask.
           </p>
@@ -74,12 +74,12 @@ export function AskBox({
     <form
       onSubmit={submit}
       className={cn(
-        "rounded-3xl border border-stone-200 bg-gradient-to-br from-white via-amber-50/40 to-emerald-50/40 p-6 shadow-sm",
+        "rounded-3xl border border-border bg-gradient-to-br from-card via-accent-soft/30 to-primary-soft/30 p-6 shadow-sm",
         className,
       )}
     >
-      <p className="text-sm font-semibold text-stone-900">{title}</p>
-      <p className="mt-1 text-sm text-stone-600">{subtitle}</p>
+      <p className="text-sm font-semibold text-foreground">{title}</p>
+      <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
         <input
@@ -87,7 +87,7 @@ export function AskBox({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
-          className="h-11 rounded-full border border-stone-200 bg-white px-4 text-sm placeholder:text-stone-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+          className="h-11 rounded-full border border-input bg-[var(--input-bg)] px-4 text-sm text-foreground placeholder:text-text-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <input
           type="email"
@@ -95,13 +95,13 @@ export function AskBox({
           onChange={(e) => setEmail(e.target.value)}
           required
           placeholder="your@email.com"
-          className="h-11 rounded-full border border-stone-200 bg-white px-4 text-sm placeholder:text-stone-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+          className="h-11 rounded-full border border-input bg-[var(--input-bg)] px-4 text-sm text-foreground placeholder:text-text-subtle focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
         <Button type="submit" disabled={submitting}>
           {submitting ? "Sending…" : <>Notify me <Send className="h-3.5 w-3.5" /></>}
         </Button>
       </div>
-      <p className="mt-3 text-xs text-stone-500">
+      <p className="mt-3 text-xs text-muted-foreground">
         One email when a match shows up. Unsubscribe anytime — no questions
         asked.
       </p>

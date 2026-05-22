@@ -39,7 +39,7 @@ export function NigeriaMap({
       fill="none"
       role="img"
       aria-label="Map of Nigeria highlighting served cities"
-      className={cn("h-auto w-full text-emerald-700", className)}
+      className={cn("h-auto w-full text-primary", className)}
     >
       <defs>
         <linearGradient id="ngmap-fill" x1="0" y1="0" x2="400" y2="360">

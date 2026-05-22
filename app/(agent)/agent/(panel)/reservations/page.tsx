@@ -50,13 +50,13 @@ export default async function AgentReservationsPage() {
     <section>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Buyers in motion
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">
             Reservations on your listings
           </h1>
-          <p className="mt-1 text-sm text-stone-600 text-pretty">
+          <p className="mt-1 text-sm text-muted-foreground text-pretty">
             When a buyer pays a deposit, they show up here. Move them through
             to <strong>Converted</strong> once you&apos;ve closed offline.
           </p>
@@ -71,12 +71,12 @@ export default async function AgentReservationsPage() {
       )}
 
       {reservations.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-stone-300 bg-white p-12 text-center">
+        <div className="mt-10 rounded-3xl border border-dashed border-input bg-card p-12 text-center">
           <NoReservations className="mx-auto h-32" />
-          <p className="mt-4 text-lg font-semibold text-stone-700">
+          <p className="mt-4 text-lg font-semibold text-foreground">
             No reservations yet
           </p>
-          <p className="mx-auto mt-1 max-w-md text-sm text-stone-500 text-pretty">
+          <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground text-pretty">
             Reservations show up the moment a buyer pays a deposit on one of
             your listings.
           </p>
@@ -100,30 +100,30 @@ export default async function AgentReservationsPage() {
             return (
               <div
                 key={r.id}
-                className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+                className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
               >
                 <div className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center">
                   <div className="flex items-start gap-3">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 text-sm font-semibold text-white">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-hover text-sm font-semibold text-white">
                       {initials}
                     </div>
                     <div className="min-w-0">
                       <Link
                         href={`/listings/${r.listing.slug}`}
-                        className="font-semibold text-stone-900 hover:text-emerald-700"
+                        className="font-semibold text-foreground hover:text-primary"
                       >
                         {r.listing.title}
                       </Link>
-                      <p className="mt-0.5 text-xs text-stone-500">
+                      <p className="mt-0.5 text-xs text-muted-foreground">
                         {r.buyer.fullName} · {r.buyer.email}
                       </p>
-                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-stone-600">
+                      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs text-muted-foreground">
                         <span className="inline-flex items-center gap-1">
-                          <Wallet className="h-3 w-3 text-emerald-700" />
+                          <Wallet className="h-3 w-3 text-primary" />
                           <strong>{formatNgn(r.depositNgn.toString())}</strong>
                         </span>
                         <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3 w-3 text-stone-400" />
+                          <Clock className="h-3 w-3 text-text-subtle" />
                           {timeAgo(r.createdAt)}
                         </span>
                       </div>
@@ -134,12 +134,12 @@ export default async function AgentReservationsPage() {
                   </Badge>
                 </div>
                 {statusBlurb(r.status) && (
-                  <div className="border-t border-stone-100 bg-stone-50/60 px-5 py-2.5 text-xs text-stone-600">
+                  <div className="border-t border-border bg-surface-2/60 px-5 py-2.5 text-xs text-muted-foreground">
                     {statusBlurb(r.status)}
                   </div>
                 )}
                 {r.status === "PAID" && (
-                  <div className="border-t border-stone-100 px-5 py-3">
+                  <div className="border-t border-border px-5 py-3">
                     <ReservationActions
                       id={r.id}
                       status={r.status}

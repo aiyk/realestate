@@ -27,7 +27,7 @@ export default async function DevPaystackPage({ params }: Props) {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Paystack (dev simulator)</CardTitle>
-          <p className="text-xs text-amber-700">
+          <p className="text-xs text-accent">
             Real Paystack keys are not configured. This stand-in simulates the
             payment + webhook for local testing only.
           </p>

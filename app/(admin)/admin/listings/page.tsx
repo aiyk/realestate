@@ -56,13 +56,13 @@ export default async function AdminListingsPage({ searchParams }: Props) {
     <section>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Moderation desk
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">
             Listings
           </h1>
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             {listings.length}{" "}
             {status
               ? `with status "${STATUS_LABEL[status as ListingStatus] ?? status}"`
@@ -86,8 +86,8 @@ export default async function AdminListingsPage({ searchParams }: Props) {
           className={cn(
             "rounded-full border px-3 py-1 transition-colors",
             !status
-              ? "border-stone-900 bg-stone-900 text-white"
-              : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
+              ? "border-foreground bg-foreground text-background"
+              : "border-border bg-card text-foreground hover:border-primary/30",
           )}
         >
           All
@@ -99,8 +99,8 @@ export default async function AdminListingsPage({ searchParams }: Props) {
             className={cn(
               "rounded-full border px-3 py-1 transition-colors",
               status === s
-                ? "border-stone-900 bg-stone-900 text-white"
-                : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
+                ? "border-foreground bg-foreground text-background"
+                : "border-border bg-card text-foreground hover:border-primary/30",
             )}
           >
             {STATUS_LABEL[s]}
@@ -117,13 +117,13 @@ export default async function AdminListingsPage({ searchParams }: Props) {
       )}
 
       {listings.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center text-sm text-stone-500">
+        <div className="mt-10 rounded-2xl border border-dashed border-input bg-card p-12 text-center text-sm text-muted-foreground">
           Nothing in this queue.
         </div>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-2xl border border-stone-200 bg-white">
+        <div className="mt-6 overflow-x-auto rounded-2xl border border-border bg-card">
           <table className="w-full text-sm">
-            <thead className="bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
+            <thead className="bg-surface-2 text-left text-xs uppercase tracking-wider text-muted-foreground">
               <tr>
                 <th className="px-4 py-3">Listing</th>
                 <th className="px-4 py-3">Status</th>
@@ -133,9 +133,9 @@ export default async function AdminListingsPage({ searchParams }: Props) {
                 <th className="px-4 py-3"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-stone-100">
+            <tbody className="divide-y divide-border">
               {listings.map((l) => (
-                <tr key={l.id} className="hover:bg-stone-50/60">
+                <tr key={l.id} className="hover:bg-surface-2/60">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       {l.images[0]?.url ? (
@@ -146,16 +146,16 @@ export default async function AdminListingsPage({ searchParams }: Props) {
                           className="h-12 w-12 rounded-lg object-cover"
                         />
                       ) : (
-                        <div className="grid h-12 w-12 place-items-center rounded-lg bg-stone-100 text-[10px] text-stone-400">
+                        <div className="grid h-12 w-12 place-items-center rounded-lg bg-surface-2 text-[10px] text-text-subtle">
                           —
                         </div>
                       )}
                       <div className="min-w-0">
-                        <p className="line-clamp-1 font-medium text-stone-900">
+                        <p className="line-clamp-1 font-medium text-foreground">
                           {l.title}
                         </p>
                         {statusBlurb(l.status) && (
-                          <p className="line-clamp-1 text-xs text-stone-500">
+                          <p className="line-clamp-1 text-xs text-muted-foreground">
                             {statusBlurb(l.status)}
                           </p>
                         )}
@@ -167,17 +167,17 @@ export default async function AdminListingsPage({ searchParams }: Props) {
                       {l.status.replace("_", " ")}
                     </Badge>
                   </td>
-                  <td className="px-4 py-3 text-stone-600">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {l.agent?.fullName ?? "Platform"}
                   </td>
-                  <td className="px-4 py-3 text-stone-600">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {formatNgn(l.priceNgn.toString())}
                   </td>
-                  <td className="px-4 py-3 text-stone-600">{l.city}</td>
+                  <td className="px-4 py-3 text-muted-foreground">{l.city}</td>
                   <td className="px-4 py-3 text-right">
                     <Link
                       href={`/admin/listings/${l.id}/edit`}
-                      className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1 text-xs font-medium text-stone-700 transition-colors hover:border-emerald-300 hover:text-emerald-700"
+                      className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-foreground transition-colors hover:border-primary/30 hover:text-primary"
                     >
                       <Pencil className="h-3 w-3" />
                       Edit

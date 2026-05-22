@@ -29,7 +29,7 @@ export function CheckoutAction({ listingId }: { listingId: string }) {
         {loading ? "Starting payment…" : "Proceed to payment"}
       </Button>
       {error && (
-        <p className="mt-2 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <p className="mt-2 rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
           {error}
         </p>
       )}

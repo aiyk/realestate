@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Search, MapPin, BedDouble } from "lucide-react";
+import { Search, MapPin, BedDouble, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const POPULAR_CITIES = ["Lagos", "Abuja", "Port Harcourt", "Ibadan", "Enugu"];
@@ -25,7 +25,7 @@ export function HeroSearch() {
   return (
     <form
       onSubmit={submit}
-      className="mt-8 w-full rounded-2xl border border-stone-200 bg-white p-2 shadow-lg sm:p-3"
+      className="mt-8 w-full rounded-2xl border border-border bg-card p-2 shadow-lg sm:p-3"
     >
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-[1.5fr_1fr_1fr_auto]">
         <Field icon={<MapPin className="h-4 w-4" />} label="City">
@@ -34,6 +34,7 @@ export function HeroSearch() {
             onChange={(e) => setCity(e.target.value)}
             placeholder="Lagos, Abuja…"
             list="popular-cities"
+            aria-label="City"
             className="w-full bg-transparent text-sm focus:outline-none"
           />
           <datalist id="popular-cities">
@@ -42,11 +43,12 @@ export function HeroSearch() {
             ))}
           </datalist>
         </Field>
-        <Field icon={<Search className="h-4 w-4" />} label="Type">
+        <Field icon={<Search className="h-4 w-4" />} label="Type" hasSelect>
           <select
             value={propertyType}
             onChange={(e) => setPropertyType(e.target.value)}
-            className="w-full bg-transparent text-sm focus:outline-none"
+            aria-label="Property type"
+            className="w-full appearance-none bg-transparent pr-5 text-sm focus:outline-none"
           >
             <option value="">Any</option>
             <option value="HOUSE">House</option>
@@ -57,11 +59,12 @@ export function HeroSearch() {
             <option value="LAND">Land</option>
           </select>
         </Field>
-        <Field icon={<BedDouble className="h-4 w-4" />} label="Bedrooms">
+        <Field icon={<BedDouble className="h-4 w-4" />} label="Bedrooms" hasSelect>
           <select
             value={bedrooms}
             onChange={(e) => setBedrooms(e.target.value)}
-            className="w-full bg-transparent text-sm focus:outline-none"
+            aria-label="Bedrooms"
+            className="w-full appearance-none bg-transparent pr-5 text-sm focus:outline-none"
           >
             <option value="">Any</option>
             <option value="1">1+</option>
@@ -76,17 +79,18 @@ export function HeroSearch() {
           Search
         </Button>
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 px-2 text-xs text-stone-500">
+      <div className="mt-3 flex flex-wrap items-center gap-2 px-2 text-xs text-muted-foreground">
         <span className="font-medium">Popular:</span>
         {POPULAR_CITIES.slice(0, 3).map((c) => (
-          <button
+          <Button
             key={c}
             type="button"
+            variant="soft"
+            size="xs"
             onClick={() => setCity(c)}
-            className="rounded-full bg-stone-100 px-2.5 py-0.5 text-stone-700 hover:bg-emerald-100 hover:text-emerald-800"
           >
             {c}
-          </button>
+          </Button>
         ))}
       </div>
     </form>
@@ -97,20 +101,28 @@ function Field({
   icon,
   label,
   children,
+  hasSelect,
 }: {
   icon: React.ReactNode;
   label: string;
   children: React.ReactNode;
+  hasSelect?: boolean;
 }) {
   return (
-    <label className="flex items-center gap-2 rounded-xl border border-stone-200 bg-stone-50 px-3 py-2 transition-colors focus-within:border-emerald-500 focus-within:bg-white">
-      <span className="text-stone-500">{icon}</span>
+    <label className="relative flex items-center gap-2 rounded-xl border border-border bg-surface-2 px-3 py-2 transition-colors focus-within:border-primary focus-within:bg-card">
+      <span className="text-muted-foreground">{icon}</span>
       <div className="min-w-0 flex-1">
-        <p className="text-[10px] font-semibold uppercase tracking-wide text-stone-500">
+        <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
           {label}
         </p>
         {children}
       </div>
+      {hasSelect && (
+        <ChevronDown
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+        />
+      )}
     </label>
   );
 }

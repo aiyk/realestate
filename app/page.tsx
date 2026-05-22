@@ -154,17 +154,17 @@ export default async function HomePage() {
       />
 
       {/* Neighbourhoods */}
-      <section className="border-y border-stone-100 bg-stone-50/60 py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-y border-border bg-surface-2/60 py-20">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Where Nigeria lives
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
                 Explore by city
               </h2>
-              <p className="mt-2 max-w-xl text-stone-600 text-pretty">
+              <p className="mt-2 max-w-xl text-muted-foreground text-pretty">
                 Pick a city. We&apos;ll show you what&apos;s actually available
                 right now — not what was available last quarter.
               </p>
@@ -187,7 +187,7 @@ export default async function HomePage() {
                   key={n.city}
                   href={`/listings?city=${encodeURIComponent(n.city)}`}
                   className={cn(
-                    "group relative aspect-[4/5] overflow-hidden rounded-2xl bg-stone-200 hover-lift animate-fade-up",
+                    "group relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-3 hover-lift animate-fade-up",
                     `stagger-${i + 1}`,
                   )}
                 >
@@ -197,23 +197,23 @@ export default async function HomePage() {
                     alt={n.city}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/90 via-black/30 to-transparent" />
                   <Skyline className="absolute inset-x-0 bottom-12 h-16 w-full text-white/30" />
                   <div className="absolute inset-x-0 bottom-0 p-5 text-white">
                     <div className="flex items-end justify-between">
                       <div>
-                        <p className="text-xs uppercase tracking-wider text-emerald-200">
+                        <p className="text-xs uppercase tracking-wider text-primary-foreground">
                           Discover
                         </p>
                         <h3 className="mt-1 text-2xl font-bold">{n.city}</h3>
                       </div>
                       {count > 0 && (
-                        <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold text-stone-900">
+                        <span className="rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-foreground">
                           {count} live
                         </span>
                       )}
                     </div>
-                    <p className="mt-1 text-sm text-stone-200/90">{n.blurb}</p>
+                    <p className="mt-1 text-sm text-white/90">{n.blurb}</p>
                     <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium">
                       Explore <ArrowRight className="h-3.5 w-3.5" />
                     </span>
@@ -227,15 +227,15 @@ export default async function HomePage() {
 
       {/* Listing types */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               What are we looking for?
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
               Tell us what &lsquo;home&rsquo; looks like for you.
             </h2>
-            <p className="mt-3 text-stone-600 text-pretty">
+            <p className="mt-3 text-muted-foreground text-pretty">
               Tap any shape below — we&apos;ll pre-filter the marketplace for
               you. Don&apos;t see a fit? Land or apartment usually covers it.
             </p>
@@ -247,16 +247,16 @@ export default async function HomePage() {
       </section>
 
       {/* How it works */}
-      <section className="border-y border-stone-100 bg-gradient-to-b from-white via-amber-50/30 to-white py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-y border-border bg-gradient-to-b from-white via-accent-soft/30 to-white py-20">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               The short version
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               From scrolling to keys, in four steps.
             </h2>
-            <p className="mt-3 text-stone-600 text-pretty">
+            <p className="mt-3 text-muted-foreground text-pretty">
               Four steps, plain English. No back-and-forth WhatsApp marathons,
               no &ldquo;send your number and I&apos;ll get back to you.&rdquo;
             </p>
@@ -276,16 +276,16 @@ export default async function HomePage() {
             ].map((s, i) => (
               <li
                 key={s.title}
-                className="relative rounded-2xl border border-stone-200 bg-white p-5 hover-lift"
+                className="relative rounded-2xl border border-border bg-card p-5 hover-lift"
               >
-                <span className="absolute right-4 top-3 text-4xl font-bold text-stone-100">
+                <span className="absolute right-4 top-3 text-4xl font-bold text-white/90">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">
                   {s.icon}
                 </div>
                 <h3 className="mt-3 text-base font-semibold">{s.title}</h3>
-                <p className="mt-1 text-sm text-stone-600">{s.body}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{s.body}</p>
               </li>
             ))}
           </ol>
@@ -328,16 +328,16 @@ export default async function HomePage() {
 
       {/* Featured listings */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Hot off the press
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
                 Recently listed
               </h2>
-              <p className="mt-2 max-w-xl text-stone-600">
+              <p className="mt-2 max-w-xl text-muted-foreground">
                 The newest published listings on the platform. Photos are real,
                 prices are real, and every agent below is KYC-verified.
               </p>
@@ -352,12 +352,12 @@ export default async function HomePage() {
           </div>
 
           {featured.length === 0 ? (
-            <div className="mt-10 rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center">
-              <Sparkles className="mx-auto h-8 w-8 text-stone-300" />
-              <p className="mt-3 font-semibold text-stone-700">
+            <div className="mt-10 rounded-2xl border border-dashed border-input bg-card p-12 text-center">
+              <Sparkles className="mx-auto h-8 w-8 text-text-subtle" />
+              <p className="mt-3 font-semibold text-foreground">
                 Nothing live just yet
               </p>
-              <p className="mt-1 text-sm text-stone-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Listings are being prepared. Drop your wishlist below and
                 we&apos;ll text you when something matches.
               </p>
@@ -396,17 +396,17 @@ export default async function HomePage() {
       </section>
 
       {/* Why us */}
-      <section className="border-y border-stone-100 bg-stone-50/60 py-20">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-y border-border bg-surface-2/60 py-20">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Why Realestate
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
                 Built for how Nigerians actually buy property.
               </h2>
-              <p className="mt-3 text-stone-600 text-pretty">
+              <p className="mt-3 text-muted-foreground text-pretty">
                 Most marketplaces show you photos and a phone number.
                 We&apos;ve added the missing 70% — verification, deposits,
                 messaging, payouts. Less drama, more dialogue.
@@ -415,12 +415,12 @@ export default async function HomePage() {
               <ul className="mt-8 space-y-4">
                 {WHY_BLOCKS.map((b) => (
                   <li key={b.title} className="flex gap-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
                       {b.icon}
                     </div>
                     <div>
-                      <p className="font-semibold text-stone-900">{b.title}</p>
-                      <p className="mt-1 text-sm text-stone-600 text-pretty">
+                      <p className="font-semibold text-foreground">{b.title}</p>
+                      <p className="mt-1 text-sm text-muted-foreground text-pretty">
                         {b.body}
                       </p>
                     </div>
@@ -446,7 +446,7 @@ export default async function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-emerald-100 via-amber-50 to-stone-50 blur-2xl" />
+              <div className="absolute -inset-4 -z-10 rounded-3xl bg-gradient-to-br from-primary-soft via-accent-soft to-surface-2 blur-2xl" />
               <ChatBubbles />
             </div>
           </div>
@@ -455,16 +455,16 @@ export default async function HomePage() {
 
       {/* Deposit calculator */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Money question
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
                 &ldquo;Wait — how much do I actually pay now?&rdquo;
               </h2>
-              <p className="mt-3 max-w-xl text-stone-600 text-pretty">
+              <p className="mt-3 max-w-xl text-muted-foreground text-pretty">
                 Reserving a place doesn&apos;t mean paying the full price up
                 front. It means putting down a small, refundable deposit so
                 the listing freezes for you. Try it.
@@ -481,16 +481,16 @@ export default async function HomePage() {
       </section>
 
       {/* Comparison */}
-      <section className="border-y border-stone-100 bg-gradient-to-b from-stone-50 via-white to-amber-50/30 py-20">
-        <div className="mx-auto max-w-6xl px-6">
+      <section className="border-y border-border bg-gradient-to-b from-surface-2 via-white to-accent-soft/30 py-20">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               The honest comparison
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
               {HEADLINES.comparisonTitle}
             </h2>
-            <p className="mt-3 text-stone-600 text-pretty">
+            <p className="mt-3 text-muted-foreground text-pretty">
               We&apos;re not the only place to look. We are the only place that
               treats your time and money like they matter.
             </p>
@@ -503,15 +503,15 @@ export default async function HomePage() {
 
       {/* Testimonials */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               Said about us
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               From folks who&apos;ve actually used it
             </h2>
-            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-800 ring-1 ring-amber-200">
+            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent-soft-foreground ring-1 ring-accent/20">
               <Star className="h-3.5 w-3.5 fill-current" />
               4.8 average · 312 verified reviews
             </div>
@@ -521,25 +521,25 @@ export default async function HomePage() {
               <figure
                 key={t.name}
                 className={cn(
-                  "rounded-3xl border border-stone-200 bg-white p-6 hover-lift animate-fade-up shadow-sm",
+                  "rounded-3xl border border-border bg-card p-6 hover-lift animate-fade-up shadow-sm",
                   `stagger-${i + 1}`,
                 )}
               >
-                <div className="flex items-center gap-1 text-amber-500">
+                <div className="flex items-center gap-1 text-accent">
                   {Array.from({ length: 5 }).map((_, n) => (
                     <Star key={n} className="h-3.5 w-3.5 fill-current" />
                   ))}
                 </div>
-                <blockquote className="mt-3 text-sm leading-relaxed text-stone-700 text-pretty">
+                <blockquote className="mt-3 text-sm leading-relaxed text-foreground text-pretty">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
-                <figcaption className="mt-5 flex items-center gap-3 border-t border-stone-100 pt-4">
-                  <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 text-sm font-semibold text-white">
+                <figcaption className="mt-5 flex items-center gap-3 border-t border-border pt-4">
+                  <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-br from-primary to-primary-hover text-sm font-semibold text-white">
                     {t.initials}
                   </span>
                   <div>
                     <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-stone-500">{t.role}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}</p>
                   </div>
                 </figcaption>
               </figure>
@@ -550,19 +550,19 @@ export default async function HomePage() {
 
       {/* For agents CTA */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-emerald-800 to-stone-900 p-10 text-white sm:p-16">
-            <div className="absolute right-0 top-0 h-72 w-72 -translate-y-12 translate-x-12 rounded-full bg-emerald-500/30 blur-3xl" />
-            <div className="absolute bottom-0 left-0 h-72 w-72 translate-y-12 -translate-x-12 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="mx-auto max-w-[100rem] px-6">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary-hover to-foreground p-10 text-white sm:p-16">
+            <div className="absolute right-0 top-0 h-72 w-72 -translate-y-12 translate-x-12 rounded-full bg-primary/30 blur-3xl" />
+            <div className="absolute bottom-0 left-0 h-72 w-72 translate-y-12 -translate-x-12 rounded-full bg-accent/20 blur-3xl" />
             <div className="relative grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-emerald-200">
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary-foreground">
                   For agents
                 </p>
                 <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
                   Stop chasing tyre-kickers.
                 </h2>
-                <p className="mt-3 max-w-xl text-emerald-100/90 text-pretty">
+                <p className="mt-3 max-w-xl text-primary-foreground/90 text-pretty">
                   Buyers come to you pre-verified, pre-deposit. You get a real
                   agent dashboard, commission ledger, and same-week Paystack
                   payouts. We take a small platform fee and stay out of your way.
@@ -603,7 +603,7 @@ export default async function HomePage() {
                   </Link>
                   <Link
                     href="/how-it-works#for-agents"
-                    className="inline-flex h-12 items-center gap-2 rounded-full border border-white/20 px-5 text-sm font-medium text-white transition-colors hover:bg-white/10"
+                    className="inline-flex h-12 items-center gap-2 rounded-full border border-white/20 px-5 text-sm font-medium text-white transition-colors hover:bg-card/10"
                   >
                     Read the agent guide
                   </Link>
@@ -620,15 +620,15 @@ export default async function HomePage() {
 
       {/* Glossary */}
       <section className="py-20">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               Plain English glossary
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
               The words that always trip people up
             </h2>
-            <p className="mt-3 text-stone-600 text-pretty">
+            <p className="mt-3 text-muted-foreground text-pretty">
               Tap a card to flip it. Eight definitions, zero legalese.
             </p>
           </div>
@@ -639,20 +639,20 @@ export default async function HomePage() {
       </section>
 
       {/* FAQ + AskBox */}
-      <section className="border-t border-stone-100 bg-stone-50/60 py-20">
+      <section className="border-t border-border bg-surface-2/60 py-20">
         <div className="mx-auto max-w-4xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               FAQ
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               Questions, answered
             </h2>
-            <p className="mt-3 text-stone-600">
+            <p className="mt-3 text-muted-foreground">
               If something&apos;s still unclear, just{" "}
               <Link
                 href="/contact"
-                className="font-medium text-emerald-700 underline"
+                className="font-medium text-primary underline"
               >
                 drop us a note
               </Link>
@@ -679,37 +679,37 @@ export default async function HomePage() {
 
 function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-stone-100">
+    <section className="relative overflow-hidden border-b border-border">
       <div className="absolute inset-0 -z-10 bg-grid opacity-50" />
-      <div className="absolute -top-32 left-1/2 -z-10 h-96 w-[200%] -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-100 via-emerald-100 to-stone-100 blur-3xl" />
+      <div className="absolute -top-32 left-1/2 -z-10 h-96 w-[200%] -translate-x-1/2 rounded-full bg-gradient-to-r from-accent-soft via-primary-soft to-surface-2 blur-3xl" />
 
-      <div className="mx-auto max-w-7xl px-6 pt-14 pb-20 sm:pt-20">
+      <div className="mx-auto max-w-[100rem] px-6 pt-14 pb-20 sm:pt-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           {/* Copy + search */}
           <div>
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1.5 text-xs font-medium text-emerald-800 animate-fade-in">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-soft px-4 py-1.5 text-xs font-medium text-primary-soft-foreground animate-fade-in">
               <span className="grid h-1.5 w-1.5 place-items-center">
-                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
               </span>
               Live now in Lagos, Abuja, Port Harcourt &amp; Ibadan
             </div>
-            <h1 className="mt-6 text-4xl font-bold tracking-tight text-stone-900 sm:text-6xl animate-fade-up text-balance">
+            <h1 className="mt-6 text-4xl font-bold tracking-tight text-foreground sm:text-6xl animate-fade-up text-balance">
               Find a home you actually{" "}
-              <span className="bg-gradient-to-r from-emerald-700 to-amber-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                 want to live in.
               </span>
             </h1>
-            <p className="mt-5 max-w-2xl text-lg text-stone-600 animate-fade-up stagger-1 text-pretty">
+            <p className="mt-5 max-w-2xl text-lg text-muted-foreground animate-fade-up stagger-1 text-pretty">
               Verified Nigerian properties. Reserve online with a deposit,
               finish offline with confidence. Real agents, real listings, real
               receipts.
             </p>
 
-            <p className="mt-3 text-base text-stone-500 animate-fade-up stagger-2">
-              <span className="font-medium text-stone-700">Concierge: </span>
+            <p className="mt-3 text-base text-muted-foreground animate-fade-up stagger-2">
+              <span className="font-medium text-foreground">Concierge: </span>
               <RotatingPrompt
                 prompts={HERO_PROMPTS}
-                className="text-emerald-700"
+                className="text-primary"
               />
             </p>
 
@@ -717,17 +717,17 @@ function Hero() {
               <HeroSearch />
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-stone-500 animate-fade-up stagger-4">
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-muted-foreground animate-fade-up stagger-4">
               <span className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-700" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 No sign-up to browse
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-700" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 Refundable deposits
               </span>
               <span className="inline-flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-700" />
+                <CheckCircle2 className="h-3.5 w-3.5 text-primary" />
                 Agents KYC-checked
               </span>
             </div>
@@ -735,15 +735,15 @@ function Hero() {
 
           {/* Right: Nigeria map */}
           <div className="relative hidden lg:block">
-            <div className="absolute -inset-8 -z-10 rounded-full bg-gradient-to-br from-amber-100 via-stone-50 to-emerald-100 blur-3xl" />
+            <div className="absolute -inset-8 -z-10 rounded-full bg-gradient-to-br from-accent-soft via-surface-2 to-primary-soft blur-3xl" />
             <NigeriaMap showLabels />
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 rotate-3 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-xs shadow-lg">
-              <p className="font-semibold text-emerald-700">3 new today</p>
-              <p className="text-stone-500">Lekki Phase 1</p>
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 rotate-3 rounded-2xl border border-border bg-card px-4 py-3 text-xs shadow-lg">
+              <p className="font-semibold text-primary">3 new today</p>
+              <p className="text-muted-foreground">Lekki Phase 1</p>
             </div>
-            <div className="absolute -bottom-3 left-2 -rotate-2 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-xs shadow-lg">
-              <p className="font-semibold text-amber-700">Sold yesterday</p>
-              <p className="text-stone-500">Maitama, Abuja</p>
+            <div className="absolute -bottom-3 left-2 -rotate-2 rounded-2xl border border-border bg-card px-4 py-3 text-xs shadow-lg">
+              <p className="font-semibold text-accent">Sold yesterday</p>
+              <p className="text-muted-foreground">Maitama, Abuja</p>
             </div>
           </div>
         </div>
@@ -762,8 +762,8 @@ function Trust({
   totalCities: number;
 }) {
   return (
-    <section className="border-b border-stone-100 bg-white py-12">
-      <div className="mx-auto max-w-7xl px-6">
+    <section className="border-b border-border bg-card py-12">
+      <div className="mx-auto max-w-[100rem] px-6">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <StatBadge
             icon={<Building2 className="h-4 w-4" />}
@@ -813,12 +813,12 @@ function Stat({
   label: string;
 }) {
   return (
-    <div className="rounded-2xl bg-white/10 p-4 backdrop-blur">
-      <div className="grid h-8 w-8 place-items-center rounded-lg bg-amber-400 text-stone-900">
+    <div className="rounded-2xl bg-card/10 p-4 backdrop-blur">
+      <div className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-foreground">
         {icon}
       </div>
       <p className="mt-3 text-2xl font-bold">{value}</p>
-      <p className="text-xs text-emerald-100/80">{label}</p>
+      <p className="text-xs text-primary-foreground/80">{label}</p>
     </div>
   );
 }

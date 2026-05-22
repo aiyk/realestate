@@ -4,6 +4,18 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
+import { MapPicker } from "@/components/listings/map-picker";
+import { VideoFields } from "@/components/listings/video-fields";
+import { ListingImageManager } from "@/components/listings/listing-image-manager";
+
+type ListingFormImage = {
+  storageKey: string;
+  url: string;
+  altText?: string;
+  caption?: string;
+  isCover?: boolean;
+};
 
 type ListingFormValues = {
   id?: string;
@@ -19,11 +31,18 @@ type ListingFormValues = {
   city: string;
   state: string;
   country: string;
+  latitude?: number;
+  longitude?: number;
+  videoUrl?: string;
+  virtualTourUrl?: string;
+  youtubeEmbedId?: string;
   amenities: string[];
-  images: { storageKey: string; url: string; altText?: string; isCover?: boolean }[];
+  images: ListingFormImage[];
   agentCommissionPct?: number;
   platformFeePct?: number;
 };
+
+export type ListingLockLevel = "OPEN" | "LIMITED" | "LOCKED";
 
 const PROPERTY_TYPES = [
   "HOUSE",
@@ -38,6 +57,7 @@ export function ListingForm({
   initial,
   mode,
   redirectTo,
+  lockLevel = "OPEN",
 }: {
   initial?: Partial<ListingFormValues>;
   mode: "create" | "edit";
@@ -46,31 +66,22 @@ export function ListingForm({
    * created/updated listing id, e.g. `/admin/listings/{id}/edit`.
    */
   redirectTo: string;
+  lockLevel?: ListingLockLevel;
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [images, setImages] = useState(
-    initial?.images ??
-      ([] as { storageKey: string; url: string; altText?: string; isCover?: boolean }[]),
+  const [images, setImages] = useState<ListingFormImage[]>(initial?.images ?? []);
+  const [lat, setLat] = useState<number | null>(
+    typeof initial?.latitude === "number" ? initial.latitude : null,
+  );
+  const [lng, setLng] = useState<number | null>(
+    typeof initial?.longitude === "number" ? initial.longitude : null,
   );
 
-  function addImageByUrl(url: string) {
-    if (!url) return;
-    const key = `direct/${Date.now()}-${images.length}`;
-    setImages([
-      ...images,
-      { storageKey: key, url, isCover: images.length === 0 },
-    ]);
-  }
+  const hardLocked = lockLevel === "LIMITED" || lockLevel === "LOCKED";
+  const fullyLocked = lockLevel === "LOCKED";
 
-  function removeImage(idx: number) {
-    setImages(images.filter((_, i) => i !== idx));
-  }
-
-  function setCover(idx: number) {
-    setImages(images.map((img, i) => ({ ...img, isCover: i === idx })));
-  }
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -100,11 +111,16 @@ export function ListingForm({
       city: String(fd.get("city")),
       state: String(fd.get("state")),
       country: String(fd.get("country") || "Nigeria"),
+      latitude: lat ?? undefined,
+      longitude: lng ?? undefined,
+      videoUrl: String(fd.get("videoUrl") ?? "") || undefined,
+      virtualTourUrl: String(fd.get("virtualTourUrl") ?? "") || undefined,
+      youtubeEmbedId: String(fd.get("youtubeEmbedId") ?? "") || undefined,
       amenities,
       images: images.map((img, i) => ({
         storageKey: img.storageKey,
         url: img.url,
-        altText: img.altText,
+        altText: img.altText || undefined,
         sortOrder: i,
         isCover: img.isCover ?? i === 0,
       })),
@@ -137,7 +153,27 @@ export function ListingForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <form
+      onSubmit={onSubmit}
+      className="grid grid-cols-1 gap-6 md:grid-cols-2"
+      data-locked={fullyLocked ? "true" : undefined}
+    >
+      {lockLevel === "LIMITED" && (
+        <div className="md:col-span-2 rounded-2xl border border-accent/20 bg-accent-soft px-4 py-3 text-sm text-accent-soft-foreground">
+          <p className="font-semibold">Limited edits</p>
+          <p className="mt-1">
+            Address, property type and map location are locked once a listing
+            is live. Price changes over ±10% will pause your listing for
+            re-review.
+          </p>
+        </div>
+      )}
+      {lockLevel === "LOCKED" && (
+        <div className="md:col-span-2 rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm text-foreground">
+          Editing is paused while this listing is under review (or already
+          reserved/sold).
+        </div>
+      )}
       <div className="md:col-span-2">
         <Label htmlFor="title">Title</Label>
         <Input
@@ -161,22 +197,23 @@ export function ListingForm({
           minLength={20}
           maxLength={5000}
           rows={5}
-          className="mt-1 block w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+          className="mt-1 block w-full rounded-md border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
         />
       </div>
 
       <div>
         <Label htmlFor="propertyType">Property type</Label>
-        <select
+        <Select
           id="propertyType"
           name="propertyType"
           defaultValue={initial?.propertyType ?? "HOUSE"}
-          className="mt-1 block h-10 w-full rounded-md border border-neutral-200 bg-white px-3 text-sm"
+          disabled={hardLocked}
+          className="mt-1"
         >
           {PROPERTY_TYPES.map((t) => (
             <option key={t}>{t}</option>
           ))}
-        </select>
+        </Select>
       </div>
       <div>
         <Label htmlFor="priceNgn">Price (₦)</Label>
@@ -204,7 +241,7 @@ export function ListingForm({
           className="mt-1"
         />
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
           <Label htmlFor="bedrooms">Beds</Label>
           <Input
@@ -248,6 +285,7 @@ export function ListingForm({
           name="addressLine"
           defaultValue={initial?.addressLine}
           required
+          disabled={hardLocked}
           className="mt-1"
         />
       </div>
@@ -258,6 +296,7 @@ export function ListingForm({
           name="city"
           defaultValue={initial?.city}
           required
+          disabled={hardLocked}
           className="mt-1"
         />
       </div>
@@ -268,8 +307,38 @@ export function ListingForm({
           name="state"
           defaultValue={initial?.state}
           required
+          disabled={hardLocked}
           className="mt-1"
         />
+      </div>
+
+      <div className="md:col-span-2">
+        <Label>Map location</Label>
+        <div className={hardLocked ? "pointer-events-none opacity-60" : ""}>
+          <MapPicker
+            initialLat={
+              typeof initial?.latitude === "number" ? initial.latitude : undefined
+            }
+            initialLng={
+              typeof initial?.longitude === "number" ? initial.longitude : undefined
+            }
+            onChange={(a, b) => {
+              setLat(a);
+              setLng(b);
+            }}
+          />
+        </div>
+      </div>
+
+      <div className="md:col-span-2">
+        <Label>Video &amp; virtual tour</Label>
+        <div className="mt-2">
+          <VideoFields
+            initialVideoUrl={initial?.videoUrl}
+            initialVirtualTourUrl={initial?.virtualTourUrl}
+            initialYoutubeEmbedId={initial?.youtubeEmbedId}
+          />
+        </div>
       </div>
 
       <div className="md:col-span-2">
@@ -312,60 +381,18 @@ export function ListingForm({
 
       <div className="md:col-span-2">
         <Label>Images</Label>
-        <div className="mt-2 flex gap-2">
-          <Input
-            id="imageUrl"
-            placeholder="Paste image URL (R2 upload integrates here in prod)"
+        <div className="mt-2">
+          <ListingImageManager
+            listingId={initial?.id}
+            initial={images}
+            onChange={setImages}
+            max={20}
           />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => {
-              const el = document.getElementById("imageUrl") as HTMLInputElement;
-              addImageByUrl(el.value.trim());
-              el.value = "";
-            }}
-          >
-            Add
-          </Button>
         </div>
-        {images.length > 0 && (
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3">
-            {images.map((img, i) => (
-              <div
-                key={img.storageKey}
-                className="overflow-hidden rounded-md border border-neutral-200"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={img.url}
-                  alt={img.altText ?? "Listing"}
-                  className="aspect-[4/3] w-full object-cover"
-                />
-                <div className="flex items-center justify-between p-2 text-xs">
-                  <button
-                    type="button"
-                    className={img.isCover ? "font-bold" : "underline"}
-                    onClick={() => setCover(i)}
-                  >
-                    {img.isCover ? "Cover" : "Set cover"}
-                  </button>
-                  <button
-                    type="button"
-                    className="text-red-600 underline"
-                    onClick={() => removeImage(i)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
 
       {error && (
-        <p className="md:col-span-2 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <p className="md:col-span-2 rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
           {error}
         </p>
       )}

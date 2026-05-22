@@ -16,7 +16,7 @@ const nav = [
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname() ?? "";
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-1 px-6 py-8">
+    <div className="mx-auto flex w-full max-w-[100rem] flex-1 px-6 py-8">
       <aside className="hidden w-56 shrink-0 pr-6 md:block">
         <nav className="space-y-1">
           {nav.map((item) => {
@@ -29,8 +29,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "block rounded-md px-3 py-2 text-sm",
                   active
-                    ? "bg-neutral-900 text-white"
-                    : "text-neutral-700 hover:bg-neutral-100",
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:bg-surface-2 hover:text-foreground",
                 )}
               >
                 {item.label}

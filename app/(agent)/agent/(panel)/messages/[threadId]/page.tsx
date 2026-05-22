@@ -36,12 +36,12 @@ export default async function AgentThreadPage({ params }: Props) {
     <section>
       <Link
         href="/agent/messages"
-        className="text-sm text-neutral-500 hover:underline"
+        className="text-sm text-muted-foreground hover:underline"
       >
         ← Inbox
       </Link>
       <h1 className="mt-2 text-2xl font-semibold">{thread.listing.title}</h1>
-      <p className="text-sm text-neutral-500">
+      <p className="text-sm text-muted-foreground">
         With buyer {thread.buyer.fullName} ({thread.buyer.email})
       </p>
       <div className="mt-6">

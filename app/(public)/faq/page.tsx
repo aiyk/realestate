@@ -150,19 +150,19 @@ const GROUPS: Group[] = [
 export default function FaqPage() {
   return (
     <main className="flex-1">
-      <section className="border-b border-stone-100 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white py-16">
+      <section className="border-b border-border bg-gradient-to-b from-surface-2 via-accent-soft/30 to-white py-16">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             FAQ
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-balance">
             Questions, answered — in plain English.
           </h1>
-          <p className="mt-3 text-stone-600 text-pretty">
+          <p className="mt-3 text-muted-foreground text-pretty">
             Quick answers to the things we hear most. Missing something?{" "}
             <Link
               href="/contact"
-              className="font-medium text-emerald-700 underline"
+              className="font-medium text-primary underline"
             >
               Ask us
             </Link>{" "}
@@ -176,9 +176,9 @@ export default function FaqPage() {
             <a
               key={g.key}
               href={`#${g.key}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 transition-colors hover:border-emerald-300 hover:text-emerald-700"
+              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/30 hover:text-primary"
             >
-              <span className="text-emerald-700">{g.icon}</span>
+              <span className="text-primary">{g.icon}</span>
               {g.title}
             </a>
           ))}
@@ -200,14 +200,14 @@ export default function FaqPage() {
             {GROUPS.map((g) => (
               <div key={g.key} id={g.key} className="scroll-mt-24">
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-primary-soft text-primary">
                     {g.icon}
                   </span>
                   <div>
                     <h2 className="text-xl font-semibold tracking-tight">
                       {g.title}
                     </h2>
-                    <p className="text-sm text-stone-500">{g.blurb}</p>
+                    <p className="text-sm text-muted-foreground">{g.blurb}</p>
                   </div>
                 </div>
                 <FaqAccordion items={g.items} initiallyOpen={null} />

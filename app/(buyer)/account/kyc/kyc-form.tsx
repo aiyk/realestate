@@ -42,7 +42,7 @@ export function KycForm({ fullName }: { fullName: string }) {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-4">
-      <p className="text-xs text-neutral-500">
+      <p className="text-xs text-muted-foreground">
         Verifying name <strong>{fullName}</strong> against BVN/NIN records.
       </p>
       <div className="flex flex-col gap-1.5">
@@ -70,7 +70,7 @@ export function KycForm({ fullName }: { fullName: string }) {
         <Input id="dob" name="dob" type="date" required />
       </div>
       {error && (
-        <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>
+        <p className="rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">{error}</p>
       )}
       <Button type="submit" disabled={loading}>
         {loading ? "Verifying…" : "Verify identity"}

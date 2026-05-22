@@ -15,16 +15,16 @@ export function ListingTypesGrid() {
           <Link
             key={t.key}
             href={`/listings?propertyType=${t.key}`}
-            className={`group relative flex flex-col items-center gap-2 rounded-2xl border border-stone-200 bg-white p-5 text-center transition-all hover:-translate-y-1 hover:border-emerald-500 hover:shadow-md animate-fade-up stagger-${(i % 6) + 1}`}
+            className={`group relative flex flex-col items-center gap-2 rounded-2xl border border-border bg-card p-5 text-center transition-all hover:-translate-y-1 hover:border-primary hover:shadow-md animate-fade-up stagger-${(i % 6) + 1}`}
           >
-            <span className="absolute right-2 top-2 text-stone-300 opacity-0 transition-opacity group-hover:opacity-100">
+            <span className="absolute right-2 top-2 text-text-subtle opacity-0 transition-opacity group-hover:opacity-100">
               <ArrowRight className="h-4 w-4" />
             </span>
-            <Icon className="h-14 w-14 text-emerald-700 transition-transform group-hover:scale-110" />
-            <span className="text-sm font-semibold text-stone-900">
+            <Icon className="h-14 w-14 text-primary transition-transform group-hover:scale-110" />
+            <span className="text-sm font-semibold text-foreground">
               {t.label}
             </span>
-            <span className="text-xs text-stone-500 text-pretty">{t.blurb}</span>
+            <span className="text-xs text-muted-foreground text-pretty">{t.blurb}</span>
           </Link>
         );
       })}

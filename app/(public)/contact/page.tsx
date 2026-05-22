@@ -49,21 +49,21 @@ export default function ContactPage() {
   return (
     <main className="flex-1">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-stone-100 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white py-16">
-        <LagosSkyline className="absolute inset-x-0 bottom-0 h-20 w-full text-emerald-700/15" />
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-surface-2 via-accent-soft/30 to-white py-16">
+        <LagosSkyline className="absolute inset-x-0 bottom-0 h-20 w-full text-primary/15" />
         <div className="relative mx-auto max-w-3xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Talk to us
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-balance">
             We&apos;d love to hear from you.
           </h1>
-          <p className="mt-3 text-stone-600 text-pretty">
+          <p className="mt-3 text-muted-foreground text-pretty">
             Tell us what you&apos;re looking for, what&apos;s broken, or just
             say hi. A real human (not a bot) replies inside the hour during
             business hours.
           </p>
-          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800 ring-1 ring-emerald-200">
+          <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-soft-foreground ring-1 ring-primary/20">
             <Clock className="h-3.5 w-3.5" />
             Avg. response: 42 minutes
           </div>
@@ -74,7 +74,7 @@ export default function ContactPage() {
       <section className="py-16">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               Pick your lane
             </p>
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-balance">
@@ -85,13 +85,13 @@ export default function ContactPage() {
             {LANES.map((l, i) => (
               <div
                 key={l.title}
-                className={`rounded-2xl border border-stone-200 bg-white p-6 hover-lift animate-fade-up stagger-${i + 1}`}
+                className={`rounded-2xl border border-border bg-card p-6 hover-lift animate-fade-up stagger-${i + 1}`}
               >
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                   {l.icon}
                 </div>
                 <h3 className="mt-4 text-lg font-semibold">{l.title}</h3>
-                <p className="mt-2 text-sm text-stone-600 text-pretty">
+                <p className="mt-2 text-sm text-muted-foreground text-pretty">
                   {l.blurb}
                 </p>
                 <div className="mt-4">
@@ -101,7 +101,7 @@ export default function ContactPage() {
                 </div>
                 <Link
                   href={l.cta.href}
-                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:underline"
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline"
                 >
                   {l.cta.label} →
                 </Link>
@@ -112,16 +112,16 @@ export default function ContactPage() {
       </section>
 
       {/* Form + sidebar */}
-      <section className="border-t border-stone-100 bg-stone-50/60 py-16">
+      <section className="border-t border-border bg-surface-2/60 py-16">
         <div className="mx-auto grid max-w-5xl gap-10 px-6 lg:grid-cols-[1fr_360px]">
-          <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
+          <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
             <div className="flex items-center gap-3">
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-amber-100 text-amber-700">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-accent-soft text-accent">
                 <Mail className="h-4 w-4" />
               </span>
               <div>
                 <h2 className="text-xl font-semibold">Send us a note</h2>
-                <p className="text-sm text-stone-500">
+                <p className="text-sm text-muted-foreground">
                   We read every message. Yes, every one.
                 </p>
               </div>
@@ -157,7 +157,7 @@ export default function ContactPage() {
               has everything we need.
               <Link
                 href="/agent/apply"
-                className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-emerald-700 hover:underline"
+                className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
               >
                 Become an agent → <Sparkles className="h-3 w-3" />
               </Link>
@@ -183,20 +183,20 @@ function ContactCard({
   link?: string;
 }) {
   const Inner = (
-    <div className="rounded-2xl border border-stone-200 bg-white p-4 transition-colors hover:border-emerald-300">
+    <div className="rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary/30">
       <div className="flex items-center gap-3">
-        <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+        <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">
           {icon}
         </div>
         <div className="min-w-0">
-          <p className="text-[10px] uppercase tracking-wider text-stone-500">
+          <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
             {label}
           </p>
-          <p className="text-sm font-medium text-stone-900">{value}</p>
+          <p className="text-sm font-medium text-foreground">{value}</p>
         </div>
       </div>
       {sub && (
-        <p className="mt-3 text-xs text-stone-500 text-pretty">{sub}</p>
+        <p className="mt-3 text-xs text-muted-foreground text-pretty">{sub}</p>
       )}
     </div>
   );

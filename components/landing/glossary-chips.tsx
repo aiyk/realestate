@@ -67,15 +67,15 @@ export function GlossaryChips() {
             className={cn(
               "group rounded-2xl border p-4 text-left transition-all",
               isOpen
-                ? "border-emerald-500 bg-emerald-50 shadow-md"
-                : "border-stone-200 bg-white hover:border-emerald-300 hover:shadow-sm",
+                ? "border-primary bg-primary-soft shadow-md"
+                : "border-border bg-card hover:border-primary/30 hover:shadow-sm",
             )}
             aria-expanded={isOpen}
           >
             <p
               className={cn(
                 "text-sm font-bold tracking-tight",
-                isOpen ? "text-emerald-900" : "text-stone-900",
+                isOpen ? "text-primary-soft-foreground" : "text-foreground",
               )}
             >
               {t.term}
@@ -84,8 +84,8 @@ export function GlossaryChips() {
               className={cn(
                 "mt-1 text-xs text-pretty",
                 isOpen
-                  ? "text-emerald-800"
-                  : "text-stone-500 line-clamp-2 group-hover:text-stone-700",
+                  ? "text-primary-soft-foreground"
+                  : "text-muted-foreground line-clamp-2 group-hover:text-foreground",
               )}
             >
               {t.definition}

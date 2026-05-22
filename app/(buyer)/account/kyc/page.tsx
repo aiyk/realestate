@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
-  ArrowLeft,
   ShieldCheck,
   Lock,
   Eye,
@@ -10,6 +9,7 @@ import {
 import { getSessionUser } from "@/lib/rbac";
 import { prisma } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Callout } from "@/components/ui/callout";
 import { SpeechBubble } from "@/components/ui/speech-bubble";
 import { StepIndicator } from "@/components/ui/story-step";
@@ -38,23 +38,23 @@ export default async function KycPage() {
 
   return (
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
-      <Link
-        href="/account"
-        className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition-colors hover:text-emerald-700"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Back to account
-      </Link>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Account", href: "/account" },
+          { label: "Identity check" },
+        ]}
+      />
 
       <div className="mt-4 grid items-start gap-6 sm:grid-cols-[1fr_180px]">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             One quick identity check
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-balance">
+          <h1 className="t-h1 mt-2 text-balance">
             Prove you&apos;re you. Once.
           </h1>
-          <p className="mt-2 text-stone-600 text-pretty">
+          <p className="mt-2 text-muted-foreground text-pretty">
             We do a BVN lookup via Dojah, store only a hash, and never see the
             number itself again. Takes thirty seconds.
           </p>
@@ -69,7 +69,7 @@ export default async function KycPage() {
         />
       </div>
 
-      <div className="mt-8 rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
+      <div className="mt-8 rounded-3xl border border-border bg-card p-8 shadow-sm">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Current status</h2>
           <Badge
@@ -86,7 +86,7 @@ export default async function KycPage() {
             {user.kycStatus.replace("_", " ")}
           </Badge>
         </div>
-        <p className="mt-1 text-sm text-stone-600 text-pretty">
+        <p className="mt-1 text-sm text-muted-foreground text-pretty">
           {statusBlurb(user.kycStatus) ||
             "We haven't seen a submission from you yet."}
         </p>
@@ -101,14 +101,14 @@ export default async function KycPage() {
               You can reserve any listing now.{" "}
               <Link
                 href="/listings"
-                className="font-medium text-emerald-700 underline"
+                className="font-medium text-primary underline"
               >
                 Browse listings
               </Link>{" "}
               or{" "}
               <Link
                 href="/account/reservations"
-                className="font-medium text-emerald-700 underline"
+                className="font-medium text-primary underline"
               >
                 check your reservations
               </Link>
@@ -134,8 +134,8 @@ export default async function KycPage() {
                   icon={<Sparkles className="h-5 w-5" />}
                 >
                   Dojah sandbox isn&apos;t configured locally. Use any BVN
-                  that starts with <code className="rounded bg-stone-100 px-1 py-0.5 text-xs">22222</code> (e.g.{" "}
-                  <code className="rounded bg-stone-100 px-1 py-0.5 text-xs">22222222222</code>) to simulate a successful verification.
+                  that starts with <code className="rounded bg-surface-2 px-1 py-0.5 text-xs">22222</code> (e.g.{" "}
+                  <code className="rounded bg-surface-2 px-1 py-0.5 text-xs">22222222222</code>) to simulate a successful verification.
                 </Callout>
               )}
             </>
@@ -171,7 +171,7 @@ export default async function KycPage() {
         Stuck? Email{" "}
         <a
           href="mailto:hello@realestate.ng"
-          className="font-semibold text-emerald-900 underline"
+          className="font-semibold text-primary-soft-foreground underline"
         >
           hello@realestate.ng
         </a>{" "}
@@ -200,12 +200,12 @@ function PromiseCard({
   body: string;
 }) {
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white p-5">
-      <div className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+    <div className="rounded-2xl border border-border bg-card p-5">
+      <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary-soft text-primary">
         {icon}
       </div>
-      <p className="mt-3 text-sm font-semibold text-stone-900">{title}</p>
-      <p className="mt-1 text-xs text-stone-600 text-pretty">{body}</p>
+      <p className="mt-3 text-sm font-semibold text-foreground">{title}</p>
+      <p className="mt-1 text-xs text-muted-foreground text-pretty">{body}</p>
     </div>
   );
 }

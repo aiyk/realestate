@@ -108,29 +108,29 @@ export default function HowItWorksPage() {
   return (
     <main className="flex-1">
       {/* Anchor nav (sticky) */}
-      <nav className="sticky top-16 z-20 hidden border-b border-stone-200 bg-white/85 backdrop-blur md:block">
+      <nav className="sticky top-16 z-20 hidden border-b border-border bg-card/85 backdrop-blur md:block">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-3 text-sm">
-          <span className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Jump to
           </span>
-          <a href="#overview" className="text-stone-600 hover:text-emerald-700">
+          <a href="#overview" className="text-muted-foreground hover:text-primary">
             Overview
           </a>
-          <a href="#for-buyers" className="text-stone-600 hover:text-emerald-700">
+          <a href="#for-buyers" className="text-muted-foreground hover:text-primary">
             For buyers
           </a>
           <a
             href="#deposit"
-            className="text-stone-600 hover:text-emerald-700"
+            className="text-muted-foreground hover:text-primary"
           >
             The deposit
           </a>
-          <a href="#for-agents" className="text-stone-600 hover:text-emerald-700">
+          <a href="#for-agents" className="text-muted-foreground hover:text-primary">
             For agents
           </a>
           <a
             href="#behind-the-scenes"
-            className="text-stone-600 hover:text-emerald-700"
+            className="text-muted-foreground hover:text-primary"
           >
             Behind the scenes
           </a>
@@ -140,17 +140,17 @@ export default function HowItWorksPage() {
       {/* Hero */}
       <section
         id="overview"
-        className="relative overflow-hidden border-b border-stone-100 py-20"
+        className="relative overflow-hidden border-b border-border py-20"
       >
         <div className="absolute inset-0 -z-10 bg-grid opacity-40" />
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             The longer version
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl text-balance">
             How Realestate works
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-stone-600 text-pretty">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground text-pretty">
             Two flows: one for buyers, one for agents. Both share the same
             non-negotiables — verified identity, escrowed deposits,
             audit-logged messaging.
@@ -167,13 +167,13 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 For buyers
               </p>
               <h2 className="mt-1 text-3xl font-bold tracking-tight">
                 Find, verify, reserve, close
               </h2>
-              <p className="mt-2 max-w-xl text-stone-600 text-pretty">
+              <p className="mt-2 max-w-xl text-muted-foreground text-pretty">
                 You stay anonymous until you&apos;re ready to reserve. We never
                 ask for your phone number until an agent is ready to meet you.
               </p>
@@ -205,18 +205,18 @@ export default function HowItWorksPage() {
       {/* Deposit deep-dive */}
       <section
         id="deposit"
-        className="border-y border-stone-100 bg-gradient-to-b from-stone-50/60 via-white to-stone-50/60 py-20"
+        className="border-y border-border bg-gradient-to-b from-surface-2/60 via-white to-surface-2/60 py-20"
       >
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-[1.2fr_1fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 The deposit, explained
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
                 Small money down, big peace of mind.
               </h2>
-              <p className="mt-3 text-stone-600 text-pretty">
+              <p className="mt-3 text-muted-foreground text-pretty">
                 A deposit is what tells the universe you mean business. It puts
                 the listing on quiet, locks in the price, and gives the agent
                 permission to share the exact location.
@@ -251,13 +251,13 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 For agents
               </p>
               <h2 className="mt-1 text-3xl font-bold tracking-tight">
                 Apply, get verified, list, get paid
               </h2>
-              <p className="mt-2 max-w-xl text-stone-600 text-pretty">
+              <p className="mt-2 max-w-xl text-muted-foreground text-pretty">
                 We don&apos;t ask for fees up front. You earn — you get paid.
                 Same week, same currency, same bank account.
               </p>
@@ -305,17 +305,17 @@ export default function HowItWorksPage() {
       {/* Behind the scenes */}
       <section
         id="behind-the-scenes"
-        className="border-y border-stone-100 bg-stone-50/60 py-20"
+        className="border-y border-border bg-surface-2/60 py-20"
       >
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               Behind the scenes
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
               The boring engineering that makes the easy parts easy.
             </h2>
-            <p className="mt-3 text-stone-600 text-pretty">
+            <p className="mt-3 text-muted-foreground text-pretty">
               We tell you this because you&apos;d ask. Trust isn&apos;t a
               slogan, it&apos;s a stack.
             </p>
@@ -325,15 +325,15 @@ export default function HowItWorksPage() {
               <div
                 key={b.title}
                 className={cn(
-                  "rounded-2xl border border-stone-200 bg-white p-6 hover-lift animate-fade-up",
+                  "rounded-2xl border border-border bg-card p-6 hover-lift animate-fade-up",
                   `stagger-${i + 1}`,
                 )}
               >
-                <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                <div className="grid h-10 w-10 place-items-center rounded-xl bg-primary-soft text-primary">
                   {b.icon}
                 </div>
                 <h3 className="mt-3 text-base font-semibold">{b.title}</h3>
-                <p className="mt-2 text-sm text-stone-600 text-pretty">{b.body}</p>
+                <p className="mt-2 text-sm text-muted-foreground text-pretty">{b.body}</p>
               </div>
             ))}
           </div>
@@ -346,7 +346,7 @@ export default function HowItWorksPage() {
           <h2 className="text-3xl font-bold tracking-tight text-balance">
             Still wondering if this is for you?
           </h2>
-          <p className="mt-3 text-stone-600 text-pretty">
+          <p className="mt-3 text-muted-foreground text-pretty">
             We&apos;d rather have a conversation than push you to sign up.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">

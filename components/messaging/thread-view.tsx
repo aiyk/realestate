@@ -66,10 +66,10 @@ export function ThreadView({
   }
 
   return (
-    <div className="flex h-[70vh] flex-col rounded-lg border border-neutral-200 bg-white">
+    <div className="flex h-[70vh] flex-col rounded-lg border border-border bg-card">
       <div ref={scrollerRef} className="flex-1 overflow-y-auto p-4 space-y-2">
         {messages.length === 0 && (
-          <p className="text-center text-sm text-neutral-500">
+          <p className="text-center text-sm text-muted-foreground">
             No messages yet. Send the first one below.
           </p>
         )}
@@ -83,12 +83,12 @@ export function ThreadView({
               <div
                 className={`max-w-[70%] rounded-lg px-3 py-2 text-sm ${
                   mine
-                    ? "bg-neutral-900 text-white"
-                    : "bg-neutral-100 text-neutral-900"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-surface-2 text-foreground"
                 }`}
               >
                 <p className="whitespace-pre-line">{m.body}</p>
-                <p className={`mt-1 text-[10px] ${mine ? "text-neutral-300" : "text-neutral-500"}`}>
+                <p className={`mt-1 text-[10px] ${mine ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                   {new Date(m.createdAt).toLocaleString()}
                 </p>
               </div>
@@ -96,7 +96,7 @@ export function ThreadView({
           );
         })}
       </div>
-      <form onSubmit={send} className="flex gap-2 border-t border-neutral-200 p-3">
+      <form onSubmit={send} className="flex gap-2 border-t border-border p-3">
         <Input
           placeholder="Type a message…"
           value={draft}

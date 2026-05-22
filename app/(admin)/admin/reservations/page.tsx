@@ -34,11 +34,11 @@ export default async function AdminReservationsPage({ searchParams }: Props) {
   return (
     <section>
       <h1 className="text-2xl font-semibold">Reservations</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         {reservations.length} {status ? `with status ${status}` : "recent"}
       </p>
       {reservations.length === 0 ? (
-        <p className="mt-10 rounded-lg border border-dashed border-neutral-300 p-12 text-center text-sm text-neutral-500">
+        <p className="mt-10 rounded-lg border border-dashed border-input p-12 text-center text-sm text-muted-foreground">
           No reservations.
         </p>
       ) : (
@@ -46,12 +46,12 @@ export default async function AdminReservationsPage({ searchParams }: Props) {
           {reservations.map((r) => (
             <div
               key={r.id}
-              className="rounded-lg border border-neutral-200 bg-white p-4"
+              className="rounded-lg border border-border bg-card p-4"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="font-medium">{r.listing.title}</p>
-                  <p className="text-sm text-neutral-500">
+                  <p className="text-sm text-muted-foreground">
                     {r.buyer.fullName} · {r.buyer.email}
                   </p>
                   <p className="mt-1 text-sm">

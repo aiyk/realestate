@@ -26,7 +26,7 @@ export default async function CheckoutReturnPage({ params, searchParams }: Props
   if (!reference) {
     return (
       <main className="mx-auto flex w-full max-w-md flex-1 items-center px-6 py-12">
-        <p className="text-sm text-red-700">Missing reference.</p>
+        <p className="text-sm text-danger-soft-foreground">Missing reference.</p>
       </main>
     );
   }

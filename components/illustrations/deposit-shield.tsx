@@ -11,7 +11,7 @@ export function DepositShield({ className }: { className?: string }) {
       fill="none"
       role="img"
       aria-label="Deposit held in escrow"
-      className={cn("h-auto w-full text-emerald-700", className)}
+      className={cn("h-auto w-full text-primary", className)}
     >
       <defs>
         <linearGradient id="ds-shield" x1="0" y1="0" x2="240" y2="240">

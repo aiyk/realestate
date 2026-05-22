@@ -25,21 +25,21 @@ export function DepositCalculator({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm sm:p-8",
+        "relative overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8",
         className,
       )}
     >
-      <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-amber-100/60 blur-3xl" aria-hidden="true" />
-      <div className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-emerald-100/60 blur-3xl" aria-hidden="true" />
+      <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-accent-soft/60 blur-3xl" aria-hidden="true" />
+      <div className="absolute -bottom-12 -left-12 h-40 w-40 rounded-full bg-primary-soft/60 blur-3xl" aria-hidden="true" />
 
       <div className="relative">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-800">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs font-semibold text-primary-soft-foreground">
           <Sparkles className="h-3 w-3" /> Try it
         </div>
-        <h3 className="mt-3 text-2xl font-bold tracking-tight text-stone-900">
+        <h3 className="mt-3 text-2xl font-bold tracking-tight text-foreground">
           How much would you put down?
         </h3>
-        <p className="mt-1 text-sm text-stone-600 text-pretty">
+        <p className="mt-1 text-sm text-muted-foreground text-pretty">
           A typical deposit is <strong>5% of the listing price</strong>. Move
           the chip below — we&apos;ll do the maths.
         </p>
@@ -53,8 +53,8 @@ export function DepositCalculator({ className }: { className?: string }) {
               className={cn(
                 "rounded-full px-4 py-1.5 text-sm font-medium ring-1 transition-colors",
                 price === p.value
-                  ? "bg-emerald-700 text-emerald-50 ring-emerald-700"
-                  : "bg-white text-stone-700 ring-stone-200 hover:bg-stone-50",
+                  ? "bg-primary text-primary-foreground ring-primary"
+                  : "bg-card text-foreground ring-border hover:bg-surface-2",
               )}
             >
               {p.label}
@@ -63,7 +63,7 @@ export function DepositCalculator({ className }: { className?: string }) {
         </div>
 
         <div className="mt-5">
-          <label className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+          <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             …or pick anything in between
           </label>
           <input
@@ -73,10 +73,10 @@ export function DepositCalculator({ className }: { className?: string }) {
             step={1_000_000}
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
-            className="mt-2 w-full accent-emerald-700"
+            className="mt-2 w-full [accent-color:var(--primary)]"
             aria-label="Listing price"
           />
-          <div className="mt-1 flex justify-between text-[11px] text-stone-500">
+          <div className="mt-1 flex justify-between text-[11px] text-muted-foreground">
             <span>₦5m</span>
             <span>₦500m</span>
           </div>
@@ -92,8 +92,8 @@ export function DepositCalculator({ className }: { className?: string }) {
           <Tile label="Balance at close" value={formatNgn(balance)} />
         </div>
 
-        <div className="mt-5 flex items-start gap-2 rounded-2xl bg-stone-50 px-4 py-3 text-xs text-stone-600">
-          <Wallet className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-700" />
+        <div className="mt-5 flex items-start gap-2 rounded-2xl bg-surface-2 px-4 py-3 text-xs text-muted-foreground">
+          <Wallet className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
           Your deposit lives with Paystack until both you and the agent agree
           the deal is done. Refundable inside 48 hours if the agent goes
           silent.
@@ -117,14 +117,14 @@ function Tile({
       className={cn(
         "rounded-2xl p-4 ring-1",
         highlight
-          ? "bg-emerald-700 text-emerald-50 ring-emerald-700"
-          : "bg-white text-stone-900 ring-stone-200",
+          ? "bg-primary text-primary-foreground ring-primary"
+          : "bg-card text-foreground ring-border",
       )}
     >
       <p
         className={cn(
           "text-[10px] font-semibold uppercase tracking-wider",
-          highlight ? "text-emerald-100" : "text-stone-500",
+          highlight ? "text-primary-foreground" : "text-muted-foreground",
         )}
       >
         {label}

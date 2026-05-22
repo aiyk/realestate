@@ -7,14 +7,24 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-emerald-100 text-emerald-800 ring-1 ring-emerald-200/50",
-        secondary: "bg-stone-100 text-stone-700 ring-1 ring-stone-200/50",
-        success: "bg-emerald-100 text-emerald-800 ring-1 ring-emerald-200/50",
-        warning: "bg-amber-100 text-amber-800 ring-1 ring-amber-200/50",
-        danger: "bg-red-100 text-red-700 ring-1 ring-red-200/50",
-        outline: "border border-stone-200 text-stone-600",
-        accent: "bg-amber-500 text-white",
-        glow: "bg-emerald-700 text-white shadow-[0_0_0_4px_rgb(4_120_87_/_0.15)]",
+        default:
+          "bg-primary-soft text-primary-soft-foreground ring-1 ring-primary/15",
+        secondary:
+          "bg-surface-2 text-muted-foreground ring-1 ring-border",
+        success:
+          "bg-success-soft text-success-soft-foreground ring-1 ring-success/20",
+        warning:
+          "bg-warning-soft text-warning-soft-foreground ring-1 ring-warning/20",
+        danger:
+          "bg-danger-soft text-danger-soft-foreground ring-1 ring-danger/20",
+        info:
+          "bg-info-soft text-info-soft-foreground ring-1 ring-info/20",
+        outline:
+          "border border-border text-muted-foreground",
+        accent:
+          "bg-accent text-accent-foreground",
+        glow:
+          "bg-primary text-primary-foreground shadow-[0_0_0_4px_rgb(4_120_87_/_0.15)] dark:shadow-[0_0_0_4px_rgb(16_185_129_/_0.2)]",
       },
     },
     defaultVariants: { variant: "default" },

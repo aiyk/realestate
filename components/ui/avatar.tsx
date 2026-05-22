@@ -31,7 +31,7 @@ export function Avatar({ src, alt, name, size = "md", className }: Props) {
   return (
     <div
       className={cn(
-        "grid place-items-center overflow-hidden rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 font-semibold text-white",
+        "grid place-items-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-hover font-semibold text-primary-foreground",
         SIZE[size],
         className,
       )}
@@ -44,7 +44,7 @@ export function Avatar({ src, alt, name, size = "md", className }: Props) {
           className="h-full w-full object-cover"
         />
       ) : (
-        <span>{initialsOf(name)}</span>
+        <span aria-hidden={!name}>{initialsOf(name)}</span>
       )}
     </div>
   );

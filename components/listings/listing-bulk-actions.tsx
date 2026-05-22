@@ -1,8 +1,15 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Archive, Send, Loader2 } from "lucide-react";
+import { Archive, Send, Loader2, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/toast";
 
 type Props = {
   selected: string[];
@@ -11,8 +18,8 @@ type Props = {
 
 export function ListingBulkActions({ selected, onClearSelection }: Props) {
   const router = useRouter();
+  const toast = useToast();
   const [busy, setBusy] = useState<"archive" | "submit" | null>(null);
-  const [err, setErr] = useState<string | null>(null);
 
   async function run(action: "archive" | "submit") {
     if (selected.length === 0) return;
@@ -23,7 +30,6 @@ export function ListingBulkActions({ selected, onClearSelection }: Props) {
       return;
     }
     setBusy(action);
-    setErr(null);
     try {
       const res = await fetch("/api/listings/bulk", {
         method: "POST",
@@ -36,10 +42,15 @@ export function ListingBulkActions({ selected, onClearSelection }: Props) {
           | null;
         throw new Error(d?.error?.message ?? "Bulk action failed");
       }
+      toast.success(
+        action === "archive"
+          ? `Archived ${selected.length} listing${selected.length === 1 ? "" : "s"}`
+          : `Submitted ${selected.length} for review`,
+      );
       onClearSelection();
       router.refresh();
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Bulk action failed");
+      toast.error(e instanceof Error ? e.message : "Bulk action failed");
     } finally {
       setBusy(null);
     }
@@ -48,7 +59,7 @@ export function ListingBulkActions({ selected, onClearSelection }: Props) {
   if (selected.length === 0) return null;
 
   return (
-    <div className="sticky top-2 z-10 mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-900 shadow-sm">
+    <div className="sticky top-2 z-sticky mt-4 flex flex-wrap items-center gap-3 rounded-2xl border border-primary/20 bg-primary-soft px-4 py-2 text-sm text-primary-soft-foreground shadow-sm animate-slide-in-down">
       <span className="font-medium">{selected.length} selected</span>
       <Button
         type="button"
@@ -78,14 +89,34 @@ export function ListingBulkActions({ selected, onClearSelection }: Props) {
         )}
         Archive
       </Button>
-      <button
+      <DropdownMenu align="end">
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            size="icon-sm"
+            variant="outline"
+            aria-label="More bulk actions"
+          >
+            <MoreHorizontal className="h-3 w-3" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onSelect={() => run("submit")}>
+            Submit all for review
+          </DropdownMenuItem>
+          <DropdownMenuItem destructive onSelect={() => run("archive")}>
+            Archive all
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <Button
         type="button"
+        size="xs"
+        variant="ghost"
         onClick={onClearSelection}
-        className="text-xs font-medium underline-offset-2 hover:underline"
       >
         Clear
-      </button>
-      {err && <span className="text-xs text-red-700">{err}</span>}
+      </Button>
     </div>
   );
 }

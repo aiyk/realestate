@@ -73,7 +73,7 @@ export function LeadNotes({ leadId, initial }: Props) {
 
   return (
     <div>
-      <p className="text-sm font-semibold text-stone-900">Notes</p>
+      <p className="text-sm font-semibold text-foreground">Notes</p>
       <div className="mt-3 space-y-2">
         <textarea
           value={draft}
@@ -81,14 +81,14 @@ export function LeadNotes({ leadId, initial }: Props) {
           rows={3}
           maxLength={2000}
           placeholder="Talked to them on the phone, prefers Lekki Phase 2, budget ₦80M…"
-          className="flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+          className="flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
         />
         <div className="flex items-center justify-between">
           <Button type="button" onClick={() => void add()} disabled={busy || !draft.trim()}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : null}
             Add note
           </Button>
-          {err && <span className="text-xs text-red-600">{err}</span>}
+          {err && <span className="text-xs text-danger">{err}</span>}
         </div>
       </div>
       {notes.length > 0 && (
@@ -96,15 +96,15 @@ export function LeadNotes({ leadId, initial }: Props) {
           {notes.map((n) => (
             <li
               key={n.id}
-              className="rounded-2xl border border-stone-200 bg-white p-3 text-sm shadow-sm"
+              className="rounded-2xl border border-border bg-card p-3 text-sm shadow-sm"
             >
-              <div className="flex items-center gap-2 text-xs text-stone-500">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
                 <MessageCircle className="h-3 w-3" />
-                <span className="font-medium text-stone-700">{n.authorName}</span>
+                <span className="font-medium text-foreground">{n.authorName}</span>
                 <span>·</span>
                 <span>{formatWhen(n.createdAt)}</span>
               </div>
-              <p className="mt-1 whitespace-pre-line text-stone-800">{n.body}</p>
+              <p className="mt-1 whitespace-pre-line text-foreground">{n.body}</p>
             </li>
           ))}
         </ul>

@@ -30,18 +30,18 @@ export default async function AdminKycPage({ searchParams }: Props) {
   return (
     <section>
       <h1 className="text-2xl font-semibold">KYC submissions</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         {submissions.length} {status ? `with status ${status}` : "recent"}
       </p>
 
       {submissions.length === 0 ? (
-        <p className="mt-10 rounded-lg border border-dashed border-neutral-300 p-12 text-center text-sm text-neutral-500">
+        <p className="mt-10 rounded-lg border border-dashed border-input p-12 text-center text-sm text-muted-foreground">
           No submissions.
         </p>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-neutral-200">
+        <div className="mt-6 overflow-x-auto rounded-lg border border-border">
           <table className="w-full text-sm">
-            <thead className="bg-neutral-50 text-left text-xs uppercase text-neutral-500">
+            <thead className="bg-surface-2 text-left text-xs uppercase text-muted-foreground">
               <tr>
                 <th className="px-4 py-2">User</th>
                 <th className="px-4 py-2">Status</th>
@@ -54,15 +54,15 @@ export default async function AdminKycPage({ searchParams }: Props) {
                 <tr key={s.id}>
                   <td className="px-4 py-3">
                     <div className="font-medium">{s.user.fullName}</div>
-                    <div className="text-xs text-neutral-500">{s.user.email}</div>
+                    <div className="text-xs text-muted-foreground">{s.user.email}</div>
                   </td>
                   <td className="px-4 py-3">
                     <Badge variant={STATUS_VARIANT[s.status]}>{s.status}</Badge>
                   </td>
-                  <td className="px-4 py-3 text-neutral-600">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {s.failureReason ?? "—"}
                   </td>
-                  <td className="px-4 py-3 text-neutral-600">
+                  <td className="px-4 py-3 text-muted-foreground">
                     {s.createdAt.toISOString().slice(0, 16).replace("T", " ")}
                   </td>
                 </tr>

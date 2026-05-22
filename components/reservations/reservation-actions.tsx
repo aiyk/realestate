@@ -57,7 +57,7 @@ export function ReservationActions({
   }
 
   return (
-    <div className="mt-3 flex flex-col items-end gap-1 border-t border-neutral-100 pt-3">
+    <div className="mt-3 flex flex-col items-end gap-1 border-t border-border pt-3">
       <div className="flex gap-2">
         {allowConvert && status === "PAID" && (
           <Button size="sm" onClick={convert} disabled={!!loading}>
@@ -75,7 +75,7 @@ export function ReservationActions({
           </Button>
         )}
       </div>
-      {error && <p className="text-xs text-red-700">{error}</p>}
+      {error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
     </div>
   );
 }

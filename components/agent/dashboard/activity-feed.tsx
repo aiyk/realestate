@@ -88,13 +88,13 @@ export async function ActivityFeed({ agentUserId }: Props) {
   const items: FeedItem[] = [
     ...leads.map((l) => ({
       id: `lead-${l.id}`,
-      icon: <UserPlus className="h-4 w-4 text-emerald-700" />,
+      icon: <UserPlus className="h-4 w-4 text-primary" />,
       at: l.createdAt,
       body: (
         <>
           <Link
             href={`/agent/leads/${l.id}`}
-            className="font-medium text-stone-900 hover:underline"
+            className="font-medium text-foreground hover:underline"
           >
             {l.buyerName}
           </Link>{" "}
@@ -106,7 +106,7 @@ export async function ActivityFeed({ agentUserId }: Props) {
           {l.listing ? (
             <>
               {" "}
-              · <span className="text-stone-600">{l.listing.title}</span>
+              · <span className="text-muted-foreground">{l.listing.title}</span>
             </>
           ) : null}
         </>
@@ -114,15 +114,15 @@ export async function ActivityFeed({ agentUserId }: Props) {
     })),
     ...reservations.map((r) => ({
       id: `res-${r.id}`,
-      icon: <Wallet className="h-4 w-4 text-amber-700" />,
+      icon: <Wallet className="h-4 w-4 text-accent" />,
       at: r.createdAt,
       body: (
         <>
-          <span className="font-medium text-stone-900">{r.buyer.fullName}</span>{" "}
+          <span className="font-medium text-foreground">{r.buyer.fullName}</span>{" "}
           {r.status === "PAID" || r.status === "CONVERTED"
             ? "paid a deposit on"
             : "started a reservation on"}{" "}
-          <span className="text-stone-600">{r.listing.title}</span>
+          <span className="text-muted-foreground">{r.listing.title}</span>
         </>
       ),
     })),
@@ -132,11 +132,11 @@ export async function ActivityFeed({ agentUserId }: Props) {
       return [
         {
           id: `views-${g.listingId}`,
-          icon: <Eye className="h-4 w-4 text-stone-500" />,
+          icon: <Eye className="h-4 w-4 text-muted-foreground" />,
           at: g._max.createdAt,
           body: (
             <>
-              <span className="text-stone-600">{title}</span>{" "}
+              <span className="text-muted-foreground">{title}</span>{" "}
               picked up {g._count._all} view{g._count._all === 1 ? "" : "s"}
             </>
           ),
@@ -149,13 +149,13 @@ export async function ActivityFeed({ agentUserId }: Props) {
 
   return (
     <div>
-      <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-stone-500">
+      <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         <Activity className="h-3 w-3" />
         Recent activity
       </p>
       {items.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-stone-200 bg-white px-5 py-6 text-center text-sm text-stone-500">
-          <MessageCircle className="mx-auto mb-2 h-6 w-6 text-stone-300" />
+        <div className="rounded-2xl border border-dashed border-border bg-card px-5 py-6 text-center text-sm text-muted-foreground">
+          <MessageCircle className="mx-auto mb-2 h-6 w-6 text-text-subtle" />
           Nothing happened in the last two weeks. Quiet stretch.
         </div>
       ) : (
@@ -163,14 +163,14 @@ export async function ActivityFeed({ agentUserId }: Props) {
           {items.map((it) => (
             <li
               key={it.id}
-              className="flex items-start gap-3 rounded-xl border border-stone-200 bg-white px-4 py-3 text-sm"
+              className="flex items-start gap-3 rounded-xl border border-border bg-card px-4 py-3 text-sm"
             >
-              <div className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-stone-50">
+              <div className="mt-0.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-surface-2">
                 {it.icon}
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-stone-700">{it.body}</p>
-                <p className="mt-0.5 text-[11px] text-stone-400">{timeAgo(nowMs, it.at)}</p>
+                <p className="text-foreground">{it.body}</p>
+                <p className="mt-0.5 text-[11px] text-text-subtle">{timeAgo(nowMs, it.at)}</p>
               </div>
             </li>
           ))}

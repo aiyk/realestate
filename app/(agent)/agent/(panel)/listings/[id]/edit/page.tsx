@@ -34,7 +34,7 @@ export default async function EditAgentListingPage({ params }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">{listing.title}</h1>
-          <p className="mt-1 flex items-center gap-2 text-sm text-neutral-500">
+          <p className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
             <Badge>{listing.status.replace("_", " ")}</Badge>
             <span>·</span>
             <span>{listing.city}, {listing.state}</span>
@@ -43,7 +43,7 @@ export default async function EditAgentListingPage({ params }: Props) {
         <AgentListingActions id={listing.id} status={listing.status} />
       </div>
       {listing.rejectionReason && (
-        <p className="mt-4 rounded-md bg-amber-50 p-3 text-sm text-amber-800">
+        <p className="mt-4 rounded-md bg-accent-soft p-3 text-sm text-accent-soft-foreground">
           <strong>Reason for rejection:</strong> {listing.rejectionReason}
         </p>
       )}
@@ -53,13 +53,13 @@ export default async function EditAgentListingPage({ params }: Props) {
         <div className="mt-4 flex flex-wrap gap-2">
           <Link
             href={`/agent/listings/${listing.id}/analytics`}
-            className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:border-emerald-300 hover:text-emerald-700"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/30 hover:text-primary"
           >
             <BarChart3 className="h-3 w-3" /> Analytics
           </Link>
           <Link
             href={`/agent/listings/${listing.id}/open-houses`}
-            className="inline-flex items-center gap-1.5 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-xs font-medium text-stone-700 hover:border-emerald-300 hover:text-emerald-700"
+            className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-foreground hover:border-primary/30 hover:text-primary"
           >
             <CalendarDays className="h-3 w-3" /> Open houses
           </Link>

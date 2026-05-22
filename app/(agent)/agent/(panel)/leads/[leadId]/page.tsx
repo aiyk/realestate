@@ -46,7 +46,7 @@ export default async function LeadDetailPage({ params }: Params) {
     <section>
       <Link
         href="/agent/leads"
-        className="inline-flex items-center gap-1 text-sm text-stone-500 hover:text-stone-800"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-3 w-3" /> All leads
       </Link>
@@ -56,7 +56,7 @@ export default async function LeadDetailPage({ params }: Params) {
           <h1 className="text-2xl font-semibold tracking-tight">
             {lead.buyerName}
           </h1>
-          <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-stone-600">
+          <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-1">
               <Mail className="h-3 w-3" /> {lead.buyerEmail}
             </span>
@@ -73,11 +73,11 @@ export default async function LeadDetailPage({ params }: Params) {
             )}
           </div>
           {lead.listing && (
-            <p className="mt-1 text-sm text-stone-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               About:{" "}
               <Link
                 href={`/listings/${lead.listing.slug}`}
-                className="font-medium text-emerald-700 hover:underline"
+                className="font-medium text-primary hover:underline"
               >
                 {lead.listing.title}
               </Link>
@@ -115,13 +115,13 @@ export default async function LeadDetailPage({ params }: Params) {
           />
         </div>
         <aside className="space-y-4">
-          <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-            <p className="text-sm font-semibold text-stone-900">Quick actions</p>
+          <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+            <p className="text-sm font-semibold text-foreground">Quick actions</p>
             <div className="mt-3 space-y-3">
               {lead.thread ? (
                 <Link
                   href={`/agent/messages/${lead.thread.id}`}
-                  className="block text-sm font-medium text-emerald-700 hover:underline"
+                  className="block text-sm font-medium text-primary hover:underline"
                 >
                   Open existing conversation →
                 </Link>
@@ -133,14 +133,14 @@ export default async function LeadDetailPage({ params }: Params) {
               )}
               <a
                 href={`mailto:${lead.buyerEmail}`}
-                className="block text-sm font-medium text-stone-700 hover:underline"
+                className="block text-sm font-medium text-foreground hover:underline"
               >
                 Email {lead.buyerEmail}
               </a>
               {lead.buyerPhone && (
                 <a
                   href={`tel:${lead.buyerPhone}`}
-                  className="block text-sm font-medium text-stone-700 hover:underline"
+                  className="block text-sm font-medium text-foreground hover:underline"
                 >
                   Call {lead.buyerPhone}
                 </a>

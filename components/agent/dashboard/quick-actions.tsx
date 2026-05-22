@@ -19,11 +19,11 @@ type Action = {
 };
 
 const TONE_CLASS: Record<Action["tone"], string> = {
-  primary: "bg-emerald-700 text-emerald-50 hover:bg-emerald-800",
+  primary: "bg-primary text-primary-foreground hover:bg-primary-hover",
   amber:
-    "bg-amber-50 text-amber-900 ring-1 ring-amber-200 hover:bg-amber-100",
+    "bg-accent-soft text-accent-soft-foreground ring-1 ring-accent/20 hover:bg-accent-soft",
   stone:
-    "bg-white text-stone-900 ring-1 ring-stone-200 hover:bg-stone-50",
+    "bg-card text-foreground ring-1 ring-border hover:bg-surface-2",
 };
 
 export async function QuickActions({ agentUserId }: Props) {
@@ -112,7 +112,7 @@ export async function QuickActions({ agentUserId }: Props) {
 
   return (
     <div>
-      <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-stone-500">
+      <p className="mb-3 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         <Sparkles className="h-3 w-3" />
         Quick actions
       </p>
@@ -124,7 +124,7 @@ export async function QuickActions({ agentUserId }: Props) {
             className={`group flex flex-col gap-2 rounded-2xl px-4 py-4 transition ${TONE_CLASS[a.tone]}`}
           >
             <div className="flex items-center justify-between">
-              <div className="grid h-9 w-9 place-items-center rounded-full bg-white/20">
+              <div className="grid h-9 w-9 place-items-center rounded-full bg-card/20">
                 {a.icon}
               </div>
               <ArrowRight className="h-4 w-4 opacity-60 transition group-hover:translate-x-0.5 group-hover:opacity-100" />

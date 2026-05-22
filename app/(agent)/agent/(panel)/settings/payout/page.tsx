@@ -36,7 +36,7 @@ export default async function SettingsPayoutPage() {
   return (
     <section>
       <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-      <nav className="mt-6 flex gap-2 border-b border-stone-200">
+      <nav className="mt-6 flex gap-2 border-b border-border">
         {tabs.map((t) => (
           <Link
             key={t.href}
@@ -44,8 +44,8 @@ export default async function SettingsPayoutPage() {
             className={cn(
               "border-b-2 px-3 pb-2 text-sm font-medium",
               t.href === "/agent/settings/payout"
-                ? "border-emerald-700 text-emerald-800"
-                : "border-transparent text-stone-500 hover:text-stone-800",
+                ? "border-primary text-primary-soft-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
             {t.label}
@@ -60,26 +60,26 @@ export default async function SettingsPayoutPage() {
             until admin confirms.
           </Callout>
         )}
-        <div className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+        <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
           <div className="flex items-start gap-3">
-            <Wallet className="mt-0.5 h-5 w-5 text-stone-500" />
+            <Wallet className="mt-0.5 h-5 w-5 text-muted-foreground" />
             <div className="flex-1">
-              <p className="text-sm font-semibold text-stone-900">
+              <p className="text-sm font-semibold text-foreground">
                 Payout account
               </p>
               <dl className="mt-3 grid grid-cols-[120px_1fr] gap-y-1 text-sm">
-                <dt className="text-stone-500">Account holder</dt>
-                <dd className="text-stone-900">
+                <dt className="text-muted-foreground">Account holder</dt>
+                <dd className="text-foreground">
                   {profile?.bankAccountName ?? "—"}
                 </dd>
-                <dt className="text-stone-500">Account number</dt>
-                <dd className="text-stone-900">
+                <dt className="text-muted-foreground">Account number</dt>
+                <dd className="text-foreground">
                   {maskAccount(profile?.bankAccountNo)}
                 </dd>
-                <dt className="text-stone-500">Bank code</dt>
-                <dd className="text-stone-900">{profile?.bankCode ?? "—"}</dd>
+                <dt className="text-muted-foreground">Bank code</dt>
+                <dd className="text-foreground">{profile?.bankCode ?? "—"}</dd>
               </dl>
-              <p className="mt-3 text-xs text-stone-500">
+              <p className="mt-3 text-xs text-muted-foreground">
                 Editing your account triggers re-verification. Coming soon.
               </p>
             </div>

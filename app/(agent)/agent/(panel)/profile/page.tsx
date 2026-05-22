@@ -38,7 +38,7 @@ export default async function AgentProfilePage() {
     return (
       <section>
         <h1 className="text-2xl font-semibold tracking-tight">Profile</h1>
-        <p className="mt-2 text-sm text-stone-600">
+        <p className="mt-2 text-sm text-muted-foreground">
           Finish your application first to unlock the profile editor.
         </p>
         <Link
@@ -55,15 +55,15 @@ export default async function AgentProfilePage() {
     <section>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             How buyers see you
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">
             Your public profile
           </h1>
-          <p className="mt-1 max-w-xl text-sm text-stone-600">
+          <p className="mt-1 max-w-xl text-sm text-muted-foreground">
             Everything on this page is what buyers see at{" "}
-            <span className="font-mono text-stone-800">/agents/{profile.slug}</span>.
+            <span className="font-mono text-foreground">/agents/{profile.slug}</span>.
             Save as you go — each tab is independent.
           </p>
         </div>

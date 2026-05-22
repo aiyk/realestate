@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, MapPin, Star } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { AgentTierBadge } from "@/components/agent/agent-tier-badge";
@@ -39,15 +40,16 @@ export function AgentDirectoryCard({
   return (
     <Link
       href={`/agents/${slug}`}
-      className="group flex flex-col overflow-hidden rounded-3xl border border-stone-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+      className="group flex flex-col overflow-hidden rounded-3xl border border-border bg-card transition-all duration-200 hover-lift-sm hover:border-muted-foreground/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <div className="relative h-24 bg-gradient-to-br from-emerald-700 via-emerald-800 to-stone-900">
+      <div className="relative h-24 bg-gradient-to-br from-primary via-primary-hover to-foreground">
         {coverPhotoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={coverPhotoUrl}
             alt=""
-            className="h-full w-full object-cover opacity-90"
+            fill
+            sizes="(max-width: 768px) 100vw, 400px"
+            className="object-cover opacity-90"
           />
         ) : (
           <div className="absolute inset-0 bg-noise opacity-50" />
@@ -57,48 +59,48 @@ export function AgentDirectoryCard({
         </div>
       </div>
       <div className="-mt-10 px-6">
-        <div className="ring-4 ring-white rounded-full inline-block">
+        <div className="inline-block rounded-full ring-4 ring-card">
           <Avatar src={avatarUrl} name={businessName} size="lg" />
         </div>
       </div>
       <div className="flex flex-1 flex-col p-6 pt-3">
-        <p className="font-semibold text-stone-900 group-hover:text-emerald-700">
+        <p className="font-semibold text-foreground group-hover:text-primary">
           {businessName}
         </p>
-        <p className="text-xs text-stone-500">
+        <p className="text-xs text-muted-foreground">
           {fullName} · since {yearJoined}
         </p>
         {tagline && (
-          <p className="mt-2 line-clamp-2 text-sm text-stone-700 text-pretty">
+          <p className="mt-2 line-clamp-2 text-sm text-foreground text-pretty">
             {tagline}
           </p>
         )}
         {!tagline && bio && (
-          <p className="mt-2 line-clamp-3 text-sm text-stone-600 text-pretty">
+          <p className="mt-2 line-clamp-3 text-sm text-muted-foreground text-pretty">
             {bio}
           </p>
         )}
-        <div className="mt-4 grid grid-cols-3 gap-3 border-t border-stone-100 pt-4 text-xs">
+        <div className="mt-4 grid grid-cols-3 gap-3 border-t border-border pt-4 text-xs">
           <div>
-            <p className="uppercase tracking-wider text-stone-500">Live</p>
-            <p className="text-sm font-semibold text-stone-900">{liveCount}</p>
+            <p className="uppercase tracking-wider text-muted-foreground">Live</p>
+            <p className="text-sm font-semibold text-foreground">{liveCount}</p>
           </div>
           <div>
-            <p className="uppercase tracking-wider text-stone-500">Sold</p>
-            <p className="text-sm font-semibold text-stone-900">{soldCount}</p>
+            <p className="uppercase tracking-wider text-muted-foreground">Sold</p>
+            <p className="text-sm font-semibold text-foreground">{soldCount}</p>
           </div>
           <div>
-            <p className="uppercase tracking-wider text-stone-500">Rating</p>
+            <p className="uppercase tracking-wider text-muted-foreground">Rating</p>
             {ratingAvg && ratingCount > 0 ? (
-              <p className="inline-flex items-center gap-0.5 text-sm font-semibold text-stone-900">
+              <p className="inline-flex items-center gap-0.5 text-sm font-semibold text-foreground">
                 {ratingAvg.toFixed(1)}
-                <Star className="h-3 w-3 fill-amber-500 text-amber-500" />
-                <span className="text-[10px] font-normal text-stone-500">
+                <Star className="h-3 w-3 fill-accent text-accent" />
+                <span className="text-[10px] font-normal text-muted-foreground">
                   ({ratingCount})
                 </span>
               </p>
             ) : (
-              <p className="text-sm text-stone-400">—</p>
+              <p className="text-sm text-text-subtle">—</p>
             )}
           </div>
         </div>
@@ -107,7 +109,7 @@ export function AgentDirectoryCard({
             {cities.map((c) => (
               <span
                 key={c}
-                className="inline-flex items-center gap-1 rounded-full bg-stone-100 px-2 py-0.5 text-stone-700"
+                className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-0.5 text-foreground"
               >
                 <MapPin className="h-3 w-3" />
                 {c}
@@ -115,7 +117,7 @@ export function AgentDirectoryCard({
             ))}
           </div>
         )}
-        <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-emerald-700 opacity-0 transition-opacity group-hover:opacity-100">
+        <p className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
           See their listings <ArrowRight className="h-3.5 w-3.5" />
         </p>
       </div>

@@ -42,7 +42,7 @@ export function FaqAccordion({
 }) {
   const [open, setOpen] = useState<number | null>(initiallyOpen);
   return (
-    <div className="divide-y divide-stone-200 rounded-2xl border border-stone-200 bg-white">
+    <div className="divide-y divide-border rounded-2xl border border-border bg-card">
       {items.map((item, i) => {
         const isOpen = open === i;
         return (
@@ -50,13 +50,13 @@ export function FaqAccordion({
             <button
               type="button"
               onClick={() => setOpen(isOpen ? null : i)}
-              className="flex w-full items-start justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-stone-50"
+              className="flex w-full items-start justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-surface-2"
               aria-expanded={isOpen}
             >
-              <span className="text-sm font-semibold text-stone-900">
+              <span className="text-sm font-semibold text-foreground">
                 {item.q}
               </span>
-              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-stone-200 text-stone-600">
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-border text-muted-foreground">
                 {isOpen ? (
                   <Minus className="h-3.5 w-3.5" />
                 ) : (
@@ -73,7 +73,7 @@ export function FaqAccordion({
               )}
             >
               <div className="overflow-hidden">
-                <p className="px-6 pb-5 text-sm leading-relaxed text-stone-600 text-pretty">
+                <p className="px-6 pb-5 text-sm leading-relaxed text-muted-foreground text-pretty">
                   {item.a}
                 </p>
               </div>

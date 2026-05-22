@@ -31,9 +31,9 @@ export function AgentAnchorNav({ items }: Props) {
   return (
     <nav
       aria-label="Profile sections"
-      className="sticky top-0 z-20 -mx-6 border-y border-stone-100 bg-white/95 px-6 py-2 backdrop-blur"
+      className="sticky top-0 z-20 -mx-6 border-y border-border bg-card/95 px-6 py-2 backdrop-blur"
     >
-      <ul className="mx-auto flex max-w-7xl flex-wrap gap-1 text-sm">
+      <ul className="mx-auto flex max-w-[100rem] flex-wrap gap-1 text-sm">
         {items.map((item) => {
           const on = active === item.id;
           return (
@@ -43,8 +43,8 @@ export function AgentAnchorNav({ items }: Props) {
                 className={cn(
                   "rounded-full px-3 py-1 font-medium transition",
                   on
-                    ? "bg-stone-900 text-white"
-                    : "text-stone-600 hover:bg-stone-100",
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:bg-surface-2",
                 )}
               >
                 {item.label}

@@ -23,7 +23,7 @@ function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-stone-600 ring-1 ring-stone-200 transition hover:bg-stone-50 hover:text-emerald-700"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-card text-muted-foreground ring-1 ring-border transition hover:bg-surface-2 hover:text-primary"
     >
       {children}
     </a>

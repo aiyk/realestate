@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import {
-  ArrowLeft,
   CalendarDays,
   CheckCircle2,
   Clock,
@@ -12,8 +10,10 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Avatar } from "@/components/ui/avatar";
 import { ListingCard } from "@/components/listings/listing-card";
 import { SpeechBubble } from "@/components/ui/speech-bubble";
@@ -158,40 +158,44 @@ export default async function AgentProfilePage({ params }: Props) {
         baseUrl={baseUrl}
       />
 
-      <section className="relative overflow-hidden border-b border-stone-100">
+      <section className="relative overflow-hidden border-b border-border">
         <div className="relative h-48 sm:h-56">
           {profile.coverPhotoUrl ? (
             <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={profile.coverPhotoUrl}
                 alt=""
-                className="h-full w-full object-cover"
+                fill
+                sizes="100vw"
+                priority
+                className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-stone-900/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
             </>
           ) : (
-            <div className="pointer-events-none h-full w-full bg-gradient-to-br from-emerald-700 via-emerald-800 to-stone-900">
+            <div className="pointer-events-none h-full w-full bg-gradient-to-br from-primary via-primary-hover to-foreground">
               <div className="absolute inset-0 bg-noise opacity-40" />
-              <div className="absolute right-0 top-0 h-72 w-72 -translate-y-12 translate-x-12 rounded-full bg-emerald-500/30 blur-3xl" />
-              <div className="absolute bottom-0 left-0 h-72 w-72 translate-y-12 -translate-x-12 rounded-full bg-amber-400/20 blur-3xl" />
+              <div className="absolute right-0 top-0 h-72 w-72 -translate-y-12 translate-x-12 rounded-full bg-primary/30 blur-3xl" />
+              <div className="absolute bottom-0 left-0 h-72 w-72 translate-y-12 -translate-x-12 rounded-full bg-accent/20 blur-3xl" />
             </div>
           )}
         </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6">
-          <Link
-            href="/agents"
-            className="absolute left-6 top-6 inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-stone-700 backdrop-blur transition-colors hover:bg-white"
-          >
-            <ArrowLeft className="h-3 w-3" />
-            All agents
-          </Link>
+        <div className="relative z-10 mx-auto max-w-[100rem] px-6">
+          <div className="absolute left-6 top-6 inline-flex rounded-full bg-card/90 px-3 py-1.5 text-xs backdrop-blur">
+            <Breadcrumb
+              items={[
+                { label: "Home", href: "/" },
+                { label: "Agents", href: "/agents" },
+                { label: profile.businessName },
+              ]}
+            />
+          </div>
 
           <div className="-mt-20 pb-10">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
               <div className="flex items-end gap-5">
-                <div className="ring-4 ring-white rounded-full inline-block">
+                <div className="inline-block rounded-full ring-4 ring-card">
                   <Avatar
                     src={profile.avatarUrl}
                     name={profile.businessName}
@@ -200,7 +204,7 @@ export default async function AgentProfilePage({ params }: Props) {
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-3xl font-bold tracking-tight">
+                    <h1 className="t-h1">
                       {profile.businessName}
                     </h1>
                     <AgentTierBadge
@@ -213,17 +217,17 @@ export default async function AgentProfilePage({ params }: Props) {
                     />
                   </div>
                   {profile.tagline && (
-                    <p className="mt-1 text-sm text-stone-700 text-pretty">
+                    <p className="mt-1 text-sm text-foreground text-pretty">
                       {profile.tagline}
                     </p>
                   )}
-                  <p className="mt-1 text-xs text-stone-500">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Run by {profile.user.fullName}
                     {profile.cacNumber && ` · CAC #${profile.cacNumber}`}
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap [&>*]:w-full sm:[&>*]:w-auto">
                 <ContactAgentDialog
                   slug={profile.slug}
                   businessName={profile.businessName}
@@ -315,16 +319,16 @@ export default async function AgentProfilePage({ params }: Props) {
       <AgentAnchorNav items={navItems} />
 
       <section className="py-12">
-        <div className="mx-auto max-w-7xl px-6">
+        <div className="mx-auto max-w-[100rem] px-6">
           <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
             <div className="space-y-12">
               <section id="about" className="scroll-mt-24 space-y-8">
                 {profile.bio && (
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                       About
                     </p>
-                    <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-stone-700 text-pretty">
+                    <p className="mt-2 whitespace-pre-line text-base leading-relaxed text-foreground text-pretty">
                       {profile.bio}
                     </p>
                   </div>
@@ -383,7 +387,7 @@ export default async function AgentProfilePage({ params }: Props) {
                   <h2 className="text-2xl font-bold tracking-tight">
                     Recently sold
                   </h2>
-                  <p className="mt-1 text-sm text-stone-500">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Proof of work — every sale closed through Realestate.
                   </p>
                   <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -424,7 +428,7 @@ export default async function AgentProfilePage({ params }: Props) {
               {profile.faqs.length > 0 && (
                 <section id="faq" className="scroll-mt-24">
                   <h2 className="text-2xl font-bold tracking-tight">FAQ</h2>
-                  <p className="mt-1 text-sm text-stone-500">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Common questions answered by {profile.user.fullName.split(" ")[0]}.
                   </p>
                   <div className="mt-4">
@@ -440,14 +444,14 @@ export default async function AgentProfilePage({ params }: Props) {
             </div>
 
             <aside className="lg:sticky lg:top-24 lg:self-start">
-              <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
+              <div className="rounded-3xl border border-border bg-card p-6 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-600" />
-                  <h3 className="text-sm font-semibold text-stone-900">
+                  <Sparkles className="h-4 w-4 text-accent" />
+                  <h3 className="text-sm font-semibold text-foreground">
                     Conversation starters
                   </h3>
                 </div>
-                <p className="mt-1 text-xs text-stone-500 text-pretty">
+                <p className="mt-1 text-xs text-muted-foreground text-pretty">
                   Tap one to open a message — no account needed.
                 </p>
                 <div className="mt-4 space-y-2">
@@ -457,7 +461,7 @@ export default async function AgentProfilePage({ params }: Props) {
                       slug={profile.slug}
                       businessName={profile.businessName}
                       trigger={
-                        <span className="block w-full cursor-pointer rounded-2xl border border-stone-200 px-3 py-2 text-left text-xs text-stone-700 transition-colors hover:border-emerald-300 hover:bg-emerald-50/40 hover:text-emerald-800">
+                        <span className="block w-full cursor-pointer rounded-2xl border border-border px-3 py-2 text-left text-xs text-foreground transition-colors hover:border-primary/30 hover:bg-primary-soft/40 hover:text-primary-soft-foreground">
                           &ldquo;{s}&rdquo;
                         </span>
                       }
@@ -466,7 +470,7 @@ export default async function AgentProfilePage({ params }: Props) {
                 </div>
               </div>
 
-              <div className="mt-5 rounded-3xl border border-stone-200 bg-stone-50 p-6">
+              <div className="mt-5 rounded-3xl border border-border bg-surface-2 p-6">
                 <SpeechBubble
                   from="concierge"
                   avatar="·"
@@ -484,7 +488,7 @@ export default async function AgentProfilePage({ params }: Props) {
                 Verified · KYC + bank match
               </Badge>
               {profile.serviceAreas[0] && (
-                <p className="mt-2 inline-flex items-center gap-1 text-xs text-stone-500">
+                <p className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground">
                   <MapPin className="h-3 w-3" />
                   Based in {profile.serviceAreas[0].city},{" "}
                   {profile.serviceAreas[0].state}

@@ -3,36 +3,39 @@ import { cn } from "@/lib/utils";
 
 type Tone = "emerald" | "amber" | "stone" | "rose" | "ink";
 
-const TONE_STYLES: Record<Tone, { wrap: string; icon: string; value: string; sub: string }> = {
+const TONE_STYLES: Record<
+  Tone,
+  { wrap: string; icon: string; value: string; sub: string }
+> = {
   emerald: {
-    wrap: "bg-emerald-50 ring-emerald-100",
-    icon: "bg-emerald-100 text-emerald-700",
-    value: "text-emerald-900",
-    sub: "text-emerald-700/80",
+    wrap: "bg-primary-soft ring-primary/15",
+    icon: "bg-primary/10 text-primary",
+    value: "text-primary-soft-foreground",
+    sub: "text-primary-soft-foreground/80",
   },
   amber: {
-    wrap: "bg-amber-50 ring-amber-100",
-    icon: "bg-amber-100 text-amber-700",
-    value: "text-amber-900",
-    sub: "text-amber-700/80",
+    wrap: "bg-accent-soft ring-accent/15",
+    icon: "bg-accent/10 text-accent",
+    value: "text-accent-soft-foreground",
+    sub: "text-accent-soft-foreground/80",
   },
   stone: {
-    wrap: "bg-stone-50 ring-stone-100",
-    icon: "bg-stone-100 text-stone-700",
-    value: "text-stone-900",
-    sub: "text-stone-600",
+    wrap: "bg-surface-2 ring-border",
+    icon: "bg-surface-3 text-muted-foreground",
+    value: "text-foreground",
+    sub: "text-muted-foreground",
   },
   rose: {
-    wrap: "bg-rose-50 ring-rose-100",
-    icon: "bg-rose-100 text-rose-700",
-    value: "text-rose-900",
-    sub: "text-rose-700/80",
+    wrap: "bg-danger-soft ring-danger/15",
+    icon: "bg-danger/10 text-danger",
+    value: "text-danger-soft-foreground",
+    sub: "text-danger-soft-foreground/80",
   },
   ink: {
-    wrap: "bg-stone-900 ring-stone-800",
-    icon: "bg-white/10 text-amber-300",
-    value: "text-white",
-    sub: "text-stone-300",
+    wrap: "bg-foreground ring-foreground/40 dark:bg-surface-3 dark:ring-border",
+    icon: "bg-background/10 text-accent",
+    value: "text-background dark:text-foreground",
+    sub: "text-background/70 dark:text-muted-foreground",
   },
 };
 

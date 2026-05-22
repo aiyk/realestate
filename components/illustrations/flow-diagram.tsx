@@ -11,7 +11,7 @@ export function FlowDiagram({ className }: { className?: string }) {
       fill="none"
       role="img"
       aria-label="Buyer flow: browse, verify, reserve, close"
-      className={cn("h-auto w-full text-emerald-700", className)}
+      className={cn("h-auto w-full text-primary", className)}
     >
       <defs>
         <linearGradient id="fd-arrow" x1="0" y1="0" x2="1" y2="0">

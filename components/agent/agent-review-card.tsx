@@ -26,24 +26,24 @@ export function AgentReviewCard({
   agentRepliedAt,
 }: Props) {
   return (
-    <article className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
+    <article className="rounded-2xl border border-border bg-card p-5 shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <RatingStars value={rating} readOnly size="sm" />
-          <p className="text-sm font-semibold text-stone-900">{authorName}</p>
+          <p className="text-sm font-semibold text-foreground">{authorName}</p>
         </div>
-        <p className="text-xs text-stone-500">{formatDate(createdAt)}</p>
+        <p className="text-xs text-muted-foreground">{formatDate(createdAt)}</p>
       </div>
       {body && (
-        <p className="mt-3 whitespace-pre-line text-sm text-stone-700">{body}</p>
+        <p className="mt-3 whitespace-pre-line text-sm text-foreground">{body}</p>
       )}
       {agentReplyBody && (
-        <div className="mt-4 rounded-xl bg-stone-50 p-3 text-sm">
-          <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+        <div className="mt-4 rounded-xl bg-surface-2 p-3 text-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-primary">
             Agent reply
             {agentRepliedAt && ` · ${formatDate(agentRepliedAt)}`}
           </p>
-          <p className="mt-1 whitespace-pre-line text-stone-700">
+          <p className="mt-1 whitespace-pre-line text-foreground">
             {agentReplyBody}
           </p>
         </div>

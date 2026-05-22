@@ -7,20 +7,20 @@ type Props = {
 export function AgentTierBadge({ tier }: Props) {
   if (tier === "TOP_PERFORMER") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-900 ring-1 ring-amber-300/60">
+      <span className="inline-flex items-center gap-1 rounded-full bg-accent-soft px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-accent-soft-foreground ring-1 ring-accent/30/60">
         <Award className="h-3 w-3" /> Top performer
       </span>
     );
   }
   if (tier === "RISING_STAR") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-900 ring-1 ring-emerald-300/60">
+      <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary-soft-foreground ring-1 ring-primary/30/60">
         <Sparkles className="h-3 w-3" /> Rising star
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-stone-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-stone-700 ring-1 ring-stone-200">
+    <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-foreground ring-1 ring-border">
       <ShieldCheck className="h-3 w-3" /> Verified
     </span>
   );

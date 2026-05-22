@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useState } from "react";
+import Image from "next/image";
 import {
   Camera,
   ChevronDown,
@@ -10,7 +11,9 @@ import {
   Upload,
   X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/toast";
 
 export type ListingImageDraft = {
   storageKey: string;
@@ -67,9 +70,9 @@ export function ListingImageManager({
   onChange,
   max = 20,
 }: Props) {
+  const toast = useToast();
   const [images, setImages] = useState<ListingImageDraft[]>(initial);
   const [uploading, setUploading] = useState(0);
-  const [err, setErr] = useState<string | null>(null);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -84,9 +87,7 @@ export function ListingImageManager({
     const room = max - images.length;
     const accepted = list.slice(0, Math.max(0, room));
     if (accepted.length < list.length) {
-      setErr(`Cap is ${max} images. Extras were skipped.`);
-    } else {
-      setErr(null);
+      toast.info(`Cap is ${max} images. Extras were skipped.`);
     }
     setUploading(accepted.length);
     const results: (ListingImageDraft | null)[] = new Array(accepted.length).fill(
@@ -105,6 +106,13 @@ export function ListingImageManager({
       new Array(Math.min(CONCURRENCY, accepted.length)).fill(0).map(() => worker()),
     );
     const fresh = results.filter((r): r is ListingImageDraft => Boolean(r));
+    if (fresh.length === 0 && accepted.length > 0) {
+      toast.error("Upload failed. Try smaller files.");
+      return;
+    }
+    if (fresh.length > 0) {
+      toast.success(`Added ${fresh.length} image${fresh.length === 1 ? "" : "s"}`);
+    }
     const merged = [...images, ...fresh];
     if (merged.length > 0 && !merged.some((m) => m.isCover)) {
       merged[0].isCover = true;
@@ -155,20 +163,20 @@ export function ListingImageManager({
       <div
         onDragOver={(e) => e.preventDefault()}
         onDrop={onDropOnZone}
-        className="rounded-2xl border-2 border-dashed border-stone-300 bg-white px-6 py-8 text-center"
+        className="rounded-2xl border-2 border-dashed border-input bg-card px-6 py-8 text-center"
       >
-        <Upload className="mx-auto h-8 w-8 text-stone-400" />
-        <p className="mt-2 text-sm font-medium text-stone-700">
+        <Upload className="mx-auto h-8 w-8 text-text-subtle" />
+        <p className="mt-2 text-sm font-medium text-foreground">
           Drop images here or click to browse
         </p>
-        <p className="mt-1 text-xs text-stone-500">
+        <p className="mt-1 text-xs text-muted-foreground">
           JPG, PNG, WebP — up to 10 MB each, max {max} total
         </p>
-        <button
+        <Button
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={uploading > 0 || images.length >= max}
-          className="mt-3 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800 disabled:opacity-50"
+          className="mt-3"
         >
           {uploading > 0 ? (
             <>
@@ -179,7 +187,7 @@ export function ListingImageManager({
               <Camera className="h-4 w-4" /> Choose images
             </>
           )}
-        </button>
+        </Button>
         <input
           ref={inputRef}
           type="file"
@@ -192,7 +200,6 @@ export function ListingImageManager({
           }}
         />
       </div>
-      {err && <p className="text-xs text-amber-700">{err}</p>}
 
       {images.length > 0 && (
         <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -204,45 +211,52 @@ export function ListingImageManager({
               onDragEnd={() => setDragIdx(null)}
               onDragOver={onDragOver}
               onDrop={(e) => onDrop(e, i)}
-              className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+              className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm"
             >
-              <div className="relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface-2">
+                <Image
                   src={img.url}
                   alt={img.altText ?? ""}
-                  className="aspect-[4/3] w-full object-cover"
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="object-cover"
                 />
                 {img.isCover && (
-                  <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2 py-0.5 text-[10px] font-bold text-white">
+                  <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-accent px-2 py-0.5 text-[10px] font-bold text-accent-foreground">
                     <Star className="h-3 w-3 fill-current" /> COVER
                   </span>
                 )}
                 <div className="absolute right-2 top-2 flex gap-1">
-                  <button
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="icon-xs"
                     aria-label="Move up"
                     onClick={() => move(i, -1)}
-                    className="rounded-full bg-white/90 p-1 text-stone-700 hover:bg-white"
+                    className="bg-card/90 backdrop-blur"
                   >
                     <ChevronUp className="h-3 w-3" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
+                    variant="outline"
+                    size="icon-xs"
                     aria-label="Move down"
                     onClick={() => move(i, 1)}
-                    className="rounded-full bg-white/90 p-1 text-stone-700 hover:bg-white"
+                    className="bg-card/90 backdrop-blur"
                   >
                     <ChevronDown className="h-3 w-3" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
                     type="button"
-                    aria-label="Remove"
+                    variant="outline"
+                    size="icon-xs"
+                    aria-label="Remove image"
                     onClick={() => remove(i)}
-                    className="rounded-full bg-white/90 p-1 text-red-600 hover:bg-white"
+                    className="bg-card/90 text-danger backdrop-blur hover:text-danger"
                   >
                     <Trash2 className="h-3 w-3" />
-                  </button>
+                  </Button>
                 </div>
               </div>
               <div className="space-y-2 p-3 text-xs">
@@ -262,23 +276,27 @@ export function ListingImageManager({
                 />
                 <div className="flex justify-between text-[11px]">
                   {!img.isCover ? (
-                    <button
+                    <Button
                       type="button"
+                      variant="link"
+                      size="xs"
                       onClick={() => setCover(i)}
-                      className="font-medium text-emerald-700 hover:underline"
+                      className="px-0"
                     >
                       Set as cover
-                    </button>
+                    </Button>
                   ) : (
-                    <span className="text-stone-500">Currently cover</span>
+                    <span className="text-muted-foreground">Currently cover</span>
                   )}
-                  <button
+                  <Button
                     type="button"
+                    variant="link"
+                    size="xs"
                     onClick={() => remove(i)}
-                    className="font-medium text-red-600 hover:underline"
+                    className="px-0 text-danger hover:text-danger"
                   >
                     <X className="inline h-3 w-3" /> Remove
-                  </button>
+                  </Button>
                 </div>
               </div>
             </li>

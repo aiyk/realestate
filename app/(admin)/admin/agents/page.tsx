@@ -43,13 +43,13 @@ export default async function AdminAgentsPage({ searchParams }: Props) {
   return (
     <section>
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">
           Onboarding desk
         </p>
         <h1 className="mt-1 text-2xl font-semibold tracking-tight">
           Agents
         </h1>
-        <p className="mt-1 text-sm text-stone-600">
+        <p className="mt-1 text-sm text-muted-foreground">
           {profiles.length}{" "}
           {status ? `with status "${status}"` : "applications on file"}
           {pending > 0 && ` · ${pending} pending your decision`}
@@ -69,7 +69,7 @@ export default async function AdminAgentsPage({ searchParams }: Props) {
       )}
 
       {profiles.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-stone-300 bg-white p-12 text-center text-sm text-stone-500">
+        <div className="mt-10 rounded-2xl border border-dashed border-input bg-card p-12 text-center text-sm text-muted-foreground">
           {emptyState("applications").body}
         </div>
       ) : (
@@ -89,16 +89,16 @@ export default async function AdminAgentsPage({ searchParams }: Props) {
             return (
               <div
                 key={p.id}
-                className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+                className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
               >
                 <div className="grid gap-4 p-5 sm:grid-cols-[auto_1fr_auto] sm:items-start">
-                  <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-base font-semibold text-white">
+                  <div className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-hover text-base font-semibold text-white">
                     {initials}
                   </div>
 
                   <div className="min-w-0">
                     <p className="font-semibold">{p.businessName}</p>
-                    <p className="text-sm text-stone-500">
+                    <p className="text-sm text-muted-foreground">
                       {p.user.fullName} · {p.user.email}
                     </p>
 
@@ -128,7 +128,7 @@ export default async function AdminAgentsPage({ searchParams }: Props) {
                     </ul>
 
                     {p.bio && (
-                      <p className="mt-4 text-sm text-stone-700 text-pretty">
+                      <p className="mt-4 text-sm text-foreground text-pretty">
                         {p.bio}
                       </p>
                     )}
@@ -144,14 +144,14 @@ export default async function AdminAgentsPage({ searchParams }: Props) {
                 </div>
 
                 {p.status === "PENDING" && (
-                  <div className="border-t border-stone-100 bg-stone-50/60 px-5 py-4">
+                  <div className="border-t border-border bg-surface-2/60 px-5 py-4">
                     <AgentDecisionRow
                       id={p.id}
                       canApprove={readyForReview}
                       defaultCommissionPct={Number(p.defaultCommissionPct)}
                     />
                     {!readyForReview && (
-                      <p className="mt-2 text-xs text-stone-500">
+                      <p className="mt-2 text-xs text-muted-foreground">
                         Approve unlocks once KYC ✓ and bank account name ✓.
                         Right now this agent is still missing something.
                       </p>
@@ -180,10 +180,10 @@ function Check({
     <li
       className={`inline-flex items-center gap-1.5 rounded-full px-2 py-1 ring-1 ${
         ok
-          ? "bg-emerald-50 text-emerald-800 ring-emerald-200"
+          ? "bg-primary-soft text-primary-soft-foreground ring-primary/20"
           : optional
-            ? "bg-stone-50 text-stone-500 ring-stone-200"
-            : "bg-amber-50 text-amber-800 ring-amber-200"
+            ? "bg-surface-2 text-muted-foreground ring-border"
+            : "bg-accent-soft text-accent-soft-foreground ring-accent/20"
       }`}
     >
       {ok ? (

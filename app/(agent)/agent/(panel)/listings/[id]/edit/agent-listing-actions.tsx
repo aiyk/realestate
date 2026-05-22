@@ -35,7 +35,7 @@ export function AgentListingActions({
       <Button size="sm" onClick={submit} disabled={loading}>
         {loading ? "Submitting…" : "Submit for review"}
       </Button>
-      {error && <p className="text-xs text-red-700">{error}</p>}
+      {error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
     </div>
   );
 }

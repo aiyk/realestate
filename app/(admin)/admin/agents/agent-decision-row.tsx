@@ -55,9 +55,9 @@ export function AgentDecisionRow({
   }
 
   return (
-    <div className="mt-4 flex items-end justify-between gap-3 border-t border-neutral-100 pt-3">
+    <div className="mt-4 flex items-end justify-between gap-3 border-t border-border pt-3">
       <div>
-        <label htmlFor={`pct-${id}`} className="block text-xs text-neutral-500">
+        <label htmlFor={`pct-${id}`} className="block text-xs text-muted-foreground">
           Default commission %
         </label>
         <Input
@@ -90,11 +90,11 @@ export function AgentDecisionRow({
           </Button>
         </div>
         {!canApprove && (
-          <p className="text-xs text-amber-700">
+          <p className="text-xs text-accent">
             Awaiting KYC + bank account before approval.
           </p>
         )}
-        {error && <p className="text-xs text-red-700">{error}</p>}
+        {error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
       </div>
     </div>
   );

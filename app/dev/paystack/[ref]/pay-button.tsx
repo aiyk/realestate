@@ -41,7 +41,7 @@ export function PayButton({
       <Button onClick={pay} disabled={loading} className="w-full">
         {loading ? "Simulating payment…" : "Pay now (simulated)"}
       </Button>
-      {error && <p className="text-xs text-red-700">{error}</p>}
+      {error && <p className="text-xs text-danger-soft-foreground">{error}</p>}
     </div>
   );
 }

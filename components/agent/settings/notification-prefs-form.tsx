@@ -141,15 +141,15 @@ export function NotificationPrefsForm() {
 
   if (loading) {
     return (
-      <p className="inline-flex items-center gap-2 text-sm text-stone-500">
+      <p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" /> Loading preferences…
       </p>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-stone-200 bg-white shadow-sm">
-      <div className="grid grid-cols-[1fr_80px_80px] gap-4 border-b border-stone-100 px-5 py-3 text-xs font-semibold uppercase tracking-wide text-stone-500">
+    <div className="rounded-2xl border border-border bg-card shadow-sm">
+      <div className="grid grid-cols-[1fr_80px_80px] gap-4 border-b border-border px-5 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         <span>Event</span>
         <span className="text-center">In-app</span>
         <span className="text-center">Email</span>
@@ -159,11 +159,11 @@ export function NotificationPrefsForm() {
         return (
           <div
             key={e.type}
-            className="grid grid-cols-[1fr_80px_80px] items-center gap-4 border-b border-stone-100 px-5 py-3 last:border-b-0"
+            className="grid grid-cols-[1fr_80px_80px] items-center gap-4 border-b border-border px-5 py-3 last:border-b-0"
           >
             <div>
-              <p className="text-sm font-medium text-stone-900">{e.label}</p>
-              <p className="text-xs text-stone-500">{e.description}</p>
+              <p className="text-sm font-medium text-foreground">{e.label}</p>
+              <p className="text-xs text-muted-foreground">{e.description}</p>
             </div>
             <div className="text-center">
               <input
@@ -171,7 +171,7 @@ export function NotificationPrefsForm() {
                 aria-label={`${e.label} in-app`}
                 checked={current?.in_app ?? false}
                 onChange={() => toggle(e.type, "in_app")}
-                className="h-4 w-4 accent-emerald-700"
+                className="h-4 w-4 [accent-color:var(--primary)]"
               />
             </div>
             <div className="text-center">
@@ -180,16 +180,16 @@ export function NotificationPrefsForm() {
                 aria-label={`${e.label} email`}
                 checked={current?.email ?? false}
                 onChange={() => toggle(e.type, "email")}
-                className="h-4 w-4 accent-emerald-700"
+                className="h-4 w-4 [accent-color:var(--primary)]"
               />
             </div>
           </div>
         );
       })}
-      <div className="flex items-center justify-end gap-3 border-t border-stone-100 px-5 py-3">
-        {err && <span className="text-xs text-red-600">{err}</span>}
+      <div className="flex items-center justify-end gap-3 border-t border-border px-5 py-3">
+        {err && <span className="text-xs text-danger">{err}</span>}
         {savedAt && !saving && (
-          <span className="inline-flex items-center gap-1 text-xs text-emerald-700">
+          <span className="inline-flex items-center gap-1 text-xs text-primary">
             <Check className="h-3 w-3" /> Saved
           </span>
         )}
@@ -197,7 +197,7 @@ export function NotificationPrefsForm() {
           type="button"
           onClick={() => void save()}
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800 disabled:opacity-50"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-hover disabled:opacity-50"
         >
           {saving && <Loader2 className="h-4 w-4 animate-spin" />}
           Save preferences

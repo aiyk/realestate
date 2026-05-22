@@ -87,14 +87,14 @@ export function AvatarUploader({
       <div className="space-y-2">
         <div
           className={cn(
-            "group relative h-40 w-full overflow-hidden rounded-2xl border border-stone-200 bg-gradient-to-br from-emerald-700 to-emerald-900",
+            "group relative h-40 w-full overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary to-primary-hover",
           )}
         >
           {url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={url} alt="" className="h-full w-full object-cover" />
           ) : (
-            <div className="flex h-full items-center justify-center text-xs text-emerald-50/80">
+            <div className="flex h-full items-center justify-center text-xs text-primary-foreground/80">
               Cover photo (1600×400 recommended)
             </div>
           )}
@@ -104,7 +104,7 @@ export function AvatarUploader({
                 type="button"
                 onClick={clearImage}
                 disabled={busy}
-                className="inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-white"
+                className="inline-flex items-center gap-1 rounded-full bg-card/90 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-card"
               >
                 <X className="h-3 w-3" /> Remove
               </button>
@@ -113,7 +113,7 @@ export function AvatarUploader({
               type="button"
               onClick={() => inputRef.current?.click()}
               disabled={busy}
-              className="inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-white"
+              className="inline-flex items-center gap-1 rounded-full bg-card/90 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-card"
             >
               {busy ? (
                 <Loader2 className="h-3 w-3 animate-spin" />
@@ -124,7 +124,7 @@ export function AvatarUploader({
             </button>
           </div>
         </div>
-        {err && <p className="text-xs text-red-600">{err}</p>}
+        {err && <p className="text-xs text-danger">{err}</p>}
         <input
           ref={inputRef}
           type="file"
@@ -143,7 +143,7 @@ export function AvatarUploader({
   return (
     <div className="flex items-center gap-4">
       <div className="relative">
-        <div className="grid h-24 w-24 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-emerald-600 to-emerald-800 text-2xl font-semibold text-white ring-2 ring-white">
+        <div className="grid h-24 w-24 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-primary to-primary-hover text-2xl font-semibold text-white ring-2 ring-white">
           {url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={url} alt="" className="h-full w-full object-cover" />
@@ -155,7 +155,7 @@ export function AvatarUploader({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={busy}
-          className="absolute -bottom-1 -right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-white text-stone-700 shadow ring-1 ring-stone-200 hover:bg-stone-50"
+          className="absolute -bottom-1 -right-1 inline-flex h-8 w-8 items-center justify-center rounded-full bg-card text-foreground shadow ring-1 ring-border hover:bg-surface-2"
           aria-label="Upload avatar"
         >
           {busy ? (
@@ -165,20 +165,20 @@ export function AvatarUploader({
           )}
         </button>
       </div>
-      <div className="text-xs text-stone-600">
-        <p className="font-medium text-stone-900">Profile photo</p>
-        <p className="text-stone-500">JPG, PNG or WebP — up to 10 MB.</p>
+      <div className="text-xs text-muted-foreground">
+        <p className="font-medium text-foreground">Profile photo</p>
+        <p className="text-muted-foreground">JPG, PNG or WebP — up to 10 MB.</p>
         {url && (
           <button
             type="button"
             onClick={clearImage}
             disabled={busy}
-            className="mt-1 text-red-600 hover:underline"
+            className="mt-1 text-danger hover:underline"
           >
             Remove
           </button>
         )}
-        {err && <p className="mt-1 text-red-600">{err}</p>}
+        {err && <p className="mt-1 text-danger">{err}</p>}
       </div>
       <input
         ref={inputRef}

@@ -39,7 +39,7 @@ export function LeadConvertButton({ leadId, canConvert }: Props) {
 
   if (!canConvert) {
     return (
-      <p className="text-xs text-stone-500">
+      <p className="text-xs text-muted-foreground">
         Reply by email — this lead isn&apos;t linked to an account yet.
       </p>
     );
@@ -55,7 +55,7 @@ export function LeadConvertButton({ leadId, canConvert }: Props) {
         )}
         Open message thread
       </Button>
-      {err && <p className="mt-1 text-xs text-red-600">{err}</p>}
+      {err && <p className="mt-1 text-xs text-danger">{err}</p>}
     </div>
   );
 }

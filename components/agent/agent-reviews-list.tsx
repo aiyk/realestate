@@ -77,7 +77,7 @@ export function AgentReviewsList({ slug }: Props) {
 
   if (loading) {
     return (
-      <p className="inline-flex items-center gap-2 text-sm text-stone-500">
+      <p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
         <Loader2 className="h-4 w-4 animate-spin" /> Loading reviews…
       </p>
     );

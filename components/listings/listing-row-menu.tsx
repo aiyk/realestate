@@ -84,7 +84,7 @@ export function ListingRowMenu({ id, slug, status }: Props) {
         aria-label="Listing actions"
         onClick={() => setOpen((v) => !v)}
         disabled={busy}
-        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-stone-500 hover:bg-stone-100"
+        className="inline-flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground hover:bg-surface-2"
       >
         {busy ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -93,10 +93,10 @@ export function ListingRowMenu({ id, slug, status }: Props) {
         )}
       </button>
       {open && (
-        <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-xl border border-stone-200 bg-white py-1 shadow-lg">
+        <div className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-xl border border-border bg-card py-1 shadow-lg">
           <Link
             href={`/agent/listings/${id}/edit`}
-            className="flex items-center gap-2 px-3 py-2 text-sm text-stone-700 hover:bg-stone-50"
+            className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-surface-2"
             onClick={() => setOpen(false)}
           >
             <Pencil className="h-4 w-4" /> Edit
@@ -106,7 +106,7 @@ export function ListingRowMenu({ id, slug, status }: Props) {
               href={`/listings/${slug}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2 text-sm text-stone-700 hover:bg-stone-50"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-surface-2"
               onClick={() => setOpen(false)}
             >
               <Eye className="h-4 w-4" /> Preview public
@@ -115,7 +115,7 @@ export function ListingRowMenu({ id, slug, status }: Props) {
           <button
             type="button"
             onClick={duplicate}
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-50"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-foreground hover:bg-surface-2"
           >
             <Copy className="h-4 w-4" /> Duplicate
           </button>
@@ -123,7 +123,7 @@ export function ListingRowMenu({ id, slug, status }: Props) {
             <button
               type="button"
               onClick={unarchive}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-stone-700 hover:bg-stone-50"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-foreground hover:bg-surface-2"
             >
               <ArchiveRestore className="h-4 w-4" /> Unarchive
             </button>
@@ -131,7 +131,7 @@ export function ListingRowMenu({ id, slug, status }: Props) {
             <button
               type="button"
               onClick={archive}
-              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+              className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-danger hover:bg-danger-soft"
             >
               <Archive className="h-4 w-4" /> Archive
             </button>

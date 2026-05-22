@@ -22,7 +22,7 @@ export default async function CheckoutPage({ params }: Props) {
           <CardHeader>
             <CardTitle>Verify your email first</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-neutral-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>You must verify your email before reserving a property.</p>
             <Link
               href="/account"
@@ -61,7 +61,7 @@ export default async function CheckoutPage({ params }: Props) {
           <CardHeader>
             <CardTitle>No longer available</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3 text-sm text-neutral-600">
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p>This listing has been reserved or sold.</p>
             <Link
               href={`/listings/${listing.slug}`}
@@ -78,7 +78,7 @@ export default async function CheckoutPage({ params }: Props) {
   return (
     <main className="mx-auto w-full max-w-xl flex-1 px-6 py-10">
       <h1 className="text-2xl font-semibold">Reserve {listing.title}</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         {listing.city}, {listing.state}
       </p>
 
@@ -88,18 +88,18 @@ export default async function CheckoutPage({ params }: Props) {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-neutral-600">Property price</span>
+            <span className="text-muted-foreground">Property price</span>
             <span className="font-medium">
               {formatNgn(listing.priceNgn.toString())}
             </span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-neutral-600">Reservation deposit</span>
+            <span className="text-muted-foreground">Reservation deposit</span>
             <span className="font-medium">
               {formatNgn(listing.depositNgn.toString())}
             </span>
           </div>
-          <p className="rounded-md bg-neutral-50 p-3 text-xs text-neutral-600">
+          <p className="rounded-md bg-surface-2 p-3 text-xs text-muted-foreground">
             By proceeding you agree that the deposit reserves this property
             pending offline completion. The deposit is held by the platform and
             applied to the final purchase, or refunded according to the

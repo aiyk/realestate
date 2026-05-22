@@ -46,17 +46,17 @@ export default function AboutPage() {
   return (
     <main className="flex-1">
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-stone-100 py-20">
+      <section className="relative overflow-hidden border-b border-border py-20">
         <div className="absolute inset-0 -z-10 bg-grid opacity-40" />
-        <div className="absolute -top-32 left-1/2 -z-10 h-96 w-[140%] -translate-x-1/2 rounded-full bg-gradient-to-r from-emerald-100 via-amber-50 to-stone-100 blur-3xl" />
+        <div className="absolute -top-32 left-1/2 -z-10 h-96 w-[140%] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary-soft via-accent-soft to-surface-2 blur-3xl" />
         <div className="mx-auto max-w-4xl px-6 text-center">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Who we are
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl text-balance">
             Real estate in Nigeria, finally on rails.
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-stone-600 text-pretty">
+          <p className="mx-auto mt-5 max-w-2xl text-lg text-muted-foreground text-pretty">
             We started Realestate because buying property in Nigeria felt like
             it shouldn&apos;t be this hard. Turns out the hard parts (trust,
             verification, escrow, payouts) are exactly where software helps.
@@ -65,17 +65,17 @@ export default function AboutPage() {
       </section>
 
       {/* The problem / What we did — magazine layout */}
-      <section className="border-b border-stone-100 bg-gradient-to-b from-white via-stone-50/40 to-white py-20">
+      <section className="border-b border-border bg-gradient-to-b from-white via-surface-2/40 to-white py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-12 lg:grid-cols-2">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 The problem
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-balance">
                 Most property apps stop at the photo gallery.
               </h2>
-              <p className="mt-4 text-stone-600 text-pretty">
+              <p className="mt-4 text-muted-foreground text-pretty">
                 You scroll. You DM. You get a number. The agent goes silent for
                 three days. The price changes. Half the &ldquo;listings&rdquo;
                 have been sold for months. There&apos;s no record of anything
@@ -95,13 +95,13 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 What we did
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-balance">
                 Added the missing 70%.
               </h2>
-              <p className="mt-4 text-stone-600 text-pretty">
+              <p className="mt-4 text-muted-foreground text-pretty">
                 We didn&apos;t reinvent the listing. We added verification
                 (KYC on both sides), escrow (Paystack-held deposits), in-app
                 messaging with a real audit trail, and a payout pipeline so
@@ -143,7 +143,7 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               How we work
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
@@ -155,15 +155,15 @@ export default function AboutPage() {
               <div
                 key={v.title}
                 className={cn(
-                  "rounded-2xl border border-stone-200 bg-white p-6 hover-lift animate-fade-up",
+                  "rounded-2xl border border-border bg-card p-6 hover-lift animate-fade-up",
                   `stagger-${i + 1}`,
                 )}
               >
-                <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
                   {v.icon}
                 </div>
                 <h3 className="mt-4 text-lg font-semibold">{v.title}</h3>
-                <p className="mt-2 text-sm text-stone-600 text-pretty">{v.body}</p>
+                <p className="mt-2 text-sm text-muted-foreground text-pretty">{v.body}</p>
               </div>
             ))}
           </div>
@@ -171,16 +171,16 @@ export default function AboutPage() {
       </section>
 
       {/* Founder story */}
-      <section className="relative overflow-hidden border-y border-stone-100 bg-stone-50/60 py-20">
-        <LagosSkyline className="absolute inset-x-0 bottom-0 h-24 w-full text-emerald-700/15" />
+      <section className="relative overflow-hidden border-y border-border bg-surface-2/60 py-20">
+        <LagosSkyline className="absolute inset-x-0 bottom-0 h-24 w-full text-primary/15" />
         <div className="relative mx-auto max-w-3xl px-6">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             The short story
           </p>
           <h2 className="mt-2 text-3xl font-bold tracking-tight text-balance">
             We&apos;re builders. We were buyers first.
           </h2>
-          <div className="mt-6 space-y-4 text-stone-700 text-pretty">
+          <div className="mt-6 space-y-4 text-foreground text-pretty">
             <p>
               In 2024 one of our founders spent four months trying to buy a
               two-bedroom in Lekki. Agents disappeared. Prices shifted. The
@@ -198,7 +198,7 @@ export default function AboutPage() {
               very easy to{" "}
               <Link
                 href="/contact"
-                className="font-medium text-emerald-700 underline"
+                className="font-medium text-primary underline"
               >
                 reach
               </Link>
@@ -212,13 +212,13 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               By the numbers
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
               Year one, in plain English
             </h2>
-            <p className="mt-3 text-stone-600">
+            <p className="mt-3 text-muted-foreground">
               The metrics we look at — and the ones we&apos;ll keep public.
             </p>
           </div>
@@ -252,7 +252,7 @@ export default function AboutPage() {
               tone="stone"
             />
           </div>
-          <p className="mt-6 text-center text-xs text-stone-500">
+          <p className="mt-6 text-center text-xs text-muted-foreground">
             Illustrative figures for our public year-one summary. Live numbers
             update weekly inside the platform.
           </p>
@@ -260,10 +260,10 @@ export default function AboutPage() {
       </section>
 
       {/* Comparison */}
-      <section className="border-t border-stone-100 bg-gradient-to-b from-amber-50/30 via-white to-white py-20">
+      <section className="border-t border-border bg-gradient-to-b from-accent-soft/30 via-white to-white py-20">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+            <p className="text-xs font-semibold uppercase tracking-wider text-primary">
               The honest comparison
             </p>
             <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
@@ -281,13 +281,13 @@ export default function AboutPage() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.2fr]">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Where we work
               </p>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-balance">
                 Built in Lagos. Listing nation-wide.
               </h2>
-              <p className="mt-4 text-stone-600 text-pretty">
+              <p className="mt-4 text-muted-foreground text-pretty">
                 Four cities are live today. We add a new one when there are
                 enough KYC-passed agents on the ground to do it right.
               </p>
@@ -303,9 +303,9 @@ export default function AboutPage() {
                 ].map((c) => (
                   <span
                     key={c}
-                    className="inline-flex items-center gap-1 rounded-full border border-stone-200 bg-white px-3 py-1.5 text-sm"
+                    className="inline-flex items-center gap-1 rounded-full border border-border bg-card px-3 py-1.5 text-sm"
                   >
-                    <MapPin className="h-3 w-3 text-emerald-700" />
+                    <MapPin className="h-3 w-3 text-primary" />
                     {c}
                   </span>
                 ))}
@@ -326,15 +326,15 @@ export default function AboutPage() {
                 </Link>
               </div>
             </div>
-            <div className="rounded-3xl border border-stone-200 bg-white p-8">
-              <NigeriaMap className="text-emerald-700" showLabels />
+            <div className="rounded-3xl border border-border bg-card p-8">
+              <NigeriaMap className="text-primary" showLabels />
             </div>
           </div>
         </div>
       </section>
 
       {/* Closer */}
-      <section className="border-t border-stone-100 bg-stone-50/60 py-16">
+      <section className="border-t border-border bg-surface-2/60 py-16">
         <div className="mx-auto max-w-3xl px-6">
           <Callout tone="concierge" title="One last thing">
             We&apos;re a small team — eight humans across product, agent

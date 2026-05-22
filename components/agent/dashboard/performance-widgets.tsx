@@ -49,22 +49,22 @@ export async function PerformanceWidgets({
   };
   const tiles: Tile[] = [
     {
-      icon: <Users className="h-4 w-4 text-emerald-700" />,
+      icon: <Users className="h-4 w-4 text-primary" />,
       label: "New leads (7d)",
       value: leadsThisWeek,
     },
     {
-      icon: <Target className="h-4 w-4 text-amber-700" />,
+      icon: <Target className="h-4 w-4 text-accent" />,
       label: "Viewings on the books",
       value: viewingsScheduled,
     },
     {
-      icon: <Eye className="h-4 w-4 text-stone-700" />,
+      icon: <Eye className="h-4 w-4 text-foreground" />,
       label: "Listing views (7d)",
       value: viewsThisWeek,
     },
     {
-      icon: <Clock className="h-4 w-4 text-stone-700" />,
+      icon: <Clock className="h-4 w-4 text-foreground" />,
       label: "Avg reply",
       value: responseTime
         ? responseTime < 60
@@ -79,13 +79,13 @@ export async function PerformanceWidgets({
       {tiles.map((t) => (
         <div
           key={t.label}
-          className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
+          className="rounded-2xl border border-border bg-card p-4 shadow-sm"
         >
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-stone-500">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t.icon}
             {t.label}
           </div>
-          <p className="mt-2 text-2xl font-semibold text-stone-900">{t.value}</p>
+          <p className="mt-2 text-2xl font-semibold text-foreground">{t.value}</p>
         </div>
       ))}
     </div>

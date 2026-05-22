@@ -60,10 +60,10 @@ export function ListingTableRows({ rows }: Props) {
           <div
             key={l.id}
             className={cn(
-              "rounded-2xl border bg-white p-4 transition-colors",
+              "rounded-2xl border bg-card p-4 transition-colors",
               selected.includes(l.id)
-                ? "border-emerald-400 ring-2 ring-emerald-200"
-                : "border-stone-200 hover:border-emerald-300",
+                ? "border-primary ring-2 ring-primary/20"
+                : "border-border hover:border-primary/30",
             )}
           >
             <div className="flex items-start gap-3">
@@ -72,7 +72,7 @@ export function ListingTableRows({ rows }: Props) {
                 checked={selected.includes(l.id)}
                 onChange={() => toggle(l.id)}
                 aria-label={`Select ${l.title}`}
-                className="mt-1 h-4 w-4 accent-emerald-700"
+                className="mt-1 h-4 w-4 [accent-color:var(--primary)]"
               />
               <Link href={`/agent/listings/${l.id}/edit`} className="flex-1">
                 <div className="flex items-start gap-3">
@@ -84,15 +84,15 @@ export function ListingTableRows({ rows }: Props) {
                       className="h-16 w-16 rounded-lg object-cover"
                     />
                   ) : (
-                    <div className="grid h-16 w-16 place-items-center rounded-lg bg-stone-100 text-xs text-stone-400">
+                    <div className="grid h-16 w-16 place-items-center rounded-lg bg-surface-2 text-xs text-text-subtle">
                       No photo
                     </div>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="line-clamp-1 font-semibold text-stone-900">
+                    <p className="line-clamp-1 font-semibold text-foreground">
                       {l.title}
                     </p>
-                    <p className="mt-1 text-sm text-stone-600">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       {formatNgn(l.priceNgn)}
                     </p>
                     <Badge variant={STATUS_VARIANT[l.status]} className="mt-2">
@@ -108,9 +108,9 @@ export function ListingTableRows({ rows }: Props) {
       </div>
 
       {/* Table on desktop */}
-      <div className="mt-6 hidden overflow-hidden rounded-2xl border border-stone-200 bg-white sm:block">
+      <div className="mt-6 hidden overflow-hidden rounded-2xl border border-border bg-card sm:block">
         <table className="w-full text-sm">
-          <thead className="bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
+          <thead className="bg-surface-2 text-left text-xs uppercase tracking-wider text-muted-foreground">
             <tr>
               <th className="w-10 px-4 py-3">
                 <input
@@ -120,7 +120,7 @@ export function ListingTableRows({ rows }: Props) {
                     rows.length > 0 && selected.length === rows.length
                   }
                   onChange={toggleAll}
-                  className="h-4 w-4 accent-emerald-700"
+                  className="h-4 w-4 [accent-color:var(--primary)]"
                 />
               </th>
               <th className="px-4 py-3">Listing</th>
@@ -130,12 +130,12 @@ export function ListingTableRows({ rows }: Props) {
               <th className="w-12 px-4 py-3"></th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-stone-100">
+          <tbody className="divide-y divide-border">
             {rows.map((l) => (
               <tr
                 key={l.id}
                 className={
-                  selected.includes(l.id) ? "bg-emerald-50/40" : "hover:bg-stone-50/60"
+                  selected.includes(l.id) ? "bg-primary-soft/40" : "hover:bg-surface-2/60"
                 }
               >
                 <td className="px-4 py-3">
@@ -144,7 +144,7 @@ export function ListingTableRows({ rows }: Props) {
                     aria-label={`Select ${l.title}`}
                     checked={selected.includes(l.id)}
                     onChange={() => toggle(l.id)}
-                    className="h-4 w-4 accent-emerald-700"
+                    className="h-4 w-4 [accent-color:var(--primary)]"
                   />
                 </td>
                 <td className="px-4 py-3">
@@ -160,16 +160,16 @@ export function ListingTableRows({ rows }: Props) {
                         className="h-12 w-12 rounded-lg object-cover"
                       />
                     ) : (
-                      <div className="grid h-12 w-12 place-items-center rounded-lg bg-stone-100 text-[10px] text-stone-400">
+                      <div className="grid h-12 w-12 place-items-center rounded-lg bg-surface-2 text-[10px] text-text-subtle">
                         —
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="line-clamp-1 font-medium text-stone-900">
+                      <p className="line-clamp-1 font-medium text-foreground">
                         {l.title}
                       </p>
                       {l.blurb && (
-                        <p className="line-clamp-1 text-xs text-stone-500">
+                        <p className="line-clamp-1 text-xs text-muted-foreground">
                           {l.blurb}
                         </p>
                       )}
@@ -181,10 +181,10 @@ export function ListingTableRows({ rows }: Props) {
                     {l.status.replace("_", " ")}
                   </Badge>
                 </td>
-                <td className="px-4 py-3 text-stone-600">
+                <td className="px-4 py-3 text-muted-foreground">
                   {formatNgn(l.priceNgn)}
                 </td>
-                <td className="px-4 py-3 text-stone-600">{l.city}</td>
+                <td className="px-4 py-3 text-muted-foreground">{l.city}</td>
                 <td className="px-4 py-3 text-right">
                   <ListingRowMenu id={l.id} slug={l.slug} status={l.status} />
                 </td>

@@ -68,7 +68,7 @@ function Section({
   if (options.length === 0) return null;
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         {label}
       </p>
       <div className="mt-2 flex flex-wrap gap-1.5">
@@ -81,8 +81,8 @@ function Section({
               className={cn(
                 "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ring-1 transition",
                 on
-                  ? "bg-emerald-700 text-white ring-emerald-700"
-                  : "bg-white text-stone-700 ring-stone-200 hover:bg-stone-50",
+                  ? "bg-primary text-white ring-primary"
+                  : "bg-card text-foreground ring-border hover:bg-surface-2",
               )}
             >
               {o.label}
@@ -90,7 +90,7 @@ function Section({
                 <span
                   className={cn(
                     "ml-1 rounded-full px-1.5 py-0.5 text-[10px]",
-                    on ? "bg-emerald-600 text-emerald-50" : "bg-stone-100 text-stone-500",
+                    on ? "bg-primary text-primary-foreground" : "bg-surface-2 text-muted-foreground",
                   )}
                 >
                   {o.count}
@@ -139,7 +139,7 @@ export function AgentFilterRail({
         sp={searchParams}
       />
       <div>
-        <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+        <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
           Badge
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
@@ -155,8 +155,8 @@ export function AgentFilterRail({
                 className={cn(
                   "inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium ring-1 transition",
                   on
-                    ? "bg-amber-500 text-white ring-amber-500"
-                    : "bg-white text-stone-700 ring-stone-200 hover:bg-stone-50",
+                    ? "bg-accent text-white ring-accent"
+                    : "bg-card text-foreground ring-border hover:bg-surface-2",
                 )}
               >
                 {o.label}

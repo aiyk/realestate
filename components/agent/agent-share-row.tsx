@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Copy, Share2 } from "lucide-react";
 
 type Props = {
@@ -9,11 +9,9 @@ type Props = {
 
 export function AgentShareRow({ slug, businessName }: Props) {
   const [copied, setCopied] = useState(false);
-  const [origin, setOrigin] = useState("");
-
-  useEffect(() => {
-    setOrigin(window.location.origin);
-  }, []);
+  const [origin] = useState(() =>
+    typeof window === "undefined" ? "" : window.location.origin,
+  );
 
   const url = origin ? `${origin}/agents/${slug}` : `/agents/${slug}`;
   const text = `Check out ${businessName} on Realestate`;
@@ -49,11 +47,11 @@ export function AgentShareRow({ slug, businessName }: Props) {
         type="button"
         onClick={copy}
         aria-label="Copy profile link"
-        className="inline-flex h-9 items-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-stone-50"
+        className="inline-flex h-9 items-center gap-1 rounded-full bg-card px-3 text-xs font-medium text-foreground ring-1 ring-border hover:bg-surface-2"
       >
         {copied ? (
           <>
-            <Check className="h-3 w-3 text-emerald-700" />
+            <Check className="h-3 w-3 text-primary" />
             Copied
           </>
         ) : (
@@ -67,7 +65,7 @@ export function AgentShareRow({ slug, businessName }: Props) {
         href={waHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 items-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-stone-50"
+        className="inline-flex h-9 items-center gap-1 rounded-full bg-card px-3 text-xs font-medium text-foreground ring-1 ring-border hover:bg-surface-2"
       >
         WhatsApp
       </a>
@@ -75,7 +73,7 @@ export function AgentShareRow({ slug, businessName }: Props) {
         href={xHref}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex h-9 items-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-stone-50"
+        className="inline-flex h-9 items-center gap-1 rounded-full bg-card px-3 text-xs font-medium text-foreground ring-1 ring-border hover:bg-surface-2"
       >
         Share on X
       </a>
@@ -83,7 +81,7 @@ export function AgentShareRow({ slug, businessName }: Props) {
         type="button"
         onClick={nativeShare}
         aria-label="Share"
-        className="inline-flex h-9 items-center gap-1 rounded-full bg-white px-3 text-xs font-medium text-stone-700 ring-1 ring-stone-200 hover:bg-stone-50 sm:hidden"
+        className="inline-flex h-9 items-center gap-1 rounded-full bg-card px-3 text-xs font-medium text-foreground ring-1 ring-border hover:bg-surface-2 sm:hidden"
       >
         <Share2 className="h-3 w-3" />
       </button>

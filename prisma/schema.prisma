@@ -185,6 +185,7 @@ model User {
   uploadedDocuments    ListingDocument[]       @relation("DocumentUploader")
   priceChanges         ListingPriceHistory[]   @relation("PriceChangeAuthor")
   analyticsEvents      ListingAnalyticsEvent[]
+  favorites            Favorite[]
   createdAt            DateTime                @default(now())
   updatedAt            DateTime                @updatedAt
 
@@ -320,6 +321,7 @@ model Listing {
   documents           ListingDocument[]
   priceHistory        ListingPriceHistory[]
   contactInquiries    ContactInquiry[]
+  favorites           Favorite[]
 
   @@index([status, city])
   @@index([propertyType, priceNgn])
@@ -327,6 +329,19 @@ model Listing {
   @@index([publishedAt])
   @@index([isFeatured, featuredUntil])
   @@index([agentId, archivedAt])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, listingId])
+  @@index([userId, createdAt])
+  @@index([listingId])
 }
 
 model ListingImage {

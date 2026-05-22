@@ -81,7 +81,7 @@ export function ScheduleViewingDialog({
           setDone(false);
           setErr(null);
         }}
-        className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-5 py-2.5 text-sm font-semibold text-stone-800 hover:bg-stone-50"
+        className="inline-flex items-center gap-2 rounded-full border border-input bg-card px-5 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
       >
         <CalendarDays className="h-4 w-4" />
         Schedule a viewing
@@ -142,10 +142,10 @@ export function ScheduleViewingDialog({
                 rows={3}
                 maxLength={2000}
                 placeholder="Anything they should know — group size, accessibility, second-choice times…"
-                className="flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+                className="flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
               />
             </div>
-            {err && <p className="text-sm text-red-600">{err}</p>}
+            {err && <p className="text-sm text-danger">{err}</p>}
             <div className="flex items-center justify-end gap-2 pt-2">
               <Button
                 type="button"

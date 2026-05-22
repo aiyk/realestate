@@ -65,7 +65,7 @@ export function FaqEditor({ initial }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <p className="text-sm text-stone-600">
+        <p className="text-sm text-muted-foreground">
           Answer common buyer questions once — show them to everyone.
         </p>
       </div>
@@ -73,10 +73,10 @@ export function FaqEditor({ initial }: Props) {
         {items.map((f, i) => (
           <li
             key={i}
-            className="rounded-2xl border border-stone-200 bg-white p-4 shadow-sm"
+            className="rounded-2xl border border-border bg-card p-4 shadow-sm"
           >
             <div className="flex items-start justify-between gap-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-stone-500">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 #{i + 1}
               </p>
               <div className="flex gap-1">
@@ -84,7 +84,7 @@ export function FaqEditor({ initial }: Props) {
                   type="button"
                   aria-label="Move up"
                   onClick={() => move(i, -1)}
-                  className="rounded-md p-1 text-stone-500 hover:bg-stone-100"
+                  className="rounded-md p-1 text-muted-foreground hover:bg-surface-2"
                 >
                   <ChevronUp className="h-4 w-4" />
                 </button>
@@ -92,7 +92,7 @@ export function FaqEditor({ initial }: Props) {
                   type="button"
                   aria-label="Move down"
                   onClick={() => move(i, 1)}
-                  className="rounded-md p-1 text-stone-500 hover:bg-stone-100"
+                  className="rounded-md p-1 text-muted-foreground hover:bg-surface-2"
                 >
                   <ChevronDown className="h-4 w-4" />
                 </button>
@@ -100,7 +100,7 @@ export function FaqEditor({ initial }: Props) {
                   type="button"
                   aria-label="Remove"
                   onClick={() => remove(i)}
-                  className="rounded-md p-1 text-red-600 hover:bg-red-50"
+                  className="rounded-md p-1 text-danger hover:bg-danger-soft"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -123,17 +123,17 @@ export function FaqEditor({ initial }: Props) {
                   value={f.answer}
                   onChange={(e) => update(i, { answer: e.target.value })}
                   rows={3}
-                  className="flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+                  className="flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
                 />
               </div>
-              <label className="inline-flex items-center gap-2 text-xs text-stone-600">
+              <label className="inline-flex items-center gap-2 text-xs text-muted-foreground">
                 <input
                   type="checkbox"
                   checked={f.isPublished}
                   onChange={(e) =>
                     update(i, { isPublished: e.target.checked })
                   }
-                  className="h-4 w-4 accent-emerald-700"
+                  className="h-4 w-4 [accent-color:var(--primary)]"
                 />
                 Show on public profile
               </label>
@@ -150,9 +150,9 @@ export function FaqEditor({ initial }: Props) {
           Save FAQs
         </Button>
         {savedAt && !saving && (
-          <span className="text-xs text-emerald-700">Saved.</span>
+          <span className="text-xs text-primary">Saved.</span>
         )}
-        {err && <span className="text-xs text-red-600">{err}</span>}
+        {err && <span className="text-xs text-danger">{err}</span>}
       </div>
     </div>
   );

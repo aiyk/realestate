@@ -104,11 +104,11 @@ export default async function AgentCalendarPage() {
     <section>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             What&apos;s coming up
           </p>
           <h1 className="mt-1 text-2xl font-semibold tracking-tight">Calendar</h1>
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             Open houses, viewings, and follow-ups across all your listings —
             next 30 days.
           </p>
@@ -116,12 +116,12 @@ export default async function AgentCalendarPage() {
       </div>
 
       {events.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-stone-300 bg-white p-12 text-center">
-          <CalendarDays className="mx-auto h-16 w-16 text-stone-400" />
-          <p className="mt-4 text-lg font-semibold text-stone-700">
+        <div className="mt-10 rounded-3xl border border-dashed border-input bg-card p-12 text-center">
+          <CalendarDays className="mx-auto h-16 w-16 text-text-subtle" />
+          <p className="mt-4 text-lg font-semibold text-foreground">
             Nothing scheduled
           </p>
-          <p className="mx-auto mt-1 max-w-md text-sm text-stone-500">
+          <p className="mx-auto mt-1 max-w-md text-sm text-muted-foreground">
             Open houses, confirmed viewings, and lead follow-ups will appear
             here.
           </p>
@@ -131,20 +131,20 @@ export default async function AgentCalendarPage() {
           {events.map((e) => (
             <li
               key={e.id}
-              className="grid gap-3 rounded-2xl border border-stone-200 bg-white p-4 shadow-sm sm:grid-cols-[140px_1fr]"
+              className="grid gap-3 rounded-2xl border border-border bg-card p-4 shadow-sm sm:grid-cols-[140px_1fr]"
             >
               <div className="text-xs">
-                <p className="font-semibold text-stone-900">
+                <p className="font-semibold text-foreground">
                   {formatDay(e.startsAt)}
                 </p>
-                <p className="text-stone-500">
+                <p className="text-muted-foreground">
                   {formatTime(e.startsAt)}
                   {e.endsAt ? `–${formatTime(e.endsAt)}` : ""}
                 </p>
               </div>
               <div>
-                <p className="text-sm font-semibold text-stone-900">{e.title}</p>
-                <p className="text-xs text-stone-500">{e.subtitle}</p>
+                <p className="text-sm font-semibold text-foreground">{e.title}</p>
+                <p className="text-xs text-muted-foreground">{e.subtitle}</p>
               </div>
             </li>
           ))}

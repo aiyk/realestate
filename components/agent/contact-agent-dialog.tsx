@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/toast";
 
 type Props = {
   slug: string;
@@ -19,6 +20,7 @@ export function ContactAgentDialog({
   listingId,
   trigger,
 }: Props) {
+  const toast = useToast();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -55,8 +57,11 @@ export function ContactAgentDialog({
         throw new Error(d?.error?.message ?? "Could not send");
       }
       setDone(true);
+      toast.success(`Message sent to ${businessName}`);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "Could not send");
+      const msg = e instanceof Error ? e.message : "Could not send";
+      setErr(msg);
+      toast.error(msg);
     } finally {
       setBusy(false);
     }
@@ -78,7 +83,7 @@ export function ContactAgentDialog({
         className="contents"
       >
         {trigger ?? (
-          <span className="inline-flex items-center gap-2 rounded-full bg-emerald-700 px-5 py-2.5 text-sm font-semibold text-emerald-50 hover:bg-emerald-800">
+          <span className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover">
             <MessageCircle className="h-4 w-4" />
             Contact agent
           </span>
@@ -96,7 +101,7 @@ export function ContactAgentDialog({
       >
         {done ? (
           <div className="space-y-4">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               We&apos;ve also sent a copy to your inbox so the thread stays
               continuous.
             </p>
@@ -144,10 +149,10 @@ export function ContactAgentDialog({
                 maxLength={2000}
                 rows={4}
                 placeholder="What are you looking for? Areas, budget, timeline?"
-                className="flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+                className="flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
               />
             </div>
-            {err && <p className="text-sm text-red-600">{err}</p>}
+            {err && <p className="text-sm text-danger">{err}</p>}
             <div className="flex items-center justify-end gap-2 pt-2">
               <Button
                 type="button"

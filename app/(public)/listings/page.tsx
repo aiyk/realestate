@@ -1,12 +1,15 @@
 import Link from "next/link";
-import { Filter, X, MapPin, ChevronRight } from "lucide-react";
+import { X, MapPin, ChevronRight } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { listingFilterSchema } from "@/lib/schemas/listing";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Pagination } from "@/components/ui/pagination";
+import { buttonVariants } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { EmptyState } from "@/components/ui/empty-state";
 import { cn, formatNgn } from "@/lib/utils";
 import { ListingCard } from "@/components/listings/listing-card";
+import { ListingsFilterForm } from "@/components/listings/listings-filter-form";
+import { ListingsFilterMobile } from "@/components/listings/listings-filter-mobile";
 import { ListingTypesGrid } from "@/components/landing/listing-types-grid";
 import { AskBox } from "@/components/ui/ask-box";
 import { Callout } from "@/components/ui/callout";
@@ -20,13 +23,6 @@ export const dynamic = "force-dynamic";
 const PROPERTY_TYPES = [
   { value: "", label: "All types" },
   ...PROPERTY_TYPE_META.map((t) => ({ value: t.key, label: t.label })),
-];
-
-const PRICE_PRESETS = [
-  { min: 0, max: 30_000_000, label: "Under ₦30m" },
-  { min: 30_000_000, max: 80_000_000, label: "₦30m – ₦80m" },
-  { min: 80_000_000, max: 150_000_000, label: "₦80m – ₦150m" },
-  { min: 150_000_000, max: undefined, label: "Over ₦150m" },
 ];
 
 type Props = {
@@ -103,17 +99,24 @@ export default async function ListingsPage({ searchParams }: Props) {
   return (
     <main className="flex-1">
       {/* Header strip */}
-      <section className="border-b border-stone-200 bg-gradient-to-b from-stone-50 via-amber-50/30 to-white py-12">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="border-b border-border bg-gradient-to-b from-surface-2 via-accent-soft/30 to-card py-12">
+        <div className="mx-auto max-w-[100rem] px-6">
+          <Breadcrumb
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Listings" },
+            ]}
+            className="mb-4"
+          />
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 Browse the marketplace
               </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl text-balance">
+              <h1 className="t-h1 mt-2 text-balance">
                 {headingForFilters}
               </h1>
-              <p className="mt-2 text-sm text-stone-600 text-pretty">
+              <p className="mt-2 text-sm text-muted-foreground text-pretty">
                 {total === 0
                   ? "Nothing matched that combo — relax a filter and we'll find you something."
                   : `Showing ${items.length} of ${total} matches · sorted by newest`}
@@ -122,7 +125,7 @@ export default async function ListingsPage({ searchParams }: Props) {
                     {" · "}
                     <Link
                       href="/listings"
-                      className="font-medium text-emerald-700 hover:underline"
+                      className="font-medium text-primary hover:underline"
                     >
                       see all {totalAll}
                     </Link>
@@ -138,8 +141,8 @@ export default async function ListingsPage({ searchParams }: Props) {
                   className={cn(
                     "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
                     f.city === c.city
-                      ? "border-emerald-700 bg-emerald-700 text-white"
-                      : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card text-foreground hover:border-primary/30",
                   )}
                 >
                   <MapPin className="h-3 w-3" />
@@ -156,151 +159,42 @@ export default async function ListingsPage({ searchParams }: Props) {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-6 py-10">
+      <div className="mx-auto max-w-[100rem] px-6 py-10">
+        {/* Mobile filter trigger */}
+        <div className="mb-5 flex items-center justify-between lg:hidden">
+          <p className="text-sm text-muted-foreground">
+            {total} match{total === 1 ? "" : "es"}
+          </p>
+          <ListingsFilterMobile activeCount={activeFilters.length}>
+            <ListingsFilterForm
+              values={{
+                city: f.city,
+                propertyType: f.propertyType,
+                minPrice: f.minPrice,
+                maxPrice: f.maxPrice,
+                bedrooms: f.bedrooms,
+              }}
+              propertyTypes={PROPERTY_TYPES}
+              showHeader={false}
+              hasActiveFilters={activeFilters.length > 0}
+            />
+          </ListingsFilterMobile>
+        </div>
+
         <div className="grid gap-8 lg:grid-cols-[300px_1fr]">
-          {/* Filters */}
-          <aside className="lg:sticky lg:top-24 lg:h-fit">
-            <form
-              method="GET"
-              className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
-            >
-              <div className="flex items-center justify-between">
-                <p className="flex items-center gap-2 text-sm font-semibold">
-                  <Filter className="h-4 w-4 text-emerald-700" />
-                  Filter
-                </p>
-                {activeFilters.length > 0 && (
-                  <Link
-                    href="/listings"
-                    className="inline-flex items-center gap-1 text-xs text-stone-500 hover:text-stone-900"
-                  >
-                    <X className="h-3 w-3" /> Clear all
-                  </Link>
-                )}
-              </div>
-
-              <div className="mt-5 space-y-5">
-                <div>
-                  <Label htmlFor="city">City</Label>
-                  <Input
-                    id="city"
-                    name="city"
-                    defaultValue={f.city}
-                    placeholder="Lagos, Abuja…"
-                    className="mt-1.5"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="propertyType">Property type</Label>
-                  <select
-                    id="propertyType"
-                    name="propertyType"
-                    defaultValue={f.propertyType ?? ""}
-                    className="mt-1.5 h-11 w-full rounded-lg border border-stone-200 bg-white px-4 text-sm"
-                  >
-                    {PROPERTY_TYPES.map((t) => (
-                      <option key={t.value} value={t.value}>
-                        {t.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <Label>Price range</Label>
-                  <div className="mt-1.5 grid grid-cols-2 gap-1.5">
-                    {PRICE_PRESETS.map((p) => {
-                      const isActive =
-                        Number(f.minPrice ?? 0) === p.min &&
-                        (p.max === undefined
-                          ? f.maxPrice === undefined
-                          : Number(f.maxPrice ?? 0) === p.max);
-                      const params = new URLSearchParams();
-                      if (f.city) params.set("city", f.city);
-                      if (f.propertyType) params.set("propertyType", f.propertyType);
-                      if (f.bedrooms !== undefined)
-                        params.set("bedrooms", String(f.bedrooms));
-                      params.set("minPrice", String(p.min));
-                      if (p.max !== undefined)
-                        params.set("maxPrice", String(p.max));
-                      return (
-                        <Link
-                          key={p.label}
-                          href={`/listings?${params.toString()}`}
-                          className={cn(
-                            "rounded-lg border px-2 py-2 text-center text-[11px] font-medium transition-colors",
-                            isActive
-                              ? "border-emerald-700 bg-emerald-700 text-white"
-                              : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
-                          )}
-                        >
-                          {p.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-3 grid grid-cols-2 gap-2">
-                    <div>
-                      <Label htmlFor="minPrice" className="text-[10px]">
-                        Min ₦
-                      </Label>
-                      <Input
-                        id="minPrice"
-                        name="minPrice"
-                        type="number"
-                        min="0"
-                        defaultValue={f.minPrice}
-                        placeholder="0"
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="maxPrice" className="text-[10px]">
-                        Max ₦
-                      </Label>
-                      <Input
-                        id="maxPrice"
-                        name="maxPrice"
-                        type="number"
-                        min="0"
-                        defaultValue={f.maxPrice}
-                        placeholder="No limit"
-                        className="mt-1"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="bedrooms">Bedrooms (min)</Label>
-                  <div className="mt-1.5 grid grid-cols-5 gap-1">
-                    {[1, 2, 3, 4, 5].map((n) => (
-                      <label
-                        key={n}
-                        className={cn(
-                          "cursor-pointer rounded-lg border px-1 py-2 text-center text-xs font-medium transition-colors",
-                          f.bedrooms === n
-                            ? "border-emerald-700 bg-emerald-700 text-white"
-                            : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
-                        )}
-                      >
-                        <input
-                          type="radio"
-                          name="bedrooms"
-                          value={n}
-                          defaultChecked={f.bedrooms === n}
-                          className="hidden"
-                        />
-                        {n}+
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <Button type="submit" className="mt-6 w-full">
-                Apply filters
-              </Button>
-            </form>
+          {/* Filters — desktop sidebar */}
+          <aside className="hidden lg:sticky lg:top-24 lg:block lg:h-fit">
+            <ListingsFilterForm
+              values={{
+                city: f.city,
+                propertyType: f.propertyType,
+                minPrice: f.minPrice,
+                maxPrice: f.maxPrice,
+                bedrooms: f.bedrooms,
+              }}
+              propertyTypes={PROPERTY_TYPES}
+              hasActiveFilters={activeFilters.length > 0}
+            />
 
             {/* Concierge nudge */}
             <Callout
@@ -313,14 +207,14 @@ export default async function ListingsPage({ searchParams }: Props) {
             </Callout>
 
             {/* City map */}
-            <div className="mt-5 rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+            <div className="mt-5 rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                 Cities we&apos;re live in
               </p>
               <div className="mt-3">
                 <NigeriaMap />
               </div>
-              <p className="mt-3 text-xs text-stone-500">
+              <p className="mt-3 text-xs text-muted-foreground">
                 More cities every quarter. Subscribe in the footer for new-city
                 drops.
               </p>
@@ -331,7 +225,7 @@ export default async function ListingsPage({ searchParams }: Props) {
             {/* Active filter chips */}
             {activeFilters.length > 0 && (
               <div className="mb-5 flex flex-wrap items-center gap-2">
-                <span className="text-xs text-stone-500">Active:</span>
+                <span className="text-xs text-muted-foreground">Active:</span>
                 {activeFilters.map(([k, v]) => {
                   const label =
                     k === "minPrice"
@@ -348,7 +242,7 @@ export default async function ListingsPage({ searchParams }: Props) {
                   return (
                     <span
                       key={k}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs text-emerald-800 ring-1 ring-emerald-200"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-3 py-1 text-xs text-primary-soft-foreground ring-1 ring-primary/20"
                     >
                       {label}
                     </span>
@@ -356,7 +250,7 @@ export default async function ListingsPage({ searchParams }: Props) {
                 })}
                 <Link
                   href="/listings"
-                  className="inline-flex items-center gap-1 text-xs text-stone-500 hover:text-stone-900"
+                  className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground"
                 >
                   <X className="h-3 w-3" /> Clear
                 </Link>
@@ -364,30 +258,29 @@ export default async function ListingsPage({ searchParams }: Props) {
             )}
 
             {items.length === 0 ? (
-              <div className="rounded-3xl border border-dashed border-stone-300 bg-white p-12 text-center">
-                <NoListings className="mx-auto h-32" />
-                <p className="mt-4 text-lg font-semibold text-stone-700">
-                  Nothing matched your filters
-                </p>
-                <p className="mx-auto mt-1 max-w-md text-sm text-stone-500 text-pretty">
-                  Try relaxing one filter — or let us look for you. A real
-                  human reads every wishlist.
-                </p>
-                <div className="mt-6 flex flex-wrap justify-center gap-3">
-                  <Link
-                    href="/listings"
-                    className={cn(buttonVariants({ variant: "outline" }))}
-                  >
-                    Reset filters
-                  </Link>
-                  <Link
-                    href="/agents"
-                    className={cn(buttonVariants({ variant: "ghost" }))}
-                  >
-                    Talk to an agent
-                  </Link>
-                </div>
-                <div className="mx-auto mt-8 max-w-2xl">
+              <div className="rounded-3xl border border-dashed border-input bg-card p-6 sm:p-12">
+                <EmptyState
+                  illustration={<NoListings className="h-28 w-auto" />}
+                  title="Nothing matched your filters"
+                  description="Try relaxing one filter — or let us look for you. A real human reads every wishlist."
+                  action={
+                    <Link
+                      href="/listings"
+                      className={cn(buttonVariants({ variant: "outline" }))}
+                    >
+                      Reset filters
+                    </Link>
+                  }
+                  secondary={
+                    <Link
+                      href="/agents"
+                      className={cn(buttonVariants({ variant: "ghost" }))}
+                    >
+                      Talk to an agent
+                    </Link>
+                  }
+                />
+                <div className="mx-auto mt-2 max-w-2xl">
                   <AskBox
                     context={JSON.stringify({
                       city: f.city,
@@ -429,40 +322,24 @@ export default async function ListingsPage({ searchParams }: Props) {
               </div>
             )}
 
-            {pages > 1 && (
-              <nav className="mt-10 flex items-center justify-center gap-1">
-                {Array.from({ length: pages }, (_, i) => i + 1).map((p) => {
-                  const params = new URLSearchParams();
-                  for (const [k, v] of Object.entries(sp)) {
-                    if (typeof v === "string") params.set(k, v);
-                  }
-                  params.set("page", String(p));
-                  return (
-                    <Link
-                      key={p}
-                      href={`/listings?${params.toString()}`}
-                      className={cn(
-                        "h-10 w-10 grid place-items-center rounded-lg border text-sm font-medium transition-colors",
-                        p === f.page
-                          ? "border-emerald-700 bg-emerald-700 text-white"
-                          : "border-stone-200 bg-white text-stone-700 hover:border-emerald-300",
-                      )}
-                    >
-                      {p}
-                    </Link>
-                  );
-                })}
-              </nav>
-            )}
+            <Pagination
+              basePath="/listings"
+              page={f.page}
+              pages={pages}
+              total={total}
+              perPage={f.perPage}
+              searchParams={sp}
+            />
+
 
             {/* Footer ask */}
             {items.length > 0 && (
-              <div className="mt-12 flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-stone-200 bg-stone-50 p-6">
+              <div className="mt-12 flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-border bg-surface-2 p-6">
                 <div>
-                  <p className="text-sm font-semibold text-stone-900">
+                  <p className="text-sm font-semibold text-foreground">
                     Still looking?
                   </p>
-                  <p className="mt-1 text-sm text-stone-600 text-pretty">
+                  <p className="mt-1 text-sm text-muted-foreground text-pretty">
                     Tell us what you&apos;re after — we&apos;ll watch for
                     matches and only email you when we find one.
                   </p>

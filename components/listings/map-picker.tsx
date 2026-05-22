@@ -116,9 +116,9 @@ export function MapPicker({ initialLat, initialLng, onChange }: Props) {
           </Button>
         </div>
       </div>
-      {err && <p className="text-xs text-red-600">{err}</p>}
+      {err && <p className="text-xs text-danger">{err}</p>}
       {hasCoords ? (
-        <div className="overflow-hidden rounded-xl border border-stone-200 bg-stone-100">
+        <div className="overflow-hidden rounded-xl border border-border bg-surface-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={osmStaticUrl(latN, lngN)}
@@ -130,7 +130,7 @@ export function MapPicker({ initialLat, initialLng, onChange }: Props) {
           />
         </div>
       ) : (
-        <p className="text-xs text-stone-500">
+        <p className="text-xs text-muted-foreground">
           Adding coordinates lets buyers preview the location on a map.
         </p>
       )}

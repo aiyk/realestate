@@ -37,7 +37,9 @@ export function RatingStars({
         const filled = n <= shown;
         const cls = cn(
           SIZE[size],
-          filled ? "fill-amber-500 text-amber-500" : "text-stone-300",
+          filled
+            ? "fill-accent text-accent"
+            : "text-muted-foreground/40",
         );
         if (!interactive) return <Star key={n} className={cls} />;
         return (
@@ -52,7 +54,7 @@ export function RatingStars({
             onFocus={() => setHover(n)}
             onBlur={() => setHover(null)}
             onClick={() => onChange?.(n)}
-            className="rounded p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40"
+            className="rounded p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             <Star className={cls} />
           </button>

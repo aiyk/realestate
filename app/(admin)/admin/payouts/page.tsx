@@ -39,11 +39,11 @@ export default async function AdminPayoutsPage({ searchParams }: Props) {
   return (
     <section>
       <h1 className="text-2xl font-semibold">Commission payouts</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         {rows.length} {status ? `with status ${status}` : "ledger entries"}
       </p>
       {rows.length === 0 ? (
-        <p className="mt-10 rounded-lg border border-dashed border-neutral-300 p-12 text-center text-sm text-neutral-500">
+        <p className="mt-10 rounded-lg border border-dashed border-input p-12 text-center text-sm text-muted-foreground">
           No payouts.
         </p>
       ) : (
@@ -51,12 +51,12 @@ export default async function AdminPayoutsPage({ searchParams }: Props) {
           {rows.map((r) => (
             <div
               key={r.id}
-              className="rounded-lg border border-neutral-200 bg-white p-4"
+              className="rounded-lg border border-border bg-card p-4"
             >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-medium">{r.listing.title}</p>
-                  <p className="text-sm text-neutral-500">
+                  <p className="text-sm text-muted-foreground">
                     {r.agent?.businessName ?? "Platform-listed (no agent)"}
                     {r.agent?.bankAccountName && (
                       <> · {r.agent.bankAccountName}</>
@@ -64,28 +64,28 @@ export default async function AdminPayoutsPage({ searchParams }: Props) {
                     {r.agent?.user?.email && <> · {r.agent.user.email}</>}
                   </p>
                   <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 text-sm sm:grid-cols-4">
-                    <span className="text-neutral-500">Sale</span>
+                    <span className="text-muted-foreground">Sale</span>
                     <span>{formatNgn(r.salePriceNgn.toString())}</span>
-                    <span className="text-neutral-500">
+                    <span className="text-muted-foreground">
                       Agent ({Number(r.agentCommissionPct)}%)
                     </span>
                     <span>{formatNgn(r.agentCommissionNgn.toString())}</span>
-                    <span className="text-neutral-500">
+                    <span className="text-muted-foreground">
                       Platform fee ({Number(r.platformFeePct)}%)
                     </span>
                     <span>{formatNgn(r.platformFeeNgn.toString())}</span>
-                    <span className="text-neutral-500">Net payout</span>
+                    <span className="text-muted-foreground">Net payout</span>
                     <span className="font-medium">
                       {formatNgn(r.netPayoutNgn.toString())}
                     </span>
                   </div>
                   {r.notes && (
-                    <p className="mt-2 text-xs text-neutral-500">
+                    <p className="mt-2 text-xs text-muted-foreground">
                       Notes: {r.notes}
                     </p>
                   )}
                   {r.paystackTransferRef && (
-                    <p className="mt-1 text-xs text-neutral-500">
+                    <p className="mt-1 text-xs text-muted-foreground">
                       Transfer ref: <code>{r.paystackTransferRef}</code>
                     </p>
                   )}

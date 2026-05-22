@@ -104,7 +104,7 @@ export function Trustmarks({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "flex flex-wrap items-center gap-x-8 gap-y-3 text-stone-400",
+        "flex flex-wrap items-center gap-x-8 gap-y-3 text-muted-foreground",
         className,
       )}
     >

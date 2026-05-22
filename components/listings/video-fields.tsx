@@ -89,7 +89,7 @@ export function VideoFields({
             />
           </div>
         ) : yt.trim() ? (
-          <p className="mt-1 text-xs text-amber-700">
+          <p className="mt-1 text-xs text-accent">
             Couldn&apos;t detect a YouTube video id from that input.
           </p>
         ) : null}

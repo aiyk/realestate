@@ -122,9 +122,9 @@ export function OpenHouseEditor({ listingId, initial }: Props) {
         action={(fd) => {
           void add(fd);
         }}
-        className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+        className="rounded-2xl border border-border bg-card p-5 shadow-sm"
       >
-        <p className="text-sm font-semibold text-stone-900">Schedule an open house</p>
+        <p className="text-sm font-semibold text-foreground">Schedule an open house</p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <div>
             <Label htmlFor="startsAt">Starts</Label>
@@ -162,7 +162,7 @@ export function OpenHouseEditor({ listingId, initial }: Props) {
             />
           </div>
         </div>
-        {err && <p className="mt-2 text-xs text-red-600">{err}</p>}
+        {err && <p className="mt-2 text-xs text-danger">{err}</p>}
         <div className="mt-3">
           <Button type="submit" disabled={busy}>
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <CalendarPlus className="h-4 w-4" />}
@@ -172,34 +172,34 @@ export function OpenHouseEditor({ listingId, initial }: Props) {
       </form>
 
       <div>
-        <p className="text-sm font-semibold text-stone-900">Upcoming open houses</p>
+        <p className="text-sm font-semibold text-foreground">Upcoming open houses</p>
         {items.length === 0 ? (
-          <p className="mt-2 text-sm text-stone-500">No open houses scheduled yet.</p>
+          <p className="mt-2 text-sm text-muted-foreground">No open houses scheduled yet.</p>
         ) : (
           <ul className="mt-3 space-y-2">
             {items.map((o) => (
               <li
                 key={o.id}
-                className="flex items-start justify-between gap-3 rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm"
+                className="flex items-start justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3 text-sm"
               >
                 <div>
-                  <p className="font-medium text-stone-900">
+                  <p className="font-medium text-foreground">
                     {formatRange(o.startsAt, o.endsAt)}
                   </p>
                   {o.capacity && (
-                    <p className="text-xs text-stone-500">
+                    <p className="text-xs text-muted-foreground">
                       Capacity {o.capacity}
                     </p>
                   )}
                   {o.notes && (
-                    <p className="mt-1 text-xs text-stone-600">{o.notes}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{o.notes}</p>
                   )}
                 </div>
                 <button
                   type="button"
                   onClick={() => void remove(o.id)}
                   aria-label="Cancel open house"
-                  className="rounded-full p-1.5 text-red-600 hover:bg-red-50"
+                  className="rounded-full p-1.5 text-danger hover:bg-danger-soft"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>

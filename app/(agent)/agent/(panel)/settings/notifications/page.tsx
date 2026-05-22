@@ -19,10 +19,10 @@ export default async function SettingsNotificationsPage() {
   return (
     <section>
       <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
-      <p className="mt-1 text-sm text-stone-600">
+      <p className="mt-1 text-sm text-muted-foreground">
         Choose what reaches you, and where.
       </p>
-      <nav className="mt-6 flex gap-2 border-b border-stone-200">
+      <nav className="mt-6 flex gap-2 border-b border-border">
         {tabs.map((t) => (
           <Link
             key={t.href}
@@ -30,8 +30,8 @@ export default async function SettingsNotificationsPage() {
             className={cn(
               "border-b-2 px-3 pb-2 text-sm font-medium",
               t.href === "/agent/settings/notifications"
-                ? "border-emerald-700 text-emerald-800"
-                : "border-transparent text-stone-500 hover:text-stone-800",
+                ? "border-primary text-primary-soft-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
             {t.label}

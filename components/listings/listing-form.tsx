@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { MapPicker } from "@/components/listings/map-picker";
 import { VideoFields } from "@/components/listings/video-fields";
 import { ListingImageManager } from "@/components/listings/listing-image-manager";
@@ -158,7 +159,7 @@ export function ListingForm({
       data-locked={fullyLocked ? "true" : undefined}
     >
       {lockLevel === "LIMITED" && (
-        <div className="md:col-span-2 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+        <div className="md:col-span-2 rounded-2xl border border-accent/20 bg-accent-soft px-4 py-3 text-sm text-accent-soft-foreground">
           <p className="font-semibold">Limited edits</p>
           <p className="mt-1">
             Address, property type and map location are locked once a listing
@@ -168,7 +169,7 @@ export function ListingForm({
         </div>
       )}
       {lockLevel === "LOCKED" && (
-        <div className="md:col-span-2 rounded-2xl border border-stone-200 bg-stone-50 px-4 py-3 text-sm text-stone-700">
+        <div className="md:col-span-2 rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm text-foreground">
           Editing is paused while this listing is under review (or already
           reserved/sold).
         </div>
@@ -196,23 +197,23 @@ export function ListingForm({
           minLength={20}
           maxLength={5000}
           rows={5}
-          className="mt-1 block w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm placeholder:text-neutral-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
+          className="mt-1 block w-full rounded-md border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-neutral-400"
         />
       </div>
 
       <div>
         <Label htmlFor="propertyType">Property type</Label>
-        <select
+        <Select
           id="propertyType"
           name="propertyType"
           defaultValue={initial?.propertyType ?? "HOUSE"}
           disabled={hardLocked}
-          className="mt-1 block h-10 w-full rounded-md border border-neutral-200 bg-white px-3 text-sm disabled:bg-stone-100 disabled:opacity-60"
+          className="mt-1"
         >
           {PROPERTY_TYPES.map((t) => (
             <option key={t}>{t}</option>
           ))}
-        </select>
+        </Select>
       </div>
       <div>
         <Label htmlFor="priceNgn">Price (₦)</Label>
@@ -240,7 +241,7 @@ export function ListingForm({
           className="mt-1"
         />
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         <div>
           <Label htmlFor="bedrooms">Beds</Label>
           <Input
@@ -391,7 +392,7 @@ export function ListingForm({
       </div>
 
       {error && (
-        <p className="md:col-span-2 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <p className="md:col-span-2 rounded-md bg-danger-soft p-3 text-sm text-danger-soft-foreground">
           {error}
         </p>
       )}

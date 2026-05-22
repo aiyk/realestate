@@ -8,11 +8,11 @@ export default function SignupPage() {
   return (
     <AuthShell variant="signup" showFeatures>
       <h2 className="text-2xl font-bold tracking-tight">Create your account</h2>
-      <p className="mt-1 text-sm text-stone-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         Takes about 30 seconds.{" "}
         <Link
           href="/login"
-          className="font-medium text-emerald-700 underline"
+          className="font-medium text-primary underline"
         >
           Already have one?
         </Link>
@@ -20,7 +20,7 @@ export default function SignupPage() {
       <div className="mt-6">
         <SignupForm />
       </div>
-      <p className="mt-5 text-xs text-stone-500 text-pretty">
+      <p className="mt-5 text-xs text-muted-foreground text-pretty">
         By signing up you agree to our{" "}
         <Link href="/legal/terms" className="underline">
           Terms

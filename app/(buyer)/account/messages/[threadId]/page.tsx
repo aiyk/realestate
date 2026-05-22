@@ -39,14 +39,14 @@ export default async function MessageThreadPage({ params }: Props) {
     <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-8">
       <Link
         href="/account/messages"
-        className="text-sm text-neutral-500 hover:underline"
+        className="text-sm text-muted-foreground hover:underline"
       >
         ← Inbox
       </Link>
       <h1 className="mt-2 text-2xl font-semibold">{thread.listing.title}</h1>
       <Link
         href={`/listings/${thread.listing.slug}`}
-        className="text-sm text-neutral-500 underline"
+        className="text-sm text-muted-foreground underline"
       >
         View listing
       </Link>

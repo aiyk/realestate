@@ -68,9 +68,9 @@ export function ReviewSubmitDialog({
           setDone(false);
           setErr(null);
         }}
-        className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-medium text-amber-900 hover:bg-amber-100"
+        className="inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent-soft px-3 py-1.5 text-xs font-medium text-accent-soft-foreground hover:bg-accent-soft"
       >
-        <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
+        <Star className="h-3.5 w-3.5 fill-accent text-accent" />
         {triggerLabel}
       </button>
       <Dialog
@@ -85,7 +85,7 @@ export function ReviewSubmitDialog({
       >
         {done ? (
           <div className="space-y-4">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               Your rating is now visible on the public profile.
             </p>
             <Button type="button" onClick={() => setOpen(false)}>
@@ -95,7 +95,7 @@ export function ReviewSubmitDialog({
         ) : (
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-medium text-stone-900">
+              <p className="text-sm font-medium text-foreground">
                 Your rating
               </p>
               <div className="mt-1">
@@ -110,7 +110,7 @@ export function ReviewSubmitDialog({
             <div>
               <label
                 htmlFor="reviewBody"
-                className="text-sm font-medium text-stone-900"
+                className="text-sm font-medium text-foreground"
               >
                 What stood out? (optional)
               </label>
@@ -121,10 +121,10 @@ export function ReviewSubmitDialog({
                 rows={4}
                 maxLength={2000}
                 placeholder="Communication, neighbourhood knowledge, how viewings went, closing experience…"
-                className="mt-1 flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+                className="mt-1 flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
               />
             </div>
-            {err && <p className="text-sm text-red-600">{err}</p>}
+            {err && <p className="text-sm text-danger">{err}</p>}
             <div className="flex items-center justify-end gap-2 pt-2">
               <Button
                 type="button"

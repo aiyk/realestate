@@ -51,16 +51,16 @@ export default async function AccountHome() {
   return (
     <main className="flex-1">
       {/* Hero greeting */}
-      <section className="relative overflow-hidden border-b border-stone-100 bg-gradient-to-b from-amber-50/40 via-white to-white">
-        <LagosSkyline className="absolute inset-x-0 bottom-0 h-20 text-emerald-700/15" />
+      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-accent-soft/40 via-white to-white">
+        <LagosSkyline className="absolute inset-x-0 bottom-0 h-20 text-primary/15" />
         <div className="relative mx-auto max-w-5xl px-6 py-12">
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Your space
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+          <h1 className="t-h1 mt-2 text-balance">
             {greet(firstName)}
           </h1>
-          <p className="mt-2 max-w-lg text-stone-600 text-pretty">
+          <p className="mt-2 max-w-lg text-muted-foreground text-pretty">
             Here&apos;s what&apos;s on your dashboard, and the one thing
             we&apos;d do next.
           </p>
@@ -75,7 +75,7 @@ export default async function AccountHome() {
               The next best move: {" "}
               <Link
                 href={nextStep.href}
-                className="font-semibold text-emerald-700 hover:underline"
+                className="font-semibold text-primary hover:underline"
               >
                 {nextStep.label} →
               </Link>
@@ -177,15 +177,15 @@ export default async function AccountHome() {
 
         {/* Agent CTA + saved searches */}
         <div className="mt-8 grid gap-4 lg:grid-cols-2">
-          <div className="relative overflow-hidden rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-6">
-            <Sparkles className="absolute right-4 top-4 h-6 w-6 text-amber-500" />
-            <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">
+          <div className="relative overflow-hidden rounded-3xl border border-accent/20 bg-gradient-to-br from-accent-soft via-white to-primary-soft p-6">
+            <Sparkles className="absolute right-4 top-4 h-6 w-6 text-accent" />
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent">
               Side hustle
             </p>
-            <p className="mt-2 text-lg font-semibold text-stone-900">
+            <p className="mt-2 text-lg font-semibold text-foreground">
               List as an agent
             </p>
-            <p className="mt-1 text-sm text-stone-600 text-pretty">
+            <p className="mt-1 text-sm text-muted-foreground text-pretty">
               If you sell property, we&apos;d love to verify you. Same-week
               Paystack payouts, a real ledger, no chasing.
             </p>
@@ -203,19 +203,19 @@ export default async function AccountHome() {
 
           <Callout
             tone="info"
-            title="Saved searches & favourites"
-            icon={<Heart className="h-5 w-5 text-rose-500" />}
+            title="Your favourites"
+            icon={<Heart className="h-5 w-5 text-danger" />}
           >
-            Coming soon — heart any listing and we&apos;ll watch for
-            price-drops, new photos, or status changes on your behalf.
+            Tap the heart on any listing to save it here. We watch every save
+            for price-drops, new photos, or status changes.
             <Link
-              href="/listings"
+              href="/account/favorites"
               className={cn(
                 buttonVariants({ variant: "outline", size: "sm" }),
                 "mt-3",
               )}
             >
-              Browse listings
+              View favourites
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </Callout>
@@ -245,33 +245,33 @@ function Status({
   actionLabel: string;
 }) {
   return (
-    <div className="rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
+    <div className="rounded-3xl border border-border bg-card p-6 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-start gap-3">
           <div
             className={cn(
               "grid h-10 w-10 place-items-center rounded-xl",
               ok
-                ? "bg-emerald-50 text-emerald-700"
+                ? "bg-primary-soft text-primary"
                 : failed
-                  ? "bg-rose-50 text-rose-700"
-                  : "bg-amber-50 text-amber-700",
+                  ? "bg-danger-soft text-danger-soft-foreground"
+                  : "bg-accent-soft text-accent",
             )}
           >
             {ok ? <CheckCircle2 className="h-5 w-5" /> : icon}
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {label}
             </p>
-            <p className="mt-1 font-semibold text-stone-900">
+            <p className="mt-1 font-semibold text-foreground">
               {ok
                 ? "All set"
                 : failed
                   ? "Needs another try"
                   : "Awaiting you"}
             </p>
-            <p className="mt-1 text-sm text-stone-600 text-pretty">
+            <p className="mt-1 text-sm text-muted-foreground text-pretty">
               {ok ? okMessage : pendingMessage}
             </p>
           </div>
@@ -313,16 +313,16 @@ function ShortcutCard({
   return (
     <Link
       href={href}
-      className="group rounded-3xl border border-stone-200 bg-white p-6 transition-all hover-lift"
+      className="group rounded-3xl border border-border bg-card p-6 transition-all hover-lift"
     >
-      <div className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+      <div className="grid h-11 w-11 place-items-center rounded-xl bg-primary-soft text-primary">
         {icon}
       </div>
-      <p className="mt-3 font-semibold text-stone-900 group-hover:text-emerald-700">
+      <p className="mt-3 font-semibold text-foreground group-hover:text-primary">
         {title}
       </p>
-      <p className="mt-1 text-sm text-stone-600 text-pretty">{desc}</p>
-      <p className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-emerald-700">
+      <p className="mt-1 text-sm text-muted-foreground text-pretty">{desc}</p>
+      <p className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-primary">
         Open <ArrowRight className="h-3 w-3" />
       </p>
     </Link>

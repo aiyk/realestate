@@ -13,7 +13,7 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
       <h2 className="text-2xl font-bold tracking-tight">
         Reset your password
       </h2>
-      <p className="mt-1 text-sm text-stone-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         Pick something memorable. A short sentence beats a clever symbol every
         time.
       </p>

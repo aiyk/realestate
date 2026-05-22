@@ -1,16 +1,33 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Check, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useToast } from "@/components/ui/toast";
+import { cn } from "@/lib/utils";
 
 type Status = "NEW" | "CONTACTED" | "QUALIFIED" | "BOOKED" | "LOST";
 
 const OPTIONS: Status[] = ["NEW", "CONTACTED", "QUALIFIED", "BOOKED", "LOST"];
 
+const TONE: Record<Status, string> = {
+  NEW: "bg-info-soft text-info-soft-foreground",
+  CONTACTED: "bg-primary-soft text-primary-soft-foreground",
+  QUALIFIED: "bg-accent-soft text-accent-soft-foreground",
+  BOOKED: "bg-success-soft text-success-soft-foreground",
+  LOST: "bg-muted text-muted-foreground",
+};
+
 type Props = { leadId: string; current: Status };
 
 export function LeadStatusChanger({ leadId, current }: Props) {
   const router = useRouter();
+  const toast = useToast();
   const [value, setValue] = useState<Status>(current);
   const [busy, setBusy] = useState(false);
 
@@ -25,9 +42,11 @@ export function LeadStatusChanger({ leadId, current }: Props) {
         body: JSON.stringify({ status: next }),
       });
       if (!res.ok) throw new Error();
+      toast.success(`Marked ${next.toLowerCase()}`);
       router.refresh();
     } catch {
       setValue(current);
+      toast.error("Couldn't update status");
     } finally {
       setBusy(false);
     }
@@ -35,22 +54,42 @@ export function LeadStatusChanger({ leadId, current }: Props) {
 
   return (
     <div className="inline-flex items-center gap-2">
-      <label className="text-xs font-medium uppercase tracking-wide text-stone-500">
+      <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
         Status
-      </label>
-      <select
-        value={value}
-        disabled={busy}
-        onChange={(e) => void change(e.target.value as Status)}
-        className="h-9 rounded-full border border-stone-200 bg-white px-3 text-sm focus-visible:border-emerald-500 focus-visible:outline-none"
-      >
-        {OPTIONS.map((s) => (
-          <option key={s} value={s}>
-            {s}
-          </option>
-        ))}
-      </select>
-      {busy && <Loader2 className="h-3 w-3 animate-spin text-stone-500" />}
+      </span>
+      <DropdownMenu align="end">
+        <DropdownMenuTrigger
+          disabled={busy}
+          className={cn(
+            "inline-flex h-9 items-center gap-2 rounded-full px-3 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            TONE[value],
+          )}
+        >
+          {value}
+          {busy ? (
+            <Loader2 className="h-3 w-3 animate-spin" />
+          ) : (
+            <ChevronDown className="h-3 w-3" />
+          )}
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          {OPTIONS.map((s) => (
+            <DropdownMenuItem
+              key={s}
+              onSelect={() => void change(s)}
+              icon={
+                s === value ? (
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                ) : (
+                  <span className="inline-block h-3.5 w-3.5" />
+                )
+              }
+            >
+              {s}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }

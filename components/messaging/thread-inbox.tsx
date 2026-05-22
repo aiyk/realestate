@@ -23,16 +23,16 @@ export function ThreadInbox({ basePath }: { basePath: string }) {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p className="text-sm text-neutral-500">Loading…</p>;
+  if (loading) return <p className="text-sm text-muted-foreground">Loading…</p>;
   if (threads.length === 0) {
     return (
-      <p className="rounded-lg border border-dashed border-neutral-300 p-12 text-center text-sm text-neutral-500">
+      <p className="rounded-lg border border-dashed border-input p-12 text-center text-sm text-muted-foreground">
         No conversations yet.
       </p>
     );
   }
   return (
-    <ul className="divide-y divide-neutral-100 rounded-lg border border-neutral-200 bg-white">
+    <ul className="divide-y divide-neutral-100 rounded-lg border border-border bg-card">
       {threads.map((t) => {
         const unread =
           t.lastMessage && t.lastReadAt
@@ -42,7 +42,7 @@ export function ThreadInbox({ basePath }: { basePath: string }) {
           <li key={t.id}>
             <Link
               href={`${basePath}/${t.id}`}
-              className="flex items-center justify-between gap-4 p-4 hover:bg-neutral-50"
+              className="flex items-center justify-between gap-4 p-4 hover:bg-surface-2"
             >
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">
@@ -51,11 +51,11 @@ export function ThreadInbox({ basePath }: { basePath: string }) {
                     <span className="ml-2 inline-block h-2 w-2 rounded-full bg-blue-600 align-middle" />
                   )}
                 </p>
-                <p className="mt-0.5 truncate text-sm text-neutral-500">
+                <p className="mt-0.5 truncate text-sm text-muted-foreground">
                   {t.lastMessage?.body ?? "No messages yet"}
                 </p>
               </div>
-              <span className="shrink-0 text-xs text-neutral-400">
+              <span className="shrink-0 text-xs text-text-subtle">
                 {new Date(t.lastMessageAt).toLocaleString()}
               </span>
             </Link>

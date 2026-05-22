@@ -60,7 +60,7 @@ export function ListingMediaExtras({
     <div className="space-y-8">
       {youtubeEmbedId && (
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Walkthrough video
           </p>
           <div className="mt-3 aspect-video overflow-hidden rounded-2xl bg-black">
@@ -83,9 +83,9 @@ export function ListingMediaExtras({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => track(listingId, "LISTING_VIRTUAL_TOUR_OPEN")}
-              className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-800 hover:bg-stone-50"
+              className="inline-flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
             >
-              <Globe className="h-4 w-4 text-emerald-700" />
+              <Globe className="h-4 w-4 text-primary" />
               Open virtual tour
             </a>
           )}
@@ -94,9 +94,9 @@ export function ListingMediaExtras({
               href={videoUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-800 hover:bg-stone-50"
+              className="inline-flex items-center gap-2 rounded-full border border-input bg-card px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
             >
-              <Film className="h-4 w-4 text-emerald-700" />
+              <Film className="h-4 w-4 text-primary" />
               Watch full video
             </a>
           )}
@@ -104,28 +104,28 @@ export function ListingMediaExtras({
       )}
       {openHouses.length > 0 && (
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             Open houses
           </p>
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             Show up during these windows — no appointment needed.
           </p>
           <ul className="mt-3 space-y-2">
             {openHouses.map((o, i) => (
               <li
                 key={`${o.startsAt}-${i}`}
-                className="flex items-start gap-3 rounded-2xl border border-stone-200 bg-white px-4 py-3"
+                className="flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3"
               >
-                <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+                <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                 <div>
-                  <p className="text-sm font-medium text-stone-900">
+                  <p className="text-sm font-medium text-foreground">
                     {formatRange(o.startsAt, o.endsAt)}
                   </p>
                   {o.notes && (
-                    <p className="mt-0.5 text-xs text-stone-600">{o.notes}</p>
+                    <p className="mt-0.5 text-xs text-muted-foreground">{o.notes}</p>
                   )}
                   {o.capacity && (
-                    <p className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-stone-500">
+                    <p className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                       <Users className="h-3 w-3" /> Up to {o.capacity} guests
                     </p>
                   )}

@@ -100,24 +100,24 @@ export function NotificationBell() {
         type="button"
         aria-label={`Notifications${unread > 0 ? ` (${unread} unread)` : ""}`}
         onClick={() => setOpen((v) => !v)}
-        className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-stone-600 hover:bg-stone-100 hover:text-stone-900"
+        className="relative inline-flex h-9 w-9 items-center justify-center rounded-full text-muted-foreground hover:bg-surface-2 hover:text-foreground"
       >
         <Bell className="h-5 w-5" />
         {unread > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-red-600 px-1 text-[10px] font-bold text-white">
+          <span className="absolute -right-0.5 -top-0.5 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-danger px-1 text-[10px] font-bold text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
       </button>
       {open && (
-        <div className="absolute right-0 z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-xl">
-          <div className="flex items-center justify-between border-b border-stone-100 px-4 py-3">
-            <p className="text-sm font-semibold text-stone-900">Notifications</p>
+        <div className="absolute right-0 z-50 mt-2 w-80 overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
+          <div className="flex items-center justify-between border-b border-border px-4 py-3">
+            <p className="text-sm font-semibold text-foreground">Notifications</p>
             {unread > 0 && (
               <button
                 type="button"
                 onClick={markAllRead}
-                className="text-xs font-medium text-emerald-700 hover:underline"
+                className="text-xs font-medium text-primary hover:underline"
               >
                 Mark all read
               </button>
@@ -125,9 +125,9 @@ export function NotificationBell() {
           </div>
           <div className="max-h-96 overflow-y-auto">
             {loading ? (
-              <p className="px-4 py-6 text-center text-sm text-stone-500">Loading…</p>
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">Loading…</p>
             ) : items.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm text-stone-500">
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
                 You&apos;re all caught up.
               </p>
             ) : (
@@ -137,19 +137,19 @@ export function NotificationBell() {
                   const inner = (
                     <div
                       className={cn(
-                        "flex flex-col gap-1 border-b border-stone-100 px-4 py-3 last:border-b-0",
-                        isUnread && "bg-emerald-50/60",
+                        "flex flex-col gap-1 border-b border-border px-4 py-3 last:border-b-0",
+                        isUnread && "bg-primary-soft/60",
                       )}
                     >
-                      <p className="text-sm font-medium text-stone-900">
+                      <p className="text-sm font-medium text-foreground">
                         {n.title}
                       </p>
                       {n.body && (
-                        <p className="line-clamp-2 text-xs text-stone-600">
+                        <p className="line-clamp-2 text-xs text-muted-foreground">
                           {n.body}
                         </p>
                       )}
-                      <p className="text-[10px] uppercase tracking-wide text-stone-400">
+                      <p className="text-[10px] uppercase tracking-wide text-text-subtle">
                         {timeAgo(n.createdAt)}
                       </p>
                     </div>
@@ -163,7 +163,7 @@ export function NotificationBell() {
                             if (isUnread) void markRead(n.id);
                             setOpen(false);
                           }}
-                          className="block hover:bg-stone-50"
+                          className="block hover:bg-surface-2"
                         >
                           {inner}
                         </Link>
@@ -173,7 +173,7 @@ export function NotificationBell() {
                           onClick={() => {
                             if (isUnread) void markRead(n.id);
                           }}
-                          className="block w-full text-left hover:bg-stone-50"
+                          className="block w-full text-left hover:bg-surface-2"
                         >
                           {inner}
                         </button>
@@ -187,7 +187,7 @@ export function NotificationBell() {
           <Link
             href="/agent/notifications"
             onClick={() => setOpen(false)}
-            className="block border-t border-stone-100 px-4 py-3 text-center text-sm font-medium text-emerald-700 hover:bg-stone-50"
+            className="block border-t border-border px-4 py-3 text-center text-sm font-medium text-primary hover:bg-surface-2"
           >
             See all
           </Link>

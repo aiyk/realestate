@@ -42,18 +42,18 @@ const ROWS: Row[] = [
  */
 export function ComparisonTable() {
   return (
-    <div className="grid gap-px overflow-hidden rounded-3xl bg-stone-200 shadow-sm">
+    <div className="grid gap-px overflow-hidden rounded-3xl bg-surface-3 shadow-sm">
       {/* Header */}
-      <div className="grid grid-cols-[1fr_1fr_1fr] bg-stone-50 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-stone-500 sm:px-6">
+      <div className="grid grid-cols-[1fr_1fr_1fr] bg-surface-2 px-4 py-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground sm:px-6">
         <div>Topic</div>
         <div className="flex items-center gap-1.5">
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-stone-200 text-stone-600">
+          <span className="grid h-5 w-5 place-items-center rounded-full bg-surface-3 text-muted-foreground">
             <X className="h-3 w-3" />
           </span>
           The old way
         </div>
         <div className="flex items-center gap-1.5">
-          <span className="grid h-5 w-5 place-items-center rounded-full bg-emerald-100 text-emerald-700">
+          <span className="grid h-5 w-5 place-items-center rounded-full bg-primary-soft text-primary">
             <Check className="h-3 w-3" />
           </span>
           With Realestate
@@ -63,18 +63,18 @@ export function ComparisonTable() {
       {ROWS.map((r) => (
         <div
           key={r.topic}
-          className="grid grid-cols-1 gap-4 bg-white px-4 py-5 sm:grid-cols-[1fr_1fr_1fr] sm:px-6"
+          className="grid grid-cols-1 gap-4 bg-card px-4 py-5 sm:grid-cols-[1fr_1fr_1fr] sm:px-6"
         >
-          <div className="text-sm font-semibold text-stone-900">{r.topic}</div>
+          <div className="text-sm font-semibold text-foreground">{r.topic}</div>
           {/* Them — left chat bubble */}
           <div className="flex">
-            <div className="rounded-2xl rounded-tl-md bg-stone-100 px-4 py-3 text-sm text-stone-600">
+            <div className="rounded-2xl rounded-tl-md bg-surface-2 px-4 py-3 text-sm text-muted-foreground">
               {r.them}
             </div>
           </div>
           {/* Us — right chat bubble */}
           <div className="flex sm:justify-end">
-            <div className="rounded-2xl rounded-tr-md bg-emerald-700 px-4 py-3 text-sm text-emerald-50">
+            <div className="rounded-2xl rounded-tr-md bg-primary px-4 py-3 text-sm text-primary-foreground">
               {r.us}
             </div>
           </div>

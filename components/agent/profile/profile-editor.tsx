@@ -61,7 +61,7 @@ type Initial = {
 
 function SavedBadge({ at }: { at: number | null }) {
   if (!at) return null;
-  return <span className="text-xs text-emerald-700">Saved.</span>;
+  return <span className="text-xs text-primary">Saved.</span>;
 }
 
 function ChipList({
@@ -90,14 +90,14 @@ function ChipList({
         {values.map((v) => (
           <span
             key={v}
-            className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-800"
+            className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary-soft-foreground"
           >
             {v}
             <button
               type="button"
               onClick={() => onChange(values.filter((x) => x !== v))}
               aria-label={`Remove ${v}`}
-              className="rounded-full p-0.5 hover:bg-emerald-200"
+              className="rounded-full p-0.5 hover:bg-primary-soft"
             >
               <X className="h-3 w-3" />
             </button>
@@ -276,7 +276,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
   return (
     <div>
-      <nav className="flex flex-wrap gap-1 border-b border-stone-200 pb-px">
+      <nav className="flex flex-wrap gap-1 border-b border-border pb-px">
         {TABS.map((t) => (
           <button
             key={t}
@@ -285,8 +285,8 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
             className={cn(
               "border-b-2 px-3 py-2 text-sm font-medium",
               tab === t
-                ? "border-emerald-700 text-emerald-800"
-                : "border-transparent text-stone-500 hover:text-stone-800",
+                ? "border-primary text-primary-soft-foreground"
+                : "border-transparent text-muted-foreground hover:text-foreground",
             )}
           >
             {t}
@@ -342,7 +342,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
                 rows={5}
                 maxLength={2000}
                 placeholder="What sets you apart? Areas you know, deals you've closed, your approach."
-                className="flex w-full rounded-lg border border-stone-200 bg-white px-4 py-2 text-sm shadow-sm focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+                className="flex w-full rounded-lg border border-border bg-card px-4 py-2 text-sm shadow-sm focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
               />
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -375,7 +375,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
                 placeholder="+2348012345678"
                 onChange={(e) => setWhatsapp(e.target.value)}
               />
-              <p className="mt-1 text-xs text-stone-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Buyers can tap WhatsApp on your public profile if this is set.
               </p>
             </div>
@@ -386,7 +386,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt.Basics ?? null} />
               {err.Basics && (
-                <span className="text-xs text-red-600">{err.Basics}</span>
+                <span className="text-xs text-danger">{err.Basics}</span>
               )}
             </div>
           </div>
@@ -394,7 +394,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
         {tab === "Specialties" && (
           <div className="space-y-5">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               Which property types do you specialise in? Buyers filter the
               directory by these.
             </p>
@@ -415,8 +415,8 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
                     className={cn(
                       "rounded-full px-4 py-2 text-sm font-medium ring-1 transition",
                       on
-                        ? "bg-emerald-700 text-white ring-emerald-700"
-                        : "bg-white text-stone-700 ring-stone-200 hover:bg-stone-50",
+                        ? "bg-primary text-white ring-primary"
+                        : "bg-card text-foreground ring-border hover:bg-surface-2",
                     )}
                   >
                     {pt}
@@ -437,7 +437,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt.Specialties ?? null} />
               {err.Specialties && (
-                <span className="text-xs text-red-600">{err.Specialties}</span>
+                <span className="text-xs text-danger">{err.Specialties}</span>
               )}
             </div>
           </div>
@@ -445,7 +445,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
         {tab === "Languages" && (
           <div className="space-y-5">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               List languages you can negotiate in. Suggestions: English, Yoruba,
               Igbo, Hausa, Pidgin.
             </p>
@@ -465,7 +465,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt.Languages ?? null} />
               {err.Languages && (
-                <span className="text-xs text-red-600">{err.Languages}</span>
+                <span className="text-xs text-danger">{err.Languages}</span>
               )}
             </div>
           </div>
@@ -473,20 +473,20 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
         {tab === "Service areas" && (
           <div className="space-y-5">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               Cities &amp; states you cover. The first one is your primary area.
             </p>
             <ul className="space-y-2">
               {serviceAreas.map((a, i) => (
                 <li
                   key={`${a.city}-${a.state}-${i}`}
-                  className="flex items-center gap-3 rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm"
+                  className="flex items-center gap-3 rounded-xl border border-border bg-card px-3 py-2 text-sm"
                 >
-                  <span className="font-medium text-stone-900">
+                  <span className="font-medium text-foreground">
                     {a.city}, {a.state}
                   </span>
                   {a.isPrimary && (
-                    <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-800">
+                    <span className="rounded-full bg-primary-soft px-2 py-0.5 text-[10px] font-semibold text-primary-soft-foreground">
                       PRIMARY
                     </span>
                   )}
@@ -502,7 +502,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
                             })),
                           )
                         }
-                        className="text-xs font-medium text-emerald-700 hover:underline"
+                        className="text-xs font-medium text-primary hover:underline"
                       >
                         Make primary
                       </button>
@@ -514,7 +514,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
                           serviceAreas.filter((_, idx) => idx !== i),
                         )
                       }
-                      className="text-xs font-medium text-red-600 hover:underline"
+                      className="text-xs font-medium text-danger hover:underline"
                     >
                       Remove
                     </button>
@@ -550,7 +550,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt["Service areas"] ?? null} />
               {err["Service areas"] && (
-                <span className="text-xs text-red-600">
+                <span className="text-xs text-danger">
                   {err["Service areas"]}
                 </span>
               )}
@@ -560,7 +560,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
         {tab === "Socials" && (
           <div className="space-y-4">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               Buyers click these icons on your public profile. Leave any blank
               to hide.
             </p>
@@ -590,7 +590,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt.Socials ?? null} />
               {err.Socials && (
-                <span className="text-xs text-red-600">{err.Socials}</span>
+                <span className="text-xs text-danger">{err.Socials}</span>
               )}
             </div>
           </div>
@@ -598,7 +598,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
 
         {tab === "Credentials" && (
           <div className="space-y-5">
-            <p className="text-sm text-stone-600">
+            <p className="text-sm text-muted-foreground">
               Things like &quot;REDAN member&quot;, &quot;ESVARBON-registered surveyor&quot;,
               &quot;10+ years closed&quot;. Buyers trust signals like these.
             </p>
@@ -620,7 +620,7 @@ export function ProfileEditor({ initial }: { initial: Initial }) {
               </Button>
               <SavedBadge at={savedAt.Credentials ?? null} />
               {err.Credentials && (
-                <span className="text-xs text-red-600">{err.Credentials}</span>
+                <span className="text-xs text-danger">{err.Credentials}</span>
               )}
             </div>
           </div>

@@ -24,20 +24,20 @@ function Inner({ initial }: { initial: string }) {
 
   return (
     <div className="relative">
-      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-400" />
+      <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-text-subtle" />
       <input
         type="search"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="Search by name, business, or area…"
-        className="h-12 w-full rounded-full border border-stone-200 bg-white pl-11 pr-10 text-sm shadow-sm placeholder:text-stone-400 focus-visible:border-emerald-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-500/15"
+        className="h-12 w-full rounded-full border border-border bg-card pl-11 pr-10 text-sm shadow-sm placeholder:text-text-subtle focus-visible:border-primary focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/15"
       />
       {value && (
         <button
           type="button"
           aria-label="Clear search"
           onClick={() => setValue("")}
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-stone-400 hover:bg-stone-100 hover:text-stone-700"
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-text-subtle hover:bg-surface-2 hover:text-foreground"
         >
           <X className="h-4 w-4" />
         </button>

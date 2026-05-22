@@ -18,11 +18,11 @@ export default async function LoginPage({ searchParams }: Props) {
   return (
     <AuthShell variant="login">
       <h2 className="text-2xl font-bold tracking-tight">Welcome back</h2>
-      <p className="mt-1 text-sm text-stone-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         New here?{" "}
         <Link
           href="/signup"
-          className="font-medium text-emerald-700 underline"
+          className="font-medium text-primary underline"
         >
           Create an account
         </Link>
@@ -35,10 +35,10 @@ export default async function LoginPage({ searchParams }: Props) {
       <div className="mt-6">
         <LoginForm next={params.next} initialError={params.error} />
       </div>
-      <p className="mt-4 text-sm text-stone-500">
+      <p className="mt-4 text-sm text-muted-foreground">
         <Link
           href="/forgot-password"
-          className="text-emerald-700 underline hover:text-emerald-800"
+          className="text-primary underline hover:text-primary-soft-foreground"
         >
           Forgot your password?
         </Link>

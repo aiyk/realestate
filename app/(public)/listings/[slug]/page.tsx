@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
   Bath,
   Bed,
   CalendarDays,
   CheckCircle2,
-  Heart,
   MapPin,
   MessageCircle,
   Share2,
@@ -31,10 +29,12 @@ import {
 import { prisma } from "@/lib/db";
 import { getSessionUser } from "@/lib/rbac";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants, Button } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { cn, formatNgn } from "@/lib/utils";
 import { ListingGallery } from "@/components/listings/listing-gallery";
 import { ListingViewTracker } from "@/components/listings/listing-view-tracker";
+import { FavoriteButton } from "@/components/listings/favorite-button";
 import { ListingMediaExtras } from "@/components/listings/listing-media-extras";
 import { ListingCard } from "@/components/listings/listing-card";
 import { Callout } from "@/components/ui/callout";
@@ -159,6 +159,12 @@ export default async function ListingDetailPage({ params }: Props) {
     ? `/account/messages?listing=${listing.id}`
     : `/login?next=${encodeURIComponent(`/listings/${slug}`)}`;
 
+  const initialFavorited = user
+    ? !!(await prisma.favorite.findUnique({
+        where: { userId_listingId: { userId: user.id, listingId: listing.id } },
+      }))
+    : false;
+
   // Agent stats — best-effort, no fake numbers
   let agentStats:
     | { listings: number; sold: number; cities: number }
@@ -204,17 +210,18 @@ export default async function ListingDetailPage({ params }: Props) {
   });
 
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 px-6 pb-20 pt-6">
+    <main className="mx-auto w-full max-w-[100rem] flex-1 px-6 pb-20 pt-6">
       <ListingViewTracker listingId={listing.id} />
-      <Link
-        href="/listings"
-        className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition-colors hover:text-emerald-700"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Back to listings
-      </Link>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Listings", href: "/listings" },
+          { label: listing.city, href: `/listings?city=${encodeURIComponent(listing.city)}` },
+          { label: listing.title },
+        ]}
+      />
 
-      <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
+      <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <Badge variant="default">
@@ -231,30 +238,29 @@ export default async function ListingDetailPage({ params }: Props) {
               <ShieldCheck className="h-3 w-3" />
               Verified
             </Badge>
-            <span className="flex items-center gap-1 text-xs text-stone-500">
+            <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
               {listing.city}, {listing.state}
             </span>
           </div>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight text-stone-900 sm:text-4xl text-balance">
-            {listing.title}
-          </h1>
+          <h1 className="t-h1 mt-2 text-balance">{listing.title}</h1>
         </div>
         <div className="flex items-center gap-2">
-          <button
+          <FavoriteButton
+            listingId={listing.id}
+            initialFavorited={initialFavorited}
+            authenticated={!!user}
+            variant="inline"
+          />
+          <Button
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-full border border-stone-200 bg-white text-stone-500 transition-colors hover:text-rose-500"
-            aria-label="Save listing"
-          >
-            <Heart className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            className="grid h-10 w-10 place-items-center rounded-full border border-stone-200 bg-white text-stone-500 transition-colors hover:text-emerald-700"
+            variant="outline"
+            size="icon"
             aria-label="Share"
+            className="text-muted-foreground hover:text-primary"
           >
             <Share2 className="h-4 w-4" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -269,7 +275,7 @@ export default async function ListingDetailPage({ params }: Props) {
       <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_380px]">
         <div>
           {/* Stat strip */}
-          <div className="grid grid-cols-2 gap-3 rounded-2xl border border-stone-200 bg-white p-4 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-4">
             <StatItem
               icon={<Bed className="h-4 w-4" />}
               value={listing.bedrooms ?? "—"}
@@ -317,7 +323,7 @@ export default async function ListingDetailPage({ params }: Props) {
           )}
 
           <Section title="About this property">
-            <p className="whitespace-pre-line text-sm leading-relaxed text-stone-700 text-pretty">
+            <p className="whitespace-pre-line text-sm leading-relaxed text-foreground text-pretty">
               {listing.description}
             </p>
           </Section>
@@ -350,9 +356,9 @@ export default async function ListingDetailPage({ params }: Props) {
                   return (
                     <li
                       key={a}
-                      className="inline-flex items-center gap-2 rounded-xl bg-stone-50 px-3 py-2 text-sm text-stone-700 ring-1 ring-stone-100"
+                      className="inline-flex items-center gap-2 rounded-xl bg-surface-2 px-3 py-2 text-sm text-foreground ring-1 ring-border"
                     >
-                      <Icon className="h-4 w-4 text-emerald-600" />
+                      <Icon className="h-4 w-4 text-primary" />
                       <span className="capitalize">{a}</span>
                     </li>
                   );
@@ -362,7 +368,7 @@ export default async function ListingDetailPage({ params }: Props) {
           )}
 
           <Section title="What happens next">
-            <p className="text-sm text-stone-600 text-pretty">
+            <p className="text-sm text-muted-foreground text-pretty">
               From the moment you tap <strong>Reserve</strong> to the day you
               get the keys — here&apos;s the whole ride.
             </p>
@@ -370,36 +376,36 @@ export default async function ListingDetailPage({ params }: Props) {
               {NEXT_STEPS.map((s, i) => (
                 <li
                   key={s.title}
-                  className="relative rounded-2xl border border-stone-200 bg-white p-4"
+                  className="relative rounded-2xl border border-border bg-card p-4"
                 >
-                  <span className="absolute right-3 top-2 text-3xl font-bold text-stone-100">
+                  <span className="absolute right-3 top-2 text-3xl font-bold text-white/90">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <div className="grid h-9 w-9 place-items-center rounded-lg bg-emerald-50 text-emerald-700">
+                  <div className="grid h-9 w-9 place-items-center rounded-lg bg-primary-soft text-primary">
                     {s.icon}
                   </div>
-                  <p className="mt-3 text-sm font-semibold text-stone-900">
+                  <p className="mt-3 text-sm font-semibold text-foreground">
                     {s.title}
                   </p>
-                  <p className="mt-1 text-xs text-stone-600">{s.body}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">{s.body}</p>
                 </li>
               ))}
             </ol>
           </Section>
 
           <Section title="Where it is">
-            <p className="text-sm text-stone-700">
+            <p className="text-sm text-foreground">
               {listing.addressLine}
               <br />
               {listing.city}, {listing.state}, {listing.country}
             </p>
-            <div className="mt-4 grid aspect-[16/8] place-items-center overflow-hidden rounded-2xl border border-dashed border-stone-300 bg-gradient-to-br from-stone-50 via-emerald-50/40 to-amber-50/40 text-sm text-stone-500">
+            <div className="mt-4 grid aspect-[16/8] place-items-center overflow-hidden rounded-2xl border border-dashed border-input bg-gradient-to-br from-surface-2 via-primary-soft/40 to-accent-soft/40 text-sm text-muted-foreground">
               <div className="text-center">
-                <MapPin className="mx-auto h-8 w-8 text-emerald-700" />
-                <p className="mt-2 font-semibold text-stone-700">
+                <MapPin className="mx-auto h-8 w-8 text-primary" />
+                <p className="mt-2 font-semibold text-foreground">
                   Exact location shared after deposit
                 </p>
-                <p className="mt-1 max-w-xs text-xs text-stone-500 text-pretty">
+                <p className="mt-1 max-w-xs text-xs text-muted-foreground text-pretty">
                   {NUDGES.exactLocation}
                 </p>
               </div>
@@ -417,14 +423,14 @@ export default async function ListingDetailPage({ params }: Props) {
 
         {/* Sticky reserve sidebar */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-lg">
+          <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-lg">
             {/* Top concierge band */}
-            <div className="bg-gradient-to-br from-emerald-700 via-emerald-800 to-stone-900 px-6 pt-5 pb-6 text-white">
+            <div className="bg-gradient-to-br from-primary via-primary-hover to-foreground px-6 pt-5 pb-6 text-white">
               <SpeechBubble
                 from="concierge"
                 avatar="·"
                 author="Concierge"
-                className="!text-stone-900"
+                className="!text-foreground"
               >
                 {NUDGES.reserveHeld}
               </SpeechBubble>
@@ -432,30 +438,30 @@ export default async function ListingDetailPage({ params }: Props) {
 
             <div className="p-6">
               <div className="flex items-baseline justify-between">
-                <p className="text-3xl font-bold text-stone-900">
+                <p className="text-3xl font-bold text-foreground">
                   {formatNgn(listing.priceNgn.toString())}
                 </p>
                 {listing.status === "PUBLISHED" && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-2 py-0.5 text-xs font-medium text-primary-soft-foreground">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
                     Available
                   </span>
                 )}
               </div>
-              <p className="mt-1 text-xs text-stone-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Asking price · room for conversation
               </p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
-                <div className="rounded-2xl bg-gradient-to-br from-emerald-50 to-amber-50 p-4">
-                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-emerald-800">
+                <div className="rounded-2xl bg-gradient-to-br from-primary-soft to-accent-soft p-4">
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-primary-soft-foreground">
                     <Wallet className="h-3.5 w-3.5" />
                     Reserve with
                   </div>
-                  <p className="mt-1 text-2xl font-bold text-stone-900">
+                  <p className="mt-1 text-2xl font-bold text-foreground">
                     {formatNgn(listing.depositNgn.toString())}
                   </p>
-                  <p className="mt-1 text-xs text-stone-600">
+                  <p className="mt-1 text-xs text-muted-foreground">
                     Held by Paystack until close.
                   </p>
                 </div>
@@ -492,17 +498,17 @@ export default async function ListingDetailPage({ params }: Props) {
                 </Link>
               </div>
 
-              <ul className="mt-5 space-y-2 border-t border-stone-100 pt-5 text-xs text-stone-600">
+              <ul className="mt-5 space-y-2 border-t border-border pt-5 text-xs text-muted-foreground">
                 <li className="flex items-start gap-2">
-                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-700" />
+                  <ShieldCheck className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   {NUDGES.escrow}
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-700" />
+                  <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   {NUDGES.refundable}
                 </li>
                 <li className="flex items-start gap-2">
-                  <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-700" />
+                  <MessageCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" />
                   {NUDGES.whatsAppNo}
                 </li>
               </ul>
@@ -512,22 +518,22 @@ export default async function ListingDetailPage({ params }: Props) {
       </div>
 
       {similar.length > 0 && (
-        <section className="mt-20 border-t border-stone-100 pt-12">
+        <section className="mt-20 border-t border-border pt-12">
           <div className="flex items-end justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+              <p className="text-xs font-semibold uppercase tracking-wider text-primary">
                 You might also like
               </p>
               <h2 className="mt-1 text-2xl font-bold tracking-tight">
                 Listings like this one
               </h2>
-              <p className="mt-1 text-sm text-stone-600">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Same city or same property type — sorted by newest.
               </p>
             </div>
             <Link
               href="/listings"
-              className="text-sm font-medium text-emerald-700 hover:text-emerald-800"
+              className="text-sm font-medium text-primary hover:text-primary-soft-foreground"
             >
               See all →
             </Link>
@@ -565,7 +571,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-10 border-t border-stone-100 pt-8">
+    <section className="mt-10 border-t border-border pt-8">
       <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
       <div className="mt-4">{children}</div>
     </section>
@@ -583,12 +589,12 @@ function StatItem({
 }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+      <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary-soft text-primary">
         {icon}
       </div>
       <div>
-        <p className="text-base font-semibold text-stone-900">{value}</p>
-        <p className="text-xs text-stone-500">{label}</p>
+        <p className="text-base font-semibold text-foreground">{value}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </div>
   );
@@ -624,10 +630,10 @@ function AgentCard({
     ? new Date(listingAgent.createdAt).getFullYear()
     : null;
   return (
-    <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white">
-      <div className="bg-gradient-to-br from-stone-50 to-amber-50/40 p-6">
+    <div className="overflow-hidden rounded-3xl border border-border bg-card">
+      <div className="bg-gradient-to-br from-surface-2 to-accent-soft/40 p-6">
         <div className="flex items-start gap-4">
-          <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 text-lg font-semibold text-white shadow-md">
+          <div className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-hover text-lg font-semibold text-white shadow-md">
             {name
               .split(/\s+/)
               .filter(Boolean)
@@ -638,19 +644,19 @@ function AgentCard({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
-              <p className="font-semibold text-stone-900">{name}</p>
+              <p className="font-semibold text-foreground">{name}</p>
               <Badge variant="success">
                 <ShieldCheck className="h-3 w-3" />
                 Verified
               </Badge>
             </div>
             {since && (
-              <p className="text-xs text-stone-500">
+              <p className="text-xs text-muted-foreground">
                 On Realestate since {since}
               </p>
             )}
             {listingAgent?.agentProfile?.bio && (
-              <p className="mt-2 text-sm text-stone-700 text-pretty">
+              <p className="mt-2 text-sm text-foreground text-pretty">
                 {listingAgent.agentProfile.bio}
               </p>
             )}
@@ -659,7 +665,7 @@ function AgentCard({
       </div>
 
       {stats && (
-        <div className="grid grid-cols-3 gap-px bg-stone-100">
+        <div className="grid grid-cols-1 gap-px bg-surface-2 sm:grid-cols-3">
           <StatBadge
             label="Listings live"
             value={stats.listings}

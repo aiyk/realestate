@@ -21,12 +21,12 @@ export default async function VerifyEmailPage({ searchParams }: Props) {
       <h2 className="text-2xl font-bold tracking-tight">Email verification</h2>
 
       {success ? (
-        <div className="mt-6 rounded-2xl bg-emerald-50 p-5 text-sm">
-          <CheckCircle2 className="h-6 w-6 text-emerald-700" />
-          <p className="mt-2 font-semibold text-emerald-900">
+        <div className="mt-6 rounded-2xl bg-primary-soft p-5 text-sm">
+          <CheckCircle2 className="h-6 w-6 text-primary" />
+          <p className="mt-2 font-semibold text-primary-soft-foreground">
             Your email is verified.
           </p>
-          <p className="mt-1 text-emerald-800 text-pretty">
+          <p className="mt-1 text-primary-soft-foreground text-pretty">
             You can now sign in and use the full marketplace — reserving,
             messaging, the lot.
           </p>
@@ -49,20 +49,20 @@ export default async function VerifyEmailPage({ searchParams }: Props) {
           your email.
         </Callout>
       ) : (
-        <div className="mt-6 space-y-4 text-sm text-stone-700">
-          <div className="flex items-start gap-3 rounded-2xl bg-stone-50 p-4">
-            <Mail className="mt-0.5 h-5 w-5 text-emerald-700" />
+        <div className="mt-6 space-y-4 text-sm text-foreground">
+          <div className="flex items-start gap-3 rounded-2xl bg-surface-2 p-4">
+            <Mail className="mt-0.5 h-5 w-5 text-primary" />
             <div>
-              <p className="font-semibold text-stone-900">Check your inbox</p>
-              <p className="mt-1 text-stone-600 text-pretty">
+              <p className="font-semibold text-foreground">Check your inbox</p>
+              <p className="mt-1 text-muted-foreground text-pretty">
                 We sent you a verification link. It expires in 24 hours — one
                 tap, you&apos;re in.
               </p>
             </div>
           </div>
 
-          <div className="flex items-start gap-3 rounded-2xl bg-amber-50 p-4 text-amber-900 ring-1 ring-amber-200">
-            <AlertTriangle className="mt-0.5 h-5 w-5 text-amber-700" />
+          <div className="flex items-start gap-3 rounded-2xl bg-accent-soft p-4 text-accent-soft-foreground ring-1 ring-accent/20">
+            <AlertTriangle className="mt-0.5 h-5 w-5 text-accent" />
             <div>
               <p className="font-semibold">Don&apos;t see it?</p>
               <p className="mt-1 text-pretty">

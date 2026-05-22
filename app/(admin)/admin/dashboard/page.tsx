@@ -48,8 +48,8 @@ export default async function AdminDashboard() {
 
   return (
     <section>
-      <div className="rounded-3xl border border-stone-200 bg-gradient-to-br from-stone-50 via-white to-emerald-50/60 p-6 sm:p-8">
-        <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+      <div className="rounded-3xl border border-border bg-gradient-to-br from-surface-2 via-white to-primary-soft/60 p-6 sm:p-8">
+        <p className="text-xs font-semibold uppercase tracking-wider text-primary">
           Admin dashboard
         </p>
         <h1 className="mt-1 text-3xl font-bold tracking-tight">
@@ -154,7 +154,7 @@ export default async function AdminDashboard() {
             {pendingReview > 0 && (
               <Link
                 href="/admin/listings?status=PENDING_REVIEW"
-                className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-white px-3 py-1 text-xs font-medium text-amber-800 hover:bg-amber-100"
+                className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-card px-3 py-1 text-xs font-medium text-accent-soft-foreground hover:bg-accent-soft"
               >
                 Review listings <ArrowRight className="h-3 w-3" />
               </Link>
@@ -162,7 +162,7 @@ export default async function AdminDashboard() {
             {pendingPayouts > 0 && (
               <Link
                 href="/admin/payouts"
-                className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-white px-3 py-1 text-xs font-medium text-amber-800 hover:bg-amber-100"
+                className="inline-flex items-center gap-1 rounded-full border border-accent/30 bg-card px-3 py-1 text-xs font-medium text-accent-soft-foreground hover:bg-accent-soft"
               >
                 Release payouts <ArrowRight className="h-3 w-3" />
               </Link>

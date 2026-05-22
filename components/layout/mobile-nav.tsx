@@ -98,7 +98,7 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="grid h-10 w-10 place-items-center rounded-full border border-stone-200 bg-white text-stone-700 transition-colors hover:border-emerald-400 hover:text-emerald-700"
+        className="grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-foreground transition-colors hover:border-primary hover:text-primary"
         aria-label="Open menu"
       >
         <Menu className="h-4 w-4" />
@@ -107,11 +107,11 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
       {open && (
         <div className="fixed inset-0 z-50">
           <div
-            className="absolute inset-0 bg-stone-900/60 animate-fade-in"
+            className="absolute inset-0 bg-foreground/60 animate-fade-in"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 top-0 h-full w-[min(400px,100vw)] animate-scale-in overflow-y-auto border-l border-stone-200 bg-white shadow-2xl">
-            <div className="flex items-center justify-between border-b border-stone-100 px-6 py-4">
+          <div className="absolute right-0 top-0 h-full w-[min(400px,100vw)] animate-scale-in overflow-y-auto border-l border-border bg-card shadow-2xl">
+            <div className="flex items-center justify-between border-b border-border px-6 py-4">
               <Link
                 href="/"
                 onClick={() => setOpen(false)}
@@ -124,7 +124,7 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
                 type="button"
                 onClick={() => setOpen(false)}
                 aria-label="Close menu"
-                className="rounded-full p-1.5 text-stone-500 hover:bg-stone-100"
+                className="rounded-full p-1.5 text-muted-foreground hover:bg-surface-2"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -133,7 +133,7 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
             <div className="px-4 py-6">
               {GROUPS.map((g) => (
                 <div key={g.title} className="mb-5">
-                  <p className="px-3 text-xs font-semibold uppercase tracking-wider text-stone-500">
+                  <p className="px-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     {g.title}
                   </p>
                   <ul className="mt-2 space-y-1">
@@ -142,17 +142,17 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
                         <Link
                           href={l.href}
                           onClick={() => setOpen(false)}
-                          className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-stone-50"
+                          className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-surface-2"
                         >
-                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-emerald-50 text-emerald-700">
+                          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-primary-soft text-primary">
                             {l.icon}
                           </span>
                           <span className="flex-1">
-                            <span className="block text-sm font-semibold text-stone-900">
+                            <span className="block text-sm font-semibold text-foreground">
                               {l.label}
                             </span>
                             {l.sub && (
-                              <span className="block text-xs text-stone-500">
+                              <span className="block text-xs text-muted-foreground">
                                 {l.sub}
                               </span>
                             )}
@@ -165,7 +165,7 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
               ))}
 
               {!isAuthed && (
-                <div className="mt-4 grid gap-2 border-t border-stone-100 px-2 pt-5">
+                <div className="mt-4 grid gap-2 border-t border-border px-2 pt-5">
                   <Link
                     href="/login"
                     onClick={() => setOpen(false)}
@@ -183,12 +183,12 @@ export function MobileNav({ isAuthed }: { isAuthed: boolean }) {
                 </div>
               )}
 
-              <div className="mt-6 rounded-2xl bg-stone-50 px-4 py-4">
-                <p className="flex items-center gap-2 text-xs font-semibold text-stone-700">
-                  <Mail className="h-3.5 w-3.5 text-emerald-700" />
+              <div className="mt-6 rounded-2xl bg-surface-2 px-4 py-4">
+                <p className="flex items-center gap-2 text-xs font-semibold text-foreground">
+                  <Mail className="h-3.5 w-3.5 text-primary" />
                   hello@realestate.ng
                 </p>
-                <p className="mt-1 text-xs text-stone-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Real humans. Replies within the hour.
                 </p>
               </div>

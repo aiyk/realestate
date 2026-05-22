@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
-  ArrowLeft,
   ArrowRight,
   MapPin,
   Wallet,
@@ -12,6 +12,8 @@ import { getSessionUser } from "@/lib/rbac";
 import { prisma } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { EmptyState } from "@/components/ui/empty-state";
 import { Callout } from "@/components/ui/callout";
 import { NoReservations } from "@/components/illustrations/empty-states";
 import { ReviewSubmitDialog } from "@/components/agent/review-submit-dialog";
@@ -60,23 +62,23 @@ export default async function BuyerReservationsPage() {
 
   return (
     <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-12">
-      <Link
-        href="/account"
-        className="inline-flex items-center gap-1.5 text-sm text-stone-500 transition-colors hover:text-emerald-700"
-      >
-        <ArrowLeft className="h-3.5 w-3.5" />
-        Back to account
-      </Link>
+      <Breadcrumb
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Account", href: "/account" },
+          { label: "Reservations" },
+        ]}
+      />
 
-      <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
+      <div className="mt-4 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             What you&apos;ve put down on
           </p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight">
+          <h1 className="t-h1 mt-1">
             My reservations
           </h1>
-          <p className="mt-1 text-sm text-stone-600">
+          <p className="mt-1 text-sm text-muted-foreground">
             Receipts, status, references — your full deposit history lives
             here.
           </p>
@@ -90,46 +92,47 @@ export default async function BuyerReservationsPage() {
       </div>
 
       {reservations.length === 0 ? (
-        <div className="mt-10 rounded-3xl border border-dashed border-stone-300 bg-white p-12 text-center">
-          <NoReservations className="mx-auto h-32" />
-          <p className="mt-4 text-lg font-semibold text-stone-700">
-            {empty.headline}
-          </p>
-          <p className="mx-auto mt-1 max-w-md text-sm text-stone-500 text-pretty">
-            {empty.body}
-          </p>
-          {empty.cta && (
-            <Link
-              href={empty.cta.href}
-              className={cn(buttonVariants(), "mt-6")}
-            >
-              {empty.cta.label}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          )}
+        <div className="mt-10 rounded-3xl border border-dashed border-input bg-card">
+          <EmptyState
+            illustration={<NoReservations className="h-28 w-auto" />}
+            title={empty.headline}
+            description={empty.body}
+            action={
+              empty.cta && (
+                <Link
+                  href={empty.cta.href}
+                  className={cn(buttonVariants())}
+                >
+                  {empty.cta.label}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              )
+            }
+          />
         </div>
       ) : (
         <div className="mt-8 space-y-4">
           {reservations.map((r) => (
             <article
               key={r.id}
-              className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+              className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
             >
               <div className="grid gap-4 p-5 sm:grid-cols-[120px_1fr_auto] sm:items-center">
                 {/* Thumbnail */}
                 <Link
                   href={`/listings/${r.listing.slug}`}
-                  className="aspect-[4/3] overflow-hidden rounded-2xl bg-stone-100"
+                  className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-surface-2"
                 >
                   {r.listing.images[0]?.url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={r.listing.images[0].url}
                       alt={r.listing.title}
-                      className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                      fill
+                      sizes="120px"
+                      className="object-cover transition-transform duration-500 hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-xs text-stone-400">
+                    <div className="flex h-full items-center justify-center text-xs text-text-subtle">
                       No photo
                     </div>
                   )}
@@ -138,30 +141,30 @@ export default async function BuyerReservationsPage() {
                 <div className="min-w-0">
                   <Link
                     href={`/listings/${r.listing.slug}`}
-                    className="font-semibold text-stone-900 hover:text-emerald-700"
+                    className="font-semibold text-foreground hover:text-primary"
                   >
                     {r.listing.title}
                   </Link>
-                  <p className="mt-0.5 flex items-center gap-1 text-xs text-stone-500">
+                  <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
                     <MapPin className="h-3 w-3" />
                     {r.listing.city}, {r.listing.state}
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-stone-600">
+                  <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1.5">
-                      <Wallet className="h-3.5 w-3.5 text-emerald-700" />
-                      <strong className="text-stone-900">
+                      <Wallet className="h-3.5 w-3.5 text-primary" />
+                      <strong className="text-foreground">
                         {formatNgn(r.depositNgn.toString())}
                       </strong>
                       &nbsp;deposit
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <Hash className="h-3.5 w-3.5 text-stone-400" />
-                      <code className="text-[11px] text-stone-500">
+                      <Hash className="h-3.5 w-3.5 text-text-subtle" />
+                      <code className="text-[11px] text-muted-foreground">
                         {r.reference}
                       </code>
                     </span>
                     <span className="inline-flex items-center gap-1.5">
-                      <CalendarDays className="h-3.5 w-3.5 text-stone-400" />
+                      <CalendarDays className="h-3.5 w-3.5 text-text-subtle" />
                       {r.createdAt.toLocaleDateString("en-NG", {
                         day: "numeric",
                         month: "short",
@@ -177,12 +180,12 @@ export default async function BuyerReservationsPage() {
               </div>
 
               {statusBlurb(r.status) && (
-                <div className="border-t border-stone-100 bg-stone-50/60 px-5 py-3 text-xs text-stone-600">
+                <div className="border-t border-border bg-surface-2/60 px-5 py-3 text-xs text-muted-foreground">
                   {statusBlurb(r.status)}
                 </div>
               )}
 
-              <div className="flex flex-wrap items-center gap-2 border-t border-stone-100 px-5 py-3">
+              <div className="flex flex-wrap items-center gap-2 border-t border-border px-5 py-3">
                 <Link
                   href={`/listings/${r.listing.slug}`}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
@@ -206,7 +209,7 @@ export default async function BuyerReservationsPage() {
                     />
                   )}
                 {r.agentReview && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-3 py-1 text-xs font-medium text-emerald-900">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary-soft px-3 py-1 text-xs font-medium text-primary-soft-foreground">
                     ✓ Review submitted
                   </span>
                 )}

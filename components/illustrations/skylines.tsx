@@ -13,10 +13,10 @@ export function LagosSkyline({ className }: Props) {
       viewBox="0 0 400 120"
       fill="none"
       aria-hidden="true"
-      className={cn("h-auto w-full text-emerald-700/30", className)}
+      className={cn("h-auto w-full text-primary/30", className)}
     >
       {/* Sun */}
-      <circle cx="320" cy="38" r="14" fill="#fbbf24" opacity="0.85" />
+      <circle cx="320" cy="38" r="14" fill="var(--accent)" opacity="0.85" />
       {/* Water */}
       <rect y="100" width="400" height="20" fill="currentColor" opacity="0.18" />
       <path
@@ -47,7 +47,7 @@ export function LagosSkyline({ className }: Props) {
         <rect x="380" y="76" width="14" height="24" />
       </g>
       {/* Window lights */}
-      <g fill="#fbbf24" opacity="0.75">
+      <g fill="var(--accent)" opacity="0.75">
         <rect x="40" y="68" width="2" height="3" />
         <rect x="44" y="72" width="2" height="3" />
         <rect x="110" y="58" width="2" height="3" />
@@ -70,7 +70,7 @@ export function AbujaSkyline({ className }: Props) {
       viewBox="0 0 400 120"
       fill="none"
       aria-hidden="true"
-      className={cn("h-auto w-full text-emerald-700/30", className)}
+      className={cn("h-auto w-full text-primary/30", className)}
     >
       {/* Aso Rock-ish silhouette */}
       <path
@@ -107,7 +107,7 @@ export function PortHarcourtSkyline({ className }: Props) {
       viewBox="0 0 400 120"
       fill="none"
       aria-hidden="true"
-      className={cn("h-auto w-full text-emerald-700/30", className)}
+      className={cn("h-auto w-full text-primary/30", className)}
     >
       {/* Refinery / oil silhouette */}
       <g fill="currentColor">
@@ -153,7 +153,7 @@ export function IbadanSkyline({ className }: Props) {
       viewBox="0 0 400 120"
       fill="none"
       aria-hidden="true"
-      className={cn("h-auto w-full text-emerald-700/30", className)}
+      className={cn("h-auto w-full text-primary/30", className)}
     >
       {/* Rolling hills + low-rise */}
       <path
@@ -176,7 +176,7 @@ export function IbadanSkyline({ className }: Props) {
         })}
       </g>
       {/* Sun */}
-      <circle cx="60" cy="36" r="11" fill="#fbbf24" opacity="0.75" />
+      <circle cx="60" cy="36" r="11" fill="var(--accent)" opacity="0.75" />
     </svg>
   );
 }

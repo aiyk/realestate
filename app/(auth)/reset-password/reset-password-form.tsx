@@ -4,16 +4,20 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/toast";
+import { PasswordStrength } from "@/components/auth/password-strength";
 
 export function ResetPasswordForm({ token }: { token: string }) {
   const router = useRouter();
+  const toast = useToast();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [hasError, setHasError] = useState(false);
+  const [password, setPassword] = useState("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setHasError(false);
     const fd = new FormData(e.currentTarget);
     const res = await fetch("/api/auth/reset-password", {
       method: "POST",
@@ -23,9 +27,13 @@ export function ResetPasswordForm({ token }: { token: string }) {
     setLoading(false);
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data?.error?.message ?? "Reset failed");
+      setHasError(true);
+      toast.error(data?.error?.message ?? "Reset failed", {
+        description: "The link may have expired — request a new one.",
+      });
       return;
     }
+    toast.success("Password updated");
     router.push("/login?reset=1");
   }
 
@@ -39,11 +47,14 @@ export function ResetPasswordForm({ token }: { token: string }) {
           type="password"
           required
           minLength={8}
+          autoComplete="new-password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          state={hasError ? "error" : "default"}
+          aria-invalid={hasError || undefined}
         />
+        <PasswordStrength value={password} className="mt-1" />
       </div>
-      {error && (
-        <p className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</p>
-      )}
       <Button type="submit" disabled={loading}>
         {loading ? "Saving…" : "Set new password"}
       </Button>

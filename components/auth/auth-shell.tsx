@@ -120,13 +120,13 @@ export function AuthShell({
             Realestate
           </Link>
 
-          <p className="text-xs font-semibold uppercase tracking-wider text-emerald-700">
+          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
             {v.eyebrow}
           </p>
           <h1 className="mt-2 text-4xl font-bold tracking-tight text-balance">
             {v.title}
           </h1>
-          <p className="mt-3 max-w-md text-stone-600 text-pretty">{v.blurb}</p>
+          <p className="mt-3 max-w-md text-muted-foreground text-pretty">{v.blurb}</p>
 
           <div className="mt-8">
             {v.illustration === "shield" && (
@@ -136,8 +136,8 @@ export function AuthShell({
               <ChatBubbles className="mx-auto max-w-md" />
             )}
             {v.illustration === "skyline" && (
-              <div className="overflow-hidden rounded-3xl border border-stone-200 bg-white p-6 shadow-sm">
-                <LagosSkyline className="text-emerald-700/40" />
+              <div className="overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm">
+                <LagosSkyline className="text-primary/40" />
                 <div className="mt-4">
                   <SpeechBubble
                     from="concierge"
@@ -156,12 +156,12 @@ export function AuthShell({
             <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {FEATURES.map((b) => (
                 <li key={b.title} className="flex gap-3">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary-soft text-primary">
                     {b.icon}
                   </div>
                   <div>
                     <p className="text-sm font-semibold">{b.title}</p>
-                    <p className="text-xs text-stone-600 text-pretty">
+                    <p className="text-xs text-muted-foreground text-pretty">
                       {b.body}
                     </p>
                   </div>
@@ -181,17 +181,17 @@ export function AuthShell({
             <NigeriaMark className="h-8 w-8" />
             Realestate
           </Link>
-          <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm">
+          <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
             {children}
           </div>
 
-          <p className="mt-5 text-center text-xs text-stone-500">
+          <p className="mt-5 text-center text-xs text-muted-foreground">
             Protected by{" "}
-            <span className="inline-flex items-center gap-1 font-medium text-stone-700">
+            <span className="inline-flex items-center gap-1 font-medium text-foreground">
               <Lock className="h-3 w-3" /> Auth.js
             </span>{" "}
             ·{" "}
-            <Link href="/contact" className="underline hover:text-emerald-700">
+            <Link href="/contact" className="underline hover:text-primary">
               Need help?
             </Link>
           </p>

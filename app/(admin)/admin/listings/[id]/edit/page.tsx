@@ -19,7 +19,7 @@ export default async function EditListingPage({ params }: Props) {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold">{listing.title}</h1>
-          <p className="mt-1 flex items-center gap-2 text-sm text-neutral-500">
+          <p className="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
             <Badge>{listing.status.replace("_", " ")}</Badge>
             <span>·</span>
             <span>{listing.city}, {listing.state}</span>
@@ -28,7 +28,7 @@ export default async function EditListingPage({ params }: Props) {
         <ListingActions id={listing.id} status={listing.status} />
       </div>
       {listing.rejectionReason && (
-        <p className="mt-4 rounded-md bg-amber-50 p-3 text-sm text-amber-800">
+        <p className="mt-4 rounded-md bg-accent-soft p-3 text-sm text-accent-soft-foreground">
           <strong>Rejection reason:</strong> {listing.rejectionReason}
         </p>
       )}

@@ -32,14 +32,14 @@ export default async function OpenHousesPage({ params }: Params) {
     <section>
       <Link
         href={`/agent/listings/${id}/edit`}
-        className="inline-flex items-center gap-1 text-sm text-stone-500 hover:text-stone-800"
+        className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-3 w-3" /> Back to listing
       </Link>
       <h1 className="mt-2 text-2xl font-semibold tracking-tight">
         Open houses — {listing.title}
       </h1>
-      <p className="mt-1 text-sm text-stone-500">
+      <p className="mt-1 text-sm text-muted-foreground">
         Schedule windows when buyers can show up. We&apos;ll send reminders to
         confirmed visit requests.
       </p>
